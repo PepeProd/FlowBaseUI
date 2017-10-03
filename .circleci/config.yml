@@ -35,3 +35,10 @@ jobs:
         
       # run tests!
       - run: npm run unit
+      - run:
+          name: Get AWS CLI
+          command: 'sudo apt-get update && sudo apt-get install -y awscli'
+      - deploy: 
+          name: Deploy to S3 if tests pass and branch is master
+          command: |
+            aws s3 sync dist/ s3://flowbase-site-qa/ --delete --region us-east-2
