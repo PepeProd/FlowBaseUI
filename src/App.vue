@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <NavBar :isLoggedIn="true"></NavBar>
+    <router-view class='navOffset'>
+    </router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
+import NavBar from './components/NavBar.vue';
+export default {  
+  name: 'app',
+  components: {
+    NavBar,
+  }
 }
 </script>
 
@@ -18,6 +23,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+}
+.navOffset {
+  margin-top: 40px;
 }
 </style>
