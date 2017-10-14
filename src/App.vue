@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar :isLoggedIn="true"></NavBar>
+    <NavBar :isLoggedIn="false"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
