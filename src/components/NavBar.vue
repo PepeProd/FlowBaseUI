@@ -20,6 +20,7 @@
 
 <script>
     export default {
+        name: 'NavBar',
         props: ['isLoggedIn'],
         data() {
             return {

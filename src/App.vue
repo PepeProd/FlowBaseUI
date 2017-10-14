@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <NavBar :isLoggedIn="false"></NavBar>
+    <LogIn class='navOffset2'></LogIn>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -8,10 +9,12 @@
 
 <script>
 import NavBar from './components/NavBar.vue';
+import LogIn from './components/LogIn.vue';
 export default {  
   name: 'app',
   components: {
     NavBar,
+    LogIn
   }
 }
 </script>
@@ -27,5 +30,8 @@ export default {
 }
 .navOffset {
   margin-top: 40px;
+}
+.navOffset2 {
+  margin-top: 80px;
 }
 </style>
