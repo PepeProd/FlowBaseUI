@@ -25,13 +25,13 @@
         },
         methods: {
             close: function() {
-                this.$emit('close');
+                this.$emit('close', 'stayOnPage');
             }
         },
         mounted: function () {
             document.addEventListener("keydown", (e) => {
                 if (e.keyCode == 27) {
-                    this.$emit('close');
+                    this.$emit('close', 'stayOnPage');
                 }
             });
         }
@@ -49,6 +49,9 @@
         margin-left: auto;
         margin-right: auto;    
         justify-content: space-between;    
+    }
+    form {
+        border-top: 20px solid #00A6FF;
     }
     label, input, button, span {
         flex: 1 0 auto;       
@@ -99,16 +102,16 @@
     }
 
     .modalTrans-enter,   {
-        transition: all .3s ease
+        transition: all .1s ease
     }
 
     .modalTrans-leave-active {
-        transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
 
     .modalTrans-enter ,
     .modalTrans-leave-to  {
-        transform: translateX(10px);
+        transform: translateX(100px);
         opacity: 0
     }
     

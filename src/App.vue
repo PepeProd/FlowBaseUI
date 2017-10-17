@@ -28,12 +28,18 @@ export default {
     },
     authUser: function(user) {
       //mock api verification
-      this.logState = true;
-      this.showLogForm = false;
+      if (user.username == "asd") {
+        this.logState = true;
+        this.showLogForm = false;
+      } else {
+        this.logOutState();
+      }
     },
-    logOutState: function() {
+    logOutState: function(e) {
       this.logState = false;
       this.showLogForm = false;
+      if (e != "stayOnPage")
+        this.$router.push('/');
     }
   }
 }

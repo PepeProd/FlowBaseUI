@@ -23,12 +23,6 @@
     export default {
         name: 'NavBar',
         props: ['isLoggedIn', 'isFormActive'],
-
-        methods: {
-            changeLogState: function() {
-                this.isLogIn = !this.isLogIn
-            }
-        }
     }
 </script>
 <style scoped>
