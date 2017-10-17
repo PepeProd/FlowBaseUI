@@ -74,7 +74,7 @@
     }
     nav button {
         /* float: right;*/
-        margin: 0.85em 3.5em 0em 0.25em;
+        margin: 0.85em 1.25em 0em 0.25em;
     }
     .hide {
         display: none;

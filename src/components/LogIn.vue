@@ -1,7 +1,7 @@
 <template>
     <transition name="modalTrans">
     <div class="modal" @click="close">
-        <form @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
+        <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
             <input type="text" v-model="user.username"></input>
@@ -51,7 +51,7 @@
         justify-content: space-between;    
     }
     form {
-        border-top: 20px solid #00A6FF;
+        border-top: 20px solid #00A6FF;        
     }
     label, input, button, span {
         flex: 1 0 auto;       
@@ -61,9 +61,13 @@
     }
     span {
         margin-bottom: 20px;
+        color: white;
     }
     input {
         text-align: center;
+    }
+    label {
+        color: white;
     }
     .btnLogIn {
         border-radius: 5px;
