@@ -1,13 +1,13 @@
 <template>
-    <transition>
-    <div class="modal">
-        <form @submit.prevent="$emit('SubmitLog', user)" class="modal-container">
+    <transition name="modalTrans">
+    <div class="modal" @click="close">
+        <form @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
             <input type="text" v-model="user.username"></input>
             
             <label>Password</label>
-            <input  type="text" v-model="user.password"></input>
+            <input  type="password" v-model="user.password"></input>
 
             <button class="btnLogIn">Login</button>
         </form>
@@ -22,6 +22,18 @@
             return {
                 user: {}
             }
+        },
+        methods: {
+            close: function() {
+                this.$emit('close');
+            }
+        },
+        mounted: function () {
+            document.addEventListener("keydown", (e) => {
+                if (e.keyCode == 27) {
+                    this.$emit('close');
+                }
+            });
         }
     }    
 </script>>
@@ -32,20 +44,23 @@
     }
     div, form {
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: column;
         width: 300px;
         margin-left: auto;
         margin-right: auto;    
         justify-content: space-between;    
     }
     label, input, button, span {
-        flex: none;        
+        flex: 1 0 auto;       
     }
     input,button {
         margin-bottom: 15px;
     }
     span {
         margin-bottom: 20px;
+    }
+    input {
+        text-align: center;
     }
     .btnLogIn {
         border-radius: 5px;
@@ -82,4 +97,19 @@
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
     }
+
+    .modalTrans-enter,   {
+        transition: all .3s ease
+    }
+
+    .modalTrans-leave-active {
+        transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+
+    .modalTrans-enter ,
+    .modalTrans-leave-to  {
+        transform: translateX(10px);
+        opacity: 0
+    }
+    
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <LogIn class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
+    <LogIn @close="logOutState" class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
     <NavBar :isLoggedIn="logState" :isFormActive="this.showLogForm" @showLogin="display" @logOut="logOutState"></NavBar>
     <router-view class='navOffset'>
     </router-view>
