@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <NavBar :isLoggedIn="false"></NavBar>
-    <LogIn class='navOffset2'></LogIn>
+    <LogIn class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
+    <NavBar :isLoggedIn="logState" :isFormActive="this.showLogForm" @showLogin="display" @logOut="logOutState"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -15,6 +15,26 @@ export default {
   components: {
     NavBar,
     LogIn
+  },
+  data() {
+    return {
+      logState: false,
+      showLogForm: false
+    }
+  },
+  methods: {
+    display: function(state) {
+      this.showLogForm = state;
+    },
+    authUser: function(user) {
+      //mock api verification
+      this.logState = true;
+      this.showLogForm = false;
+    },
+    logOutState: function() {
+      this.logState = false;
+      this.showLogForm = false;
+    }
   }
 }
 </script>
@@ -31,7 +51,7 @@ export default {
 .navOffset {
   margin-top: 40px;
 }
-.navOffset2 {
+.loginOffset {
   margin-top: 80px;
 }
 </style>

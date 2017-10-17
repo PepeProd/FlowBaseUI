@@ -1,17 +1,18 @@
 <template>
-<div v-bind:class="{'modal-mask': !isLogIn}">
+<div v-bind:class="{'modal-mask': (this.isFormActive)}">
     <nav >
         <ul><li><span>FLOWBASE</span></li></ul>
         <ul class="navLinks">
             <li><router-link to="/">Overview</router-link></li>
-            <li v-if="isLogIn"><router-link to="/addChem">Add Chemical</router-link></li>
+            <li v-if="this.isLoggedIn"><router-link to="/addChem">Add Chemical</router-link></li>
             <li><router-link to="/disposal">Disposal</router-link></li>
             <li><router-link to="/dispRecords">Disposal Records</router-link></li>
-            <li v-if="isLogIn"><router-link to="/siteSettings">Site Settings</router-link></li>
+            <li v-if="this.isLoggedIn"><router-link to="/siteSettings">Site Settings</router-link></li>
         </ul>
         <ul>
             <li>
-                <button class="btnLog" id="btnChangeLogState" @click="changeLogState()"><span v-if="!isLogIn">Login</span><span v-else>Log Out</span></button>      
+                <button v-if="!this.isLoggedIn" class="btnLog" id="btnChangeLogState" @click="$emit('showLogin', true)"><span>Login</span></button>
+                <button v-else class="btnLog" @click="$emit('logOut')"><span>Log Out</span></button>
             </li>
         </ul>
     </nav>
@@ -21,12 +22,8 @@
 <script>
     export default {
         name: 'NavBar',
-        props: ['isLoggedIn'],
-        data() {
-            return {
-                isLogIn: this.isLoggedIn
-            }
-        },
+        props: ['isLoggedIn', 'isFormActive'],
+
         methods: {
             changeLogState: function() {
                 this.isLogIn = !this.isLogIn
@@ -35,6 +32,9 @@
     }
 </script>
 <style scoped>
+    * {
+        box-sizing: border-box;
+    }
     nav {
         background-color: rgb(56,56,56);
         margin: 0;
@@ -105,7 +105,7 @@
     }
     .modal-mask {
         position: fixed;
-        z-index: 9998;
+        z-index: 9996;
         top: 0;
         left: 0;
         width: 100%;
