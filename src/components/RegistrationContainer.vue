@@ -1,27 +1,31 @@
 <template>
-    <transition name="modalTrans" mode="out-in">
-    <div class="modal" @click="clickedOutside">
-        <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
-            <span><strong>FlowBase Login</strong></span>
-            <label>UserName</label>
-            <input type="text" v-model="user.username"></input>
-            
-            <label>Password</label>
-            <input  type="password" v-model="user.password"></input>
-
-            <button class="btnLogIn">Login</button>
-            <button class="btnLogIn" @click.prevent="$emit('registerNewUser')">Register</button>
-        </form>
-    </div>
+   <transition name="modalTrans" appear>
+        <div class="modal" @click="clickedOutside">
+            <form @submit.prevent="$emit('registrationClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" >
+                <span><strong>FlowBase Registration</strong></span>
+                <label>UserName</label>
+                <input type="text" v-model="newUser.username"></input>
+                <label>Email</label>
+                <input type="text" v-model="newUser.email"></input>
+                <div class="flex-row">
+                    <input id="emailNotifications" type="checkbox" v-model="newUser.notifications"></input>
+                    <label class="lblEmail" for="emailNotifications">Email Notifications</label>
+                </div>
+                <label>Password</label>
+                <input  type="password" v-model="newUser.password"></input>
+                <button class="btnRegister">Register</button>
+            </form>
+        </div>
     </transition>
 </template>
 
 <script>
     export default {
-        name: 'LogIn',
+        name: 'RegistrationContainer',
+        props: [],
         data() {
             return {
-                user: {}
+                newUser: {}
             }
         },
         methods: {
@@ -29,21 +33,14 @@
                 this.$emit('clickedOutside');
             }
         },
-        mounted: function () {
-            document.addEventListener("keydown", (e) => {
-                if (e.keyCode == 27) {
-                    this.$emit('clickedOutside');
-                }
-            });
-        }
-    }    
-</script>>
+    }
+</script>
 
-<style scoped>
+<style scope>
     * {
         box-sizing: border-box;
     }
-    div, form {
+    form {
         display: flex;
         flex-flow: column;
         width: 300px;
@@ -60,6 +57,20 @@
     input,button {
         margin-bottom: 15px;
     }
+    input[type=checkbox] {
+        flex: 0 0 auto;
+    }
+    lblEmail {
+        flex: 0 0 auto;
+    }
+    .flex-row {
+        display: flex;
+        flex-flow: row;
+        margin-left: auto;
+        margin-right: auto;
+        width: 240px;
+        justify-content: space-between;
+    }
     span {
         margin-bottom: 20px;
         color: white;
@@ -70,7 +81,7 @@
     label {
         color: white;
     }
-    .btnLogIn {
+    .btnRegister {
         border-radius: 5px;
         padding: 3px 25px 3px 25px;
         cursor: pointer;
@@ -83,7 +94,7 @@
         -webkit-transition-duration: 0.5s;
         -moz-transition-duration: 0.5s;
     }
-    .btnLogIn:hover {
+    .btnRegister:hover {
         color: #006398;
         opacity: 0.8;
         border: 1px solid #006398;
@@ -99,6 +110,12 @@
         z-index: 9999;
     }
     .modal {
+        display: flex;
+        flex-flow: column;
+        width: 300px;
+        margin-left: auto;
+        margin-right: auto;    
+        justify-content: space-between; 
         position: fixed;
         top: 0;
         left: 0;
@@ -110,9 +127,10 @@
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
     }
-
-    .modalTrans-enter,   {
-        transition: all .1s ease;
+    
+    /* can not get transition enter to work */
+    .modalTrans-enter-active,   {
+        transition: all 1s ease !important;
     }
 
     .modalTrans-leave-active {
@@ -121,8 +139,7 @@
 
     .modalTrans-enter ,
     .modalTrans-leave-to  {
-        transform: translateX(100px);
-        opacity: 0;
+        transform: translateX(100px) !important;
+        opacity: 0 !important;
     }
-    
 </style>

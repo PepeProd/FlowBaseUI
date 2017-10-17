@@ -4,9 +4,9 @@
         <ul><li><span>FLOWBASE</span></li></ul>
         <ul class="navLinks">
             <li><router-link to="/">Overview</router-link></li> <!-- find way to remove li and apply style to router-link -->
-            <li v-if="this.isLoggedIn"><router-link to="/addChem">Add Chemical</router-link></li>
+            <li v-if="this.isLoggedIn"><router-link to="/addChemical">Add Chemical</router-link></li>
             <li><router-link to="/disposal">Disposal</router-link></li>
-            <li><router-link to="/dispRecords">Disposal Records</router-link></li>
+            <li><router-link to="/disposalRecords">Disposal Records</router-link></li>
             <li v-if="this.isLoggedIn"><router-link to="/siteSettings">Site Settings</router-link></li>
         </ul>
         <ul>

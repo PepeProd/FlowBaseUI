@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="logIn"></LogInContainer>
-    <NavBar :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
+  <div id="app" >
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
+    <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationClicked="handleRegistrationClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
+    <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -10,21 +11,27 @@
 <script>
 import NavBar from './components/NavBar.vue';
 import LogInContainer from './components/LogInContainer.vue';
+import RegistrationContainer from './components/RegistrationContainer.vue';
 export default {  
   name: 'app',
   components: {
     NavBar,
-    LogInContainer
+    LogInContainer,
+    RegistrationContainer
   },
   data() {
     return {
       isUserLoggedIn: false,
-      showLogForm: false
+      showLogForm: false,
+      showRegistrationForm: false
     }
   },
   methods: {
     showLoginContainer: function(state) {
       this.showLogForm = state;
+    },
+    showRegistrationContainer: function(state) {
+      this.showRegistrationForm = state;
     },
     logIn: function(user) {
       //mock api verification
@@ -41,6 +48,9 @@ export default {
         this.redirect(e);
       
     },
+    submitNewUser: function(e) {
+      //mock api post to create new user
+    },
     handleLogOutButtonClicked: function() {
       this.logOut('/');
     },
@@ -50,6 +60,17 @@ export default {
     },
     handleLogInButtonClicked: function() {
       this.showLoginContainer(true);
+    },
+    handleRegistrationClicked: function(e) {
+      this.submitNewUser(e);
+    },
+    handleRegisterNewUserForm: function() {
+      this.showLoginContainer(false);
+      this.showRegistrationForm = true;
+      
+    },
+    handleClickOutside_Register: function() {
+      this.showRegistrationContainer(false);
     },
     redirect: function(route) {
       this.$router.push(route);
@@ -71,7 +92,17 @@ export default {
 .navOffset {
   margin-top: 40px;
 }
-.loginOffset {
+.formOffset {
   margin-top: 80px;
+}
+.modal-mask {
+  position: fixed;
+  z-index: 9996;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  transition: opacity .3s ease;
 }
 </style>
