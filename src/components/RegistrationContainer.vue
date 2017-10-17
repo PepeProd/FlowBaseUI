@@ -3,7 +3,7 @@
         <div class="modal" @click="clickedOutside">
             <form @submit.prevent="$emit('registrationClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" >
                 <span><strong>FlowBase Registration</strong></span>
-                <label>UserName</label>
+                <label>User Name</label>
                 <input type="text" v-model="newUser.username"></input>
                 <label>Email</label>
                 <input type="text" v-model="newUser.email"></input>
@@ -33,6 +33,13 @@
                 this.$emit('clickedOutside');
             }
         },
+        mounted: function () {
+            document.addEventListener("keydown", (e) => {
+                if (e.keyCode == 27) {
+                    this.$emit('clickedOutside');
+                }
+            });
+        }
     }
 </script>
 
@@ -58,18 +65,22 @@
         margin-bottom: 15px;
     }
     input[type=checkbox] {
-        flex: 0 0 auto;
+        flex: 1 0;
     }
     lblEmail {
-        flex: 0 0 auto;
+        flex: 0 0;
+        
     }
     .flex-row {
         display: flex;
+        margin: 0;
+        padding: 0;
         flex-flow: row;
         margin-left: auto;
         margin-right: auto;
         width: 240px;
         justify-content: space-between;
+        text-align: left;
     }
     span {
         margin-bottom: 20px;
