@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LogIn @close="logOutState" class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
-    <NavBar :isLoggedIn="logState" :isFormActive="this.showLogForm" @showLogin="display" @logOut="logOutState"></NavBar>
+    <LogIn @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
+    <NavBar :isLoggedIn="logState" :isFormActive="this.showLogForm" @showLogin="display" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -40,7 +40,26 @@ export default {
       this.showLogForm = false;
       if (e != "stayOnPage")
         this.$router.push('/');
+    },
+    LogOut: function(e) {
+      alert("test");
+      this.logState = false;
+      this.showLogForm = false;
+      if (e != null)
+        this.Redirect(e);
+      
+    },
+    handleLogOutButtonClicked: function() {
+      alert("test1");
+      this.LogOut('/');
+    },
+    handleClickOutside_Login: function() {
+      this.LogOut();
+    },
+    Redirect: function(route) {
+      this.$router.push(route);
     }
+    
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <transition name="modalTrans">
-    <div class="modal" @click="close">
+    <div class="modal" @click="clickedOutside">
         <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
@@ -24,14 +24,14 @@
             }
         },
         methods: {
-            close: function() {
-                this.$emit('close', 'stayOnPage');
+            clickedOutside: function() {
+                this.$emit('clickedOutside');
             }
         },
         mounted: function () {
             document.addEventListener("keydown", (e) => {
                 if (e.keyCode == 27) {
-                    this.$emit('close', 'stayOnPage');
+                    this.$emit('clickedOutside');
                 }
             });
         }
