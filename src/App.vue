@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LogIn @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="authUser"></LogIn>
-    <NavBar :isLoggedIn="logState" :isFormActive="this.showLogForm" @showLogin="display" @logOutClicked="handleLogOutButtonClicked"></NavBar>
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="logIn"></LogInContainer>
+    <NavBar :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @showLogin="display" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -9,16 +9,16 @@
 
 <script>
 import NavBar from './components/NavBar.vue';
-import LogIn from './components/LogIn.vue';
+import LogInContainer from './components/LogInContainer.vue';
 export default {  
   name: 'app',
   components: {
     NavBar,
-    LogIn
+    LogInContainer
   },
   data() {
     return {
-      logState: false,
+      isUserLoggedIn: false,
       showLogForm: false
     }
   },
@@ -26,29 +26,29 @@ export default {
     display: function(state) {
       this.showLogForm = state;
     },
-    authUser: function(user) {
+    logIn: function(user) {
       //mock api verification
       if (user.username == "asd") {
-        this.logState = true;
+        this.isUserLoggedIn = true;
         this.showLogForm = false;
       } else {
-        this.logOutState();
+        this.logOut();
       }
     },
-    LogOut: function(e) {
-      this.logState = false;
+    logOut: function(e) {
+      this.isUserLoggedIn = false;
       this.showLogForm = false;
       if (e != null)
-        this.Redirect(e);
+        this.redirect(e);
       
     },
     handleLogOutButtonClicked: function() {
-      this.LogOut('/');
+      this.logOut('/');
     },
     handleClickOutside_Login: function() {
-      this.LogOut();
+      this.logOut();
     },
-    Redirect: function(route) {
+    redirect: function(route) {
       this.$router.push(route);
     }
     
