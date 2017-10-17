@@ -1,13 +1,61 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="logIn"></LogInContainer>
+    <NavBar :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
+    <router-view class='navOffset'>
+    </router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
+import NavBar from './components/NavBar.vue';
+import LogInContainer from './components/LogInContainer.vue';
+export default {  
+  name: 'app',
+  components: {
+    NavBar,
+    LogInContainer
+  },
+  data() {
+    return {
+      isUserLoggedIn: false,
+      showLogForm: false
+    }
+  },
+  methods: {
+    showLoginContainer: function(state) {
+      this.showLogForm = state;
+    },
+    logIn: function(user) {
+      //mock api verification
+      if (user.username == "asd") {
+        this.isUserLoggedIn = true;
+        this.showLogForm = false;
+      } else {
+        this.logOut();
+      }
+    },
+    logOut: function(e) {
+      this.isUserLoggedIn = false;
+      if (e != null)
+        this.redirect(e);
+      
+    },
+    handleLogOutButtonClicked: function() {
+      this.logOut('/');
+    },
+    handleClickOutside_Login: function() {
+      this.showLoginContainer(false);
+      this.logOut();
+    },
+    handleLogInButtonClicked: function() {
+      this.showLoginContainer(true);
+    },
+    redirect: function(route) {
+      this.$router.push(route);
+    }
+    
+  }
 }
 </script>
 
@@ -18,6 +66,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+}
+.navOffset {
+  margin-top: 40px;
+}
+.loginOffset {
+  margin-top: 80px;
 }
 </style>
