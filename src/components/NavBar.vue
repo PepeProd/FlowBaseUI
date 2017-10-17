@@ -3,7 +3,7 @@
     <nav >
         <ul><li><span>FLOWBASE</span></li></ul>
         <ul class="navLinks">
-            <li><router-link to="/">Overview</router-link></li>
+            <li><router-link to="/">Overview</router-link></li> <!-- find way to remove li and apply style to router-link -->
             <li v-if="this.isLoggedIn"><router-link to="/addChem">Add Chemical</router-link></li>
             <li><router-link to="/disposal">Disposal</router-link></li>
             <li><router-link to="/dispRecords">Disposal Records</router-link></li>
@@ -11,7 +11,7 @@
         </ul>
         <ul>
             <li>
-                <button v-if="!this.isLoggedIn" class="btnLog" id="btnChangeLogState" @click="$emit('showLogin', true)"><span>Login</span></button>
+                <button v-if="!this.isLoggedIn" class="btnLog" id="btnChangeLogState" @click="$emit('loginButtonClicked')"><span>Login</span></button>
                 <button v-else class="btnLog" @click="$emit('logOutClicked')"><span>Log Out</span></button>
             </li>
         </ul>

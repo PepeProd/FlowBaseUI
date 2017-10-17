@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <LogInContainer @clickedOutside="handleClickOutside_Login" class='loginOffset' v-if="this.showLogForm" @SubmitLog="logIn"></LogInContainer>
-    <NavBar :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @showLogin="display" @logOutClicked="handleLogOutButtonClicked"></NavBar>
+    <NavBar :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
   </div>
@@ -23,7 +23,7 @@ export default {
     }
   },
   methods: {
-    display: function(state) {
+    showLoginContainer: function(state) {
       this.showLogForm = state;
     },
     logIn: function(user) {
@@ -37,7 +37,6 @@ export default {
     },
     logOut: function(e) {
       this.isUserLoggedIn = false;
-      this.showLogForm = false;
       if (e != null)
         this.redirect(e);
       
@@ -46,7 +45,11 @@ export default {
       this.logOut('/');
     },
     handleClickOutside_Login: function() {
+      this.showLoginContainer(false);
       this.logOut();
+    },
+    handleLogInButtonClicked: function() {
+      this.showLoginContainer(true);
     },
     redirect: function(route) {
       this.$router.push(route);
