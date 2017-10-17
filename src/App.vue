@@ -42,7 +42,6 @@ export default {
         this.$router.push('/');
     },
     LogOut: function(e) {
-      alert("test");
       this.logState = false;
       this.showLogForm = false;
       if (e != null)
@@ -50,7 +49,6 @@ export default {
       
     },
     handleLogOutButtonClicked: function() {
-      alert("test1");
       this.LogOut('/');
     },
     handleClickOutside_Login: function() {

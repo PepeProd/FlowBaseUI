@@ -12,7 +12,7 @@
         <ul>
             <li>
                 <button v-if="!this.isLoggedIn" class="btnLog" id="btnChangeLogState" @click="$emit('showLogin', true)"><span>Login</span></button>
-                <button v-else class="btnLog" @click="$emit('logOut')"><span>Log Out</span></button>
+                <button v-else class="btnLog" @click="$emit('logOutClicked')"><span>Log Out</span></button>
             </li>
         </ul>
     </nav>
