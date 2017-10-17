@@ -35,12 +35,6 @@ export default {
         this.logOutState();
       }
     },
-    logOutState: function(e) {
-      this.logState = false;
-      this.showLogForm = false;
-      if (e != "stayOnPage")
-        this.$router.push('/');
-    },
     LogOut: function(e) {
       this.logState = false;
       this.showLogForm = false;
