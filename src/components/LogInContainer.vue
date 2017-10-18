@@ -1,5 +1,5 @@
 <template>
-    <transition name="modalTrans" mode="out-in">
+    <transition name="modalTrans"  mode="out-in">
     <div class="modal" @click="clickedOutside">
         <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>

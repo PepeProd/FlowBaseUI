@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-show="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
     <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationClicked="handleRegistrationClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
@@ -103,6 +103,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
-  transition: opacity .3s ease;
+  transition: opacity .5s ease;
 }
 </style>

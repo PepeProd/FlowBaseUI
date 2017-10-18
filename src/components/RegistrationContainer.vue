@@ -1,5 +1,5 @@
 <template>
-   <transition name="modalTrans" appear>
+   <transition name="modalTrans" >
         <div class="modal" @click="clickedOutside">
             <form @submit.prevent="$emit('registrationClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" >
                 <span><strong>FlowBase Registration</strong></span>
@@ -148,7 +148,7 @@
         transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
 
-    .modalTrans-enter ,
+    .modalTrans-enter,
     .modalTrans-leave-to  {
         transform: translateX(100px) !important;
         opacity: 0 !important;
