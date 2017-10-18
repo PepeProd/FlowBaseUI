@@ -1,6 +1,6 @@
 <template>
-  <div id="app" >
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-show="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
+  <div id="app">
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
     <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationClicked="handleRegistrationClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
@@ -35,15 +35,19 @@ export default {
     },
     logIn: function(user) {
       //mock api verification
+      user.email = "testemail"; //get email from api
+      user.notifications = "testnotifications"; //get notification status from api
       if (user.username == "asd") {
         this.isUserLoggedIn = true;
         this.showLogForm = false;
+        this.$store.dispatch('setActiveUser', user)
       } else {
         this.logOut();
       }
     },
     logOut: function(e) {
       this.isUserLoggedIn = false;
+      this.$store.dispatch('setActiveUser', {})
       if (e != null)
         this.redirect(e);
       
@@ -88,6 +92,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+  display: flex;
+  flex-flow: column
 }
 .navOffset {
   margin-top: 40px;

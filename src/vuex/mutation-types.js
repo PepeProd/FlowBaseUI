@@ -1,0 +1,2 @@
+export const USER_OBJECT = 'USER_OBJECT';
+export const USER_COLLECTION = 'USER_COLLECTION';
