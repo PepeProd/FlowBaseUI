@@ -21,7 +21,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="row in get_rows()">
+                <tr v-for="row in get_rows()" class="backgroundHoverColor" 
+                :class="{expiring : compareExpiration(row), soonToExpire : compareSoonExpiration(row), notExpiring : compareNotExpiring(row)}">
                     <td v-for="col in columnsName">{{row[col]}}</td>
                 </tr>
             </tbody>
@@ -90,6 +91,35 @@
             },
             formatColumn: function(name) {
                 return name.toString().split('_').join(' ');
+            },
+            compareExpiration: function(row) {
+                var eDate = new Date(row['Expiration_Date'].toString());
+                var thresholdDate = new Date(Date.now());
+                thresholdDate.setDate(thresholdDate.getDate() + 1);
+                if (eDate.getTime() < thresholdDate.getTime()) {
+                    return true;
+                }
+                return false;
+            },
+            compareSoonExpiration: function(row) {
+                var eDate = new Date(row['Expiration_Date'].toString());
+                var thresholdExpireDate = new Date(Date.now());
+                thresholdExpireDate.setDate(thresholdExpireDate.getDate() + 1);
+                var thresholdExpireSoonDate = new Date(Date.now());
+                thresholdExpireSoonDate.setDate(thresholdExpireSoonDate.getDate() + 30);
+                if (eDate.getTime() > thresholdExpireDate.getTime() && eDate.getTime() < thresholdExpireSoonDate.getTime()) {
+                    return true;
+                }
+                return false;
+            },
+            compareNotExpiring: function(row) {
+                var eDate = new Date(row['Expiration_Date'].toString());
+                var thresholdDate = new Date(Date.now());
+                thresholdDate.setDate(thresholdDate.getDate() + 30);
+                if (eDate.getTime() > thresholdDate.getTime()) {
+                    return true;
+                }
+                return false;
             }
         },
         computed: {
@@ -175,6 +205,15 @@ tableObj {
     opacity: 0.9;
 }
 /*Table styling*/
+.expiring {
+    background-color: rgb(244, 66, 66);
+}
+.soonToExpire {
+    background-color: rgb(238, 244, 65);
+}
+.notExpiring {
+    background-color: rgb(91, 244, 65);
+}
 table {
   font-family: 'Open Sans', sans-serif;
   width: 75%;
@@ -200,18 +239,21 @@ table th:hover {
 table td {
   text-align: center;
   padding: 8px;
-  border-right: 2px solid #7D82A8;
+  border-right: 2px solid rgb(56,56,56);
   text-transform: none;
 }
 table td:last-child {
   border-right: none;
 }
-table tbody tr:nth-child(2n) td {
-  background: #D4D8F9;
+table tbody tr:nth-child(n) td {
+    border-bottom: 2px solid rgb(56,56,56);
+}
+.backgroundHoverColor:hover {
+    background-color: #00A6FF;
+    opacity: 0.8;
 }
 
 .pagination {
-  font-family: 'Open Sans', sans-serif;
   text-align: right;
   width: 75%;
   padding: 8px;
