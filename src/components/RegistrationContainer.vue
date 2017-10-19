@@ -43,6 +43,9 @@
 
 <style scope>
     * {
+        font-family: 'Open Sans', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
         box-sizing: border-box;
     }
     form {
@@ -61,6 +64,9 @@
     }
     input,button {
         margin-bottom: 15px;
+    }
+    input {
+        text-transform: none;
     }
     input[type=checkbox] {
         flex: 1 0;

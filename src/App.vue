@@ -17,7 +17,7 @@ export default {
   components: {
     NavBar,
     LogInContainer,
-    RegistrationContainer
+    RegistrationContainer,
   },
   data() {
     return {
