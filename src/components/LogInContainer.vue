@@ -16,7 +16,7 @@
 
 <script>
     export default {
-        name: 'LogIn',
+        name: 'LogInContainer',
         data() {
             return {
                 user: {}
@@ -39,8 +39,11 @@
 
 <style scoped>
     * {
-        box-sizing: border-box;
-    }
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-sizing: border-box;
+}
     div, form {
         display: flex;
         flex-flow: column;
@@ -64,6 +67,7 @@
     }
     input {
         text-align: center;
+        text-transform: none;
     }
     label {
         color: white;

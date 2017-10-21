@@ -27,6 +27,9 @@
 </script>
 <style scoped>
     * {
+        font-family: 'Open Sans', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
         box-sizing: border-box;
     }
     nav {
@@ -56,6 +59,7 @@
         display: inline-block;
         list-style-type: none;
         padding-bottom: 0.25em;
+        
     }
     .navLinks > li {
         border-bottom: 5px solid transparent;
@@ -89,8 +93,6 @@
         cursor: pointer;
         color: #fff;
         background-color: #00A6FF;
-        font-family: 'Roboto';
-        font-weight: 50;
         border: 1px solid #fff;
         transition-duration: 0.5s;
         -webkit-transition-duration: 0.5s;
