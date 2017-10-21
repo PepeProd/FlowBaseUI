@@ -10,7 +10,7 @@
             <input  type="password" v-model="user.password"></input>
 
             <button class="btnLogIn">Login</button>
-            <button class="btnLogIn" @click.prevent="$emit('registerNewUser')">Register</button>
+            <button class="btnLogIn" @click.prevent="$emit('registerClicked')">Register</button>
         </form>
     </div>
     </transition>

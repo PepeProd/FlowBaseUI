@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerNewUser="handleRegisterNewUserForm"></LogInContainer>
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerClicked="handleRegisterNewUserForm"></LogInContainer>
     <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationClicked="handleRegistrationClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
