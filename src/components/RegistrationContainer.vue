@@ -1,25 +1,29 @@
 <template>
-    <div class="modal" @click="clickedOutside">
-        <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
-            <span><strong>FlowBase Login</strong></span>
-            <label>UserName</label>
-            <input type="text" v-model="user.username"></input>
-            
-            <label>Password</label>
-            <input  type="password" v-model="user.password"></input>
-
-            <button class="btnLogIn">Login</button>
-            <button class="btnLogIn" @click.prevent="$emit('showRegisterClicked')">Register</button>
-        </form>
-    </div>
+        <div class="modal" @click="clickedOutside">
+            <form @submit.prevent="$emit('registrationSubmissionClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" @click.stop>
+                <span><strong>FlowBase Registration</strong></span>
+                <label>User Name</label>
+                <input type="text" v-model="newUser.username"></input>
+                <label>Email</label>
+                <input type="text" v-model="newUser.email"></input>
+                <div class="flex-row">
+                    <input id="emailNotifications" type="checkbox" v-model="newUser.notifications"></input>
+                    <label class="lblEmail" for="emailNotifications">Email Notifications</label>
+                </div>
+                <label>Password</label>
+                <input  type="password" v-model="newUser.password"></input>
+                <button class="btnRegister">Register</button>
+            </form>
+        </div>
 </template>
 
 <script>
     export default {
-        name: 'LogIn',
+        name: 'RegistrationContainer',
+        props: [],
         data() {
             return {
-                user: {}
+                newUser: {}
             }
         },
         methods: {
@@ -34,14 +38,14 @@
                 }
             });
         }
-    }    
-</script>>
+    }
+</script>
 
-<style scoped>
+<style scope>
     * {
         box-sizing: border-box;
     }
-    div, form {
+    form {
         display: flex;
         flex-flow: column;
         width: 300px;
@@ -58,6 +62,24 @@
     input,button {
         margin-bottom: 15px;
     }
+    input[type=checkbox] {
+        flex: 1 0;
+    }
+    lblEmail {
+        flex: 0 0;
+        
+    }
+    .flex-row {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        flex-flow: row;
+        margin-left: auto;
+        margin-right: auto;
+        width: 240px;
+        justify-content: space-between;
+        text-align: left;
+    }
     span {
         margin-bottom: 20px;
         color: white;
@@ -68,7 +90,7 @@
     label {
         color: white;
     }
-    .btnLogIn {
+    .btnRegister {
         border-radius: 5px;
         padding: 3px 25px 3px 25px;
         cursor: pointer;
@@ -81,7 +103,7 @@
         -webkit-transition-duration: 0.5s;
         -moz-transition-duration: 0.5s;
     }
-    .btnLogIn:hover {
+    .btnRegister:hover {
         color: #006398;
         opacity: 0.8;
         border: 1px solid #006398;
@@ -97,6 +119,12 @@
         z-index: 9999;
     }
     .modal {
+        display: flex;
+        flex-flow: column;
+        width: 300px;
+        margin-left: auto;
+        margin-right: auto;    
+        justify-content: space-between; 
         position: fixed;
         top: 0;
         left: 0;
@@ -108,5 +136,5 @@
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
     }
-
+    
 </style>

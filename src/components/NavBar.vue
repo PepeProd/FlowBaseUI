@@ -1,15 +1,15 @@
 <template>
 <div v-bind:class="{'modal-mask': (this.isFormActive)}">
     <nav >
-        <ul><li><span>FLOWBASE</span></li></ul>
+        <ul class="align"><li><span>FLOWBASE</span></li></ul>
         <ul class="navLinks">
             <li><router-link to="/">Overview</router-link></li> <!-- find way to remove li and apply style to router-link -->
-            <li v-if="this.isLoggedIn"><router-link to="/addChem">Add Chemical</router-link></li>
+            <li v-if="this.isLoggedIn"><router-link to="/addChemical">Add Chemical</router-link></li>
             <li><router-link to="/disposal">Disposal</router-link></li>
-            <li><router-link to="/dispRecords">Disposal Records</router-link></li>
+            <li><router-link to="/disposalRecords">Disposal Records</router-link></li>
             <li v-if="this.isLoggedIn"><router-link to="/siteSettings">Site Settings</router-link></li>
         </ul>
-        <ul>
+        <ul class="align">
             <li>
                 <button v-if="!this.isLoggedIn" class="btnLog" id="btnChangeLogState" @click="$emit('loginButtonClicked')"><span>Login</span></button>
                 <button v-else class="btnLog" @click="$emit('logOutClicked')"><span>Log Out</span></button>
@@ -47,12 +47,15 @@
     nav ul {
         margin: 0;
         padding: 0;
-        height: 45px;
+        flex: 1;
+    }
+    .align {
+        flex: 0 0 auto;
     }
     nav ul li {
         display: inline-block;
         list-style-type: none;
-        
+        padding-bottom: 0.25em;
     }
     .navLinks > li {
         border-bottom: 5px solid transparent;
@@ -71,10 +74,11 @@
         display: block;
         padding: 0.85em 0.25em 0em 1.25em;
         text-decoration: none;
+
     }
     nav button {
         /* float: right;*/
-        margin: 0.85em 1.25em 0em 0.25em;
+        margin: 0.5em 1.25em 0em 0.25em;
     }
     .hide {
         display: none;
