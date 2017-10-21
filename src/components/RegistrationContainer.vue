@@ -1,7 +1,6 @@
 <template>
-   <transition name="modalTrans" >
         <div class="modal" @click="clickedOutside">
-            <form @submit.prevent="$emit('registrationClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" >
+            <form @submit.prevent="$emit('registrationSubmissionClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" @click.stop>
                 <span><strong>FlowBase Registration</strong></span>
                 <label>User Name</label>
                 <input type="text" v-model="newUser.username"></input>
@@ -16,7 +15,6 @@
                 <button class="btnRegister">Register</button>
             </form>
         </div>
-    </transition>
 </template>
 
 <script>
@@ -139,18 +137,4 @@
         transition: opacity .3s ease; */
     }
     
-    /* can not get transition enter to work */
-    .modalTrans-enter-active,   {
-        transition: all 1s ease !important;
-    }
-
-    .modalTrans-leave-active {
-        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-
-    .modalTrans-enter,
-    .modalTrans-leave-to  {
-        transform: translateX(100px) !important;
-        opacity: 0 !important;
-    }
 </style>

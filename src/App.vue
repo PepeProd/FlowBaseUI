@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @registerClicked="handleRegisterNewUserForm"></LogInContainer>
-    <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationClicked="handleRegistrationClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
+    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @showRegisterClicked="handleShowRegisterClicked"></LogInContainer>
+    <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationSubmissionClicked="handleRegistrationSubmissionClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
@@ -54,6 +54,7 @@ export default {
     },
     submitNewUser: function(e) {
       //mock api post to create new user
+      this.showRegistrationForm = false;
     },
     handleLogOutButtonClicked: function() {
       this.logOut('/');
@@ -65,10 +66,10 @@ export default {
     handleLogInButtonClicked: function() {
       this.showLoginContainer(true);
     },
-    handleRegistrationClicked: function(e) {
+    handleRegistrationSubmissionClicked: function(e) {
       this.submitNewUser(e);
     },
-    handleRegisterNewUserForm: function() {
+    handleShowRegisterClicked: function() {
       this.showLoginContainer(false);
       this.showRegistrationForm = true;
       

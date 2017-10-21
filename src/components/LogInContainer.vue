@@ -1,5 +1,4 @@
 <template>
-    <transition name="modalTrans"  mode="out-in">
     <div class="modal" @click="clickedOutside">
         <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
@@ -10,10 +9,9 @@
             <input  type="password" v-model="user.password"></input>
 
             <button class="btnLogIn">Login</button>
-            <button class="btnLogIn" @click.prevent="$emit('registerClicked')">Register</button>
+            <button class="btnLogIn" @click.prevent="$emit('showRegisterClicked')">Register</button>
         </form>
     </div>
-    </transition>
 </template>
 
 <script>
@@ -111,18 +109,4 @@
         transition: opacity .3s ease; */
     }
 
-    .modalTrans-enter,   {
-        transition: all .1s ease;
-    }
-
-    .modalTrans-leave-active {
-        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-
-    .modalTrans-enter ,
-    .modalTrans-leave-to  {
-        transform: translateX(100px);
-        opacity: 0;
-    }
-    
 </style>
