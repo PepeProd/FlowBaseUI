@@ -1,6 +1,6 @@
 <template>
         <div class="modal" @click="clickedOutside">
-            <form @submit.prevent="$emit('registrationSubmissionClicked', newUser)" class="modal-container" style="background-color: rgb(56,56,56)" @click.stop>
+            <form @submit.prevent="$emit('registrationSubmissionClicked', newUser)" class="modal-container registrationForm" style="background-color: rgb(56,56,56)" @click.stop>
                 <span><strong>FlowBase Registration</strong></span>
                 <label>User Name</label>
                 <input type="text" v-model="newUser.username"></input>
@@ -48,7 +48,7 @@
         font-weight: bold;
         box-sizing: border-box;
     }
-    form {
+    .registrationForm {
         display: flex;
         flex-flow: column;
         width: 300px;
@@ -56,19 +56,23 @@
         margin-right: auto;    
         justify-content: space-between;    
     }
-    form {
+    .registrationForm {
         border-top: 20px solid #00A6FF;        
     }
-    label, input, button, span {
+    .registrationForm label, 
+    .registrationForm input, 
+    .registrationForm button, 
+    .registrationForm span {
         flex: 1 0 auto;       
     }
-    input,button {
+    .registrationForm input,
+    .registrationForm button {
         margin-bottom: 15px;
     }
-    input {
+    .registrationForm input {
         text-transform: none;
     }
-    input[type=checkbox] {
+    .registrationForm input[type=checkbox] {
         flex: 1 0;
     }
     lblEmail {
@@ -86,14 +90,14 @@
         justify-content: space-between;
         text-align: left;
     }
-    span {
+    .registrationForm span {
         margin-bottom: 20px;
         color: white;
     }
-    input {
+    .registrationForm input {
         text-align: center;
     }
-    label {
+    .registrationForm label {
         color: white;
     }
     .btnRegister {

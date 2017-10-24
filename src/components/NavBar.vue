@@ -43,6 +43,7 @@
         text-decoration: none;
         position: fixed;
         width: 100%;
+        height: 40px;
         display: flex;
         z-index: 9997;
         justify-content: space-between;

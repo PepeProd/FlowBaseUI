@@ -13,7 +13,7 @@
         <table>
             <thead>
                 <tr>
-                    <th v-for="col in columnsName" v-on:click="sortTable(col)">
+                    <th v-for="col in columnNames" v-on:click="sortTable(col)">
                         {{formatColumn(col)}}
                         <div class="arrow" v-if="col == sortColumn" :class="[ascending ? 'arrow_up' : 'arrow_down']">
                         </div>
@@ -23,7 +23,7 @@
             <tbody>
                 <tr v-for="row in get_rows()" class="backgroundHoverColor" 
                 :class="{expiring : compareExpiration(row), soonToExpire : compareSoonExpiration(row), notExpiring : compareNotExpiring(row)}">
-                    <td v-for="col in columnsName">{{row[col]}}</td>
+                    <td v-for="col in columnNames">{{row[col]}}</td>
                 </tr>
             </tbody>
         </table>
@@ -42,13 +42,13 @@
 <script>
     export default {
         name: 'DynamicTable',
-        props: ['rows'],
+        props: ['rows', 'defaultSort', 'columnNames'],
         data() {
             return {
             currentPage: 1,
             itemsPerPage: 10,
             ascending: false,
-            sortColumn: '',
+            sortColumn: this.defaultSort,
         }},
         methods: {
             sortTable: function(col) {
@@ -122,15 +122,13 @@
                 return false;
             }
         },
-        computed: {
-            columnsName: function() {
-                if (this.rows.length == 0)
-                    return [];                    
-                return Object.keys(this.rows[0])
-            },
+        computed: {            
             totalPages: function() {
                 return Math.ceil(this.rows.length/this.itemsPerPage)
             }
+        },
+        mounted: function() {
+            this.sortTable(this.sortColumn);
         }
     }
 </script>
