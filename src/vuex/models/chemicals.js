@@ -5,16 +5,12 @@ import {
 const mutations = {
     [USER_OBJECT](state, data) {
         if(data && typeof data === 'object')
-            state.activeUsers.push(data);
+            state.chemicals.push(data);
     }
 }
 
 const state = {
-    activeUser : {
-        username: '',
-        email: '',
-        notifications: false
-    }
+    chemicals : []
 };
 
 export default {
