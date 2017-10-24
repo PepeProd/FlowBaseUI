@@ -23,7 +23,8 @@ export default {
     return {
       isUserLoggedIn: false,
       showLogForm: false,
-      showRegistrationForm: false
+      showRegistrationForm: false,
+  
     }
   },
   methods: {
@@ -81,6 +82,65 @@ export default {
       this.$router.push(route);
     }
     
+  },
+  created: function() {
+    var initialChemicals = [
+        {id: 1, chemical_Name: "PBasdsad sadsadasS asdasd", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2016", Expiration_Date: "11/2/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 2, chemical_Name: "PBS", vendor: "VWRasdsad asdsadasdsa asdsadasd", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2015", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 3, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "11/2/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+         {id: 4, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "10/19/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 5, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "10/20/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 6, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+         {id: 7, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 8, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 9, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 10, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 11, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 12, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+         {id: 13, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 14, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 15, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+         {id: 16, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 17, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"},
+        {id: 18, chemical_Name: "PBS", vendor: "VWR", vendor_catalog_number: "1234", 
+        Received_Date: "10/11/2017", Expiration_Date: "12/10/2017", Project_Code: "", 
+        Storage_Temp: "-20C", Location: "Middle Lab"}
+      ];
+      this.$store.dispatch('setChemicals', initialChemicals);
   }
 }
 </script>
