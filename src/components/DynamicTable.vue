@@ -129,6 +129,12 @@
         },
         mounted: function() {
             this.sortTable(this.sortColumn);
+        },
+        watch: {
+            totalPages: function(val, oldVal){
+                if (this.currentPage > this.totalPages)
+                    this.currentPage = this.totalPages
+            }
         }
     }
 </script>

@@ -44,7 +44,8 @@
     font-weight: bold;
     box-sizing: border-box;
 }
-    div, form {
+    .modal div, 
+    .modal form {
         display: flex;
         flex-flow: column;
         width: 300px;
@@ -52,20 +53,24 @@
         margin-right: auto;    
         justify-content: space-between;    
     }
-    form {
+    .modal form {
         border-top: 20px solid #00A6FF;        
     }
-    label, input, button, span {
+    .modal label, 
+    .modal input, 
+    .modal button, 
+    .modal span {
         flex: 1 0 auto;       
     }
-    input,button {
+    .modal input,
+    .modal button {
         margin-bottom: 15px;
     }
-    span {
+    .modal span {
         margin-bottom: 20px;
         color: white;
     }
-    input {
+    .modal input {
         text-align: center;
         text-transform: none;
     }

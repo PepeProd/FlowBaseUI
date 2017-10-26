@@ -1,26 +1,39 @@
 <template>
     <form @submit.prevent="$emit('filterData',searchJsonData(rows, searchIn, searchTerm))">
-        <select v-model="searchIn">
+        <select class="dropDownEdges" v-model="searchIn">
             <option disabled hidden value="">Search In</option>
             <option v-for="col in columnNames" v-bind:value="col">{{formatColumn(col)}}</option>
         </select>
-        <input type="text" v-model="searchTerm"></input>
+        <AutoComplete  :options="getAutoCompleteData(rows, searchIn)" @keywordChanged="updateSearchTerm">
+            <template slot="item" scope="option">
+                <p>
+                    <strong >{{ option.searchSuggestion }}</strong>
+                </p>
+            </template>
+        </AutoComplete>
         <button class="btnSearch">Search</button>
     </form>
 </template>
 
 <script>
+    import AutoComplete from './AutoComplete.vue';
     export default {
         name: 'SearchTable',
         props: ['rows', 'columnNames'],
+        components: {
+            AutoComplete
+        },
         data() {
             return {
                 searchIn: '',
                 searchTerm: '',
-                result: []               
+                result: [],                
             }
         },
         methods: {
+            updateSearchTerm: function(e) {
+                this.searchTerm = e;
+            },
             searchJsonData: function(inputData, searchIn, valueToFind) {
                 var result = []
                 if (searchIn === '')
@@ -31,7 +44,15 @@
                 }
                 if (result.length == 0)
                     return [];
-
+                return result;
+            },
+            getAutoCompleteData: function(inputData, column) {
+                var result = [];
+                if (column == "")
+                    column = 'id';
+                for (var i=0; i < inputData.length; i++) {
+                    result.push( {key: inputData[i][column].toString()});
+                }
                 return result;
             },
             formatColumn: function(name) {
@@ -42,12 +63,16 @@
 </script>
 
 <style scoped>
-    * {
-        font-family: 'Open Sans', sans-serif;
-        text-transform: uppercase;
-        font-weight: bold;
-        box-sizing: border-box;
-        margin-bottom: 5px;        
+* {
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+    .dropDownEdges:focus,.dropDownEdges:active:focus,.dropDownEdges.active:focus,
+    .dropDownEdges.focus,.dropDownEdges:active.focus,.dropDownEdges.active.focus {
+        outline: none;
+        box-shadow: none;
     }
     form {
         display: flex;
@@ -78,7 +103,9 @@
         opacity: 0.8;
         border: 1px solid rgb(56,56,56);
     }
-
+    .dropDownEdges:hover {
+        border-radius: 5px 5px 0px 0px;
+    }
     select, input {
         border-radius: 5px;
         border:1px solid rgb(56,56,56);

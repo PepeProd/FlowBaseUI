@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../assets/logo.png">
+    <img style="width: 10%;" src="../assets/Logo_1.png">
     <SearchTable :rows="this.$store.getters.chemicals" :columnNames="columns" @filterData="setData"></SearchTable>    
     <DynamicTable :rows="this.dataForTable" :columnNames="columns" defaultSort="id"></DynamicTable>
   </div>
@@ -33,6 +33,7 @@ export default {
     }
   },
   mounted: function() {
+    //api call here to get data
     this.dataForTable = this.$store.getters.chemicals;
   }
 }
@@ -40,21 +41,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
