@@ -1,9 +1,9 @@
 import {
-    USER_OBJECT
+    CHEMICAL_COLLECTION
 } from '../mutation-types';
 
 const mutations = {
-    [USER_OBJECT](state, data) {
+    [CHEMICAL_COLLECTION](state, data) {
         if(data && typeof data === 'object')
             state.chemicals.push(data);
     }

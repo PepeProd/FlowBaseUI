@@ -21,6 +21,7 @@
                 </tr>
             </thead>
             <tbody>
+                <slot></slot>
                 <tr v-for="row in get_rows()" class="backgroundHoverColor" 
                 :class="{expiring : compareExpiration(row), soonToExpire : compareSoonExpiration(row), notExpiring : compareNotExpiring(row)}">
                     <td v-for="col in columnNames">{{row[col]}}</td>
@@ -134,6 +135,10 @@
             totalPages: function(val, oldVal){
                 if (this.currentPage > this.totalPages)
                     this.currentPage = this.totalPages
+            },
+            currentPage: function(val, oldVal) {
+                if (this.currentPage < 1)
+                    this.currentPage = 1;
             }
         }
     }

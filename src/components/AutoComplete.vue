@@ -1,7 +1,7 @@
 <template>
   <div class="autocomplete-input">
     <p class="">
-      <input v-model="keyword" type="text" class="input is-large" placeholder="Search..." @input="onInput($event.target.value)" @keyup.esc="isOpen = false" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
+      <input v-model="keyword" type="text" class="input is-large" placeholder="Search..." @input="onInput($event.target.value)" @keyup.esc="closeDropDown()" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
     </p>
     <ul v-show="isOpen" class="options-list">
       <li v-for="(option, index) in fOptions" :class="{
@@ -48,8 +48,10 @@ export default {
       fOptions() {
             const re = new RegExp(this.keyword, 'i')
             var results = this.optionsWithNoDuplicates.filter(o => o['key'].match(re));
-            if (results.length == 0)
+            if (results.length == 0) {
                 this.isOpen = false;
+                this.$emit('optionClicked', true)
+            }
             return results;
       },
       
@@ -58,6 +60,10 @@ export default {
       onInput(value) {
             this.highlightedPosition = 0
             this.isOpen = !!value
+        },
+        closeDropDown() {
+            this.isOpen = false;
+            this.$emit('optionClicked', true)
         },
         moveDown() {
             if (!this.isOpen) {
@@ -73,12 +79,13 @@ export default {
           this.highlightedPosition = this.highlightedPosition - 1 < 0 ? this.fOptions.length - 1 : this.highlightedPosition - 1
         },
         select() {
-            if (this.isOpen == false) {
+            if (this.isOpen == false & this.keyword == null) {
                 this.keyword = ""
-            } else {
+            } else if (this.isOpen == true) {
                 const selectedOption = this.fOptions[this.highlightedPosition]
-                this.isOpen = false
                 this.keyword = selectedOption.key
+                this.isOpen = false
+                this.$emit('optionClicked', this.isOpen)
             }
         }
     },
@@ -144,6 +151,7 @@ ul.options-list {
   position: absolute;
   width: 100%;
   overflow: hidden;
+  z-index: 99999;
 }
 
 ul.options-list li {

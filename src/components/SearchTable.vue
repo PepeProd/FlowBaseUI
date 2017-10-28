@@ -1,10 +1,10 @@
 <template>
-    <form @submit.prevent="$emit('filterData',searchJsonData(rows, searchIn, searchTerm))">
-        <select class="dropDownEdges" v-model="searchIn">
+    <form @submit.prevent="emitSearchKeyWord">
+        <select class="dropDownEdges" v-model="searchBy">
             <option disabled hidden value="">Search In</option>
             <option v-for="col in columnNames" v-bind:value="col">{{formatColumn(col)}}</option>
         </select>
-        <AutoComplete  :options="getAutoCompleteData(rows, searchIn)" @keywordChanged="updateSearchTerm">
+        <AutoComplete @optionClicked="handleOptionClicked"  :options="getAutoCompleteData(rows, searchBy)" @keywordChanged="updateSearchTerm">
             <template slot="item" scope="option">
                 <p>
                     <strong >{{ option.searchSuggestion }}</strong>
@@ -17,29 +17,33 @@
 
 <script>
     import AutoComplete from './AutoComplete.vue';
+    import {formatColumns} from '../mixins/formatColumns';
     export default {
         name: 'SearchTable',
         props: ['rows', 'columnNames'],
         components: {
             AutoComplete
         },
+        mixins: [formatColumns],
         data() {
             return {
-                searchIn: '',
+                searchBy: '',
                 searchTerm: '',
-                result: [],                
+                result: [],
+                readyForSearch: true                
             }
         },
         methods: {
-            updateSearchTerm: function(e) {
-                this.searchTerm = e;
+            
+            updateSearchTerm: function(newKeyWord) {
+                this.searchTerm = newKeyWord;
             },
-            searchJsonData: function(inputData, searchIn, valueToFind) {
+            searchJsonData: function(inputData, searchBy, valueToFind) {
                 var result = []
-                if (searchIn === '')
+                if (searchBy === '')
                     return inputData;
                 for (var i=0; i < inputData.length; i++) {
-                    if ((inputData[i][searchIn]).toString().toLowerCase().indexOf(valueToFind.toLowerCase()) >= 0)
+                    if ((inputData[i][searchBy]).toString().toLowerCase().indexOf(valueToFind.toLowerCase()) >= 0)
                         result.push(inputData[i]);
                 }
                 if (result.length == 0)
@@ -55,9 +59,15 @@
                 }
                 return result;
             },
-            formatColumn: function(name) {
-                return name.toString().split('_').join(' ');
+            handleOptionClicked: function(searchState) {
+                this.readyForSearch = searchState;                
             },
+            emitSearchKeyWord: function() {
+                if (this.readyForSearch)
+                    this.$emit('submitClicked',this.searchJsonData(this.rows, this.searchBy, this.searchTerm));
+                this.readyForSearch = !this.readyForSearch;
+            },
+
         },
     }
 </script>
