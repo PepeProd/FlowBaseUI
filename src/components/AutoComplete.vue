@@ -31,13 +31,28 @@ export default {
         }
     },
     computed: {
+        optionsWithNoDuplicates: function() {
+          var lookup = {};
+          var items = this.options;
+          var result = [];
+
+          for (var item, i=0; item=items[i++];) {
+              var key = item.key;
+              if (!(key in lookup)) {
+                  lookup[key]=1;
+                  result.push(item);
+              }
+          }
+        return result;   
+      },
       fOptions() {
             const re = new RegExp(this.keyword, 'i')
-            var results = this.options.filter(o => o['key'].match(re));
+            var results = this.optionsWithNoDuplicates.filter(o => o['key'].match(re));
             if (results.length == 0)
                 this.isOpen = false;
             return results;
-      }
+      },
+      
     },
     methods: {
       onInput(value) {
@@ -71,7 +86,7 @@ export default {
         keyword: function(val, oldVal) {
             this.$emit('keywordChanged', val);
         }
-    }
+    },
 }
 
 </script>
