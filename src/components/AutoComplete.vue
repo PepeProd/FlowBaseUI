@@ -159,14 +159,14 @@ ul.options-list li {
   flex-wrap: wrap;
   background: white;
   margin: 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
   color: #363636;
   padding: 7px;
   cursor: pointer;
 }
 
 ul.options-list li.highlighted {
-  background: #f8f8f8
+  background: #00A6FF
 }
     input[type=text] {
         padding-left: 5px;        

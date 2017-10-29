@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <slot v-for="row in get_rows()" v-bind="row">
+                <slot name="tableRows" v-for="row in get_rows()" v-bind="row">
                     <tr v-for="row in get_rows()" class="backgroundHoverColor">
                         <td v-for="col in columnNames">{{row[col]}}</td>
                     </tr>

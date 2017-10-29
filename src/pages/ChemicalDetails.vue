@@ -3,7 +3,7 @@
     <img style="width: 10%;" src="../assets/Logo_1.png">
     <TableSearcher :rows="this.$store.getters.chemicals" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" defaultSort="id">
-      <template scope="row" >
+      <template slot="tableRows" scope="row" >
           <tr class="backgroundHoverColor" :class="{expiring : compareExpiration(row['Expiration_Date']), soonToExpire : compareSoonExpiration(row['Expiration_Date']), notExpiring : compareNotExpiring(row['Expiration_Date'])}">
               <td v-for="col in columns">{{row[col]}}</td>
           </tr>
