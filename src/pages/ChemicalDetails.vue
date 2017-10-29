@@ -1,14 +1,14 @@
 <template>
   <div>
     <img style="width: 10%;" src="../assets/Logo_1.png">
-    <SearchTable :rows="this.$store.getters.chemicals" :columnNames="columns" @submitClicked="handleSubmitClicked"></SearchTable>    
+    <TableSearcher :rows="this.$store.getters.chemicals" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" defaultSort="id"></DynamicTable>
   </div>
 </template>
 
 <script>
 import DynamicTable from '../components/DynamicTable.vue';
-import SearchTable from '../components/SearchTable.vue';
+import TableSearcher from '../components/TableSearcher.vue';
 export default {
   name: 'Overview',
   data () {
@@ -18,7 +18,7 @@ export default {
   },
   components: {
     DynamicTable,
-    SearchTable
+    TableSearcher
   },
   methods: {
     handleSubmitClicked: function(filteredData) {

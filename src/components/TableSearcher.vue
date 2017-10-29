@@ -19,7 +19,7 @@
     import AutoComplete from './AutoComplete.vue';
     import {formatColumns} from '../mixins/formatColumns';
     export default {
-        name: 'SearchTable',
+        name: 'TableSearcher',
         props: ['rows', 'columnNames'],
         components: {
             AutoComplete
