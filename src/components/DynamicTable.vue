@@ -21,10 +21,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="row in get_rows()" class="backgroundHoverColor" 
-                :class="{expiring : compareExpiration(row), soonToExpire : compareSoonExpiration(row), notExpiring : compareNotExpiring(row)}">
-                    <td v-for="col in columnNames">{{row[col]}}</td>
-                </tr>
+                <slot v-for="row in get_rows()" v-bind="row">
+                    <tr v-for="row in get_rows()" class="backgroundHoverColor">
+                        <td v-for="col in columnNames">{{row[col]}}</td>
+                    </tr>
+                </slot>
             </tbody>
         </table>
         <div class="pagination">
@@ -92,35 +93,7 @@
             formatColumn: function(name) {
                 return name.toString().split('_').join(' ');
             },
-            compareExpiration: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdDate = new Date(Date.now());
-                thresholdDate.setDate(thresholdDate.getDate() + 1);
-                if (eDate.getTime() < thresholdDate.getTime()) {
-                    return true;
-                }
-                return false;
-            },
-            compareSoonExpiration: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdExpireDate = new Date(Date.now());
-                thresholdExpireDate.setDate(thresholdExpireDate.getDate() + 1);
-                var thresholdExpireSoonDate = new Date(Date.now());
-                thresholdExpireSoonDate.setDate(thresholdExpireSoonDate.getDate() + 30);
-                if (eDate.getTime() > thresholdExpireDate.getTime() && eDate.getTime() < thresholdExpireSoonDate.getTime()) {
-                    return true;
-                }
-                return false;
-            },
-            compareNotExpiring: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdDate = new Date(Date.now());
-                thresholdDate.setDate(thresholdDate.getDate() + 30);
-                if (eDate.getTime() > thresholdDate.getTime()) {
-                    return true;
-                }
-                return false;
-            }
+
         },
         computed: {            
             totalPages: function() {
@@ -213,15 +186,7 @@ tableObj {
     opacity: 0.9;
 }
 /*Table styling*/
-.expiring {
-    background-color: rgb(244, 66, 66);
-}
-.soonToExpire {
-    background-color: rgb(238, 244, 65);
-}
-.notExpiring {
-    background-color: rgb(91, 244, 65);
-}
+
 table {
   font-family: 'Open Sans', sans-serif;
   width: 75%;
