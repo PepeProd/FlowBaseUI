@@ -13,7 +13,7 @@
         <table>
             <thead>
                 <tr>
-                    <th v-for="col in columnsName" v-on:click="sortTable(col)">
+                    <th v-for="col in columnNames" v-on:click="sortTable(col)">
                         {{formatColumn(col)}}
                         <div class="arrow" v-if="col == sortColumn" :class="[ascending ? 'arrow_up' : 'arrow_down']">
                         </div>
@@ -21,10 +21,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="row in get_rows()" class="backgroundHoverColor" 
-                :class="{expiring : compareExpiration(row), soonToExpire : compareSoonExpiration(row), notExpiring : compareNotExpiring(row)}">
-                    <td v-for="col in columnsName">{{row[col]}}</td>
-                </tr>
+                <slot name="tableRows" v-for="row in get_rows()" v-bind="row">
+                    <tr v-for="row in get_rows()" class="backgroundHoverColor">
+                        <td v-for="col in columnNames">{{row[col]}}</td>
+                    </tr>
+                </slot>
             </tbody>
         </table>
         <div class="pagination">
@@ -42,13 +43,13 @@
 <script>
     export default {
         name: 'DynamicTable',
-        props: ['rows'],
+        props: ['rows', 'defaultSort', 'columnNames'],
         data() {
             return {
             currentPage: 1,
             itemsPerPage: 10,
             ascending: false,
-            sortColumn: '',
+            sortColumn: this.defaultSort,
         }},
         methods: {
             sortTable: function(col) {
@@ -92,44 +93,24 @@
             formatColumn: function(name) {
                 return name.toString().split('_').join(' ');
             },
-            compareExpiration: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdDate = new Date(Date.now());
-                thresholdDate.setDate(thresholdDate.getDate() + 1);
-                if (eDate.getTime() < thresholdDate.getTime()) {
-                    return true;
-                }
-                return false;
-            },
-            compareSoonExpiration: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdExpireDate = new Date(Date.now());
-                thresholdExpireDate.setDate(thresholdExpireDate.getDate() + 1);
-                var thresholdExpireSoonDate = new Date(Date.now());
-                thresholdExpireSoonDate.setDate(thresholdExpireSoonDate.getDate() + 30);
-                if (eDate.getTime() > thresholdExpireDate.getTime() && eDate.getTime() < thresholdExpireSoonDate.getTime()) {
-                    return true;
-                }
-                return false;
-            },
-            compareNotExpiring: function(row) {
-                var eDate = new Date(row['Expiration_Date'].toString());
-                var thresholdDate = new Date(Date.now());
-                thresholdDate.setDate(thresholdDate.getDate() + 30);
-                if (eDate.getTime() > thresholdDate.getTime()) {
-                    return true;
-                }
-                return false;
-            }
+
         },
-        computed: {
-            columnsName: function() {
-                if (this.rows.length == 0)
-                    return [];                    
-                return Object.keys(this.rows[0])
-            },
+        computed: {            
             totalPages: function() {
                 return Math.ceil(this.rows.length/this.itemsPerPage)
+            }
+        },
+        mounted: function() {
+            this.sortTable(this.sortColumn);
+        },
+        watch: {
+            totalPages: function(val, oldVal){
+                if (this.currentPage > this.totalPages)
+                    this.currentPage = this.totalPages
+            },
+            currentPage: function(val, oldVal) {
+                if (this.currentPage < 1)
+                    this.currentPage = 1;
             }
         }
     }
@@ -205,15 +186,7 @@ tableObj {
     opacity: 0.9;
 }
 /*Table styling*/
-.expiring {
-    background-color: rgb(244, 66, 66);
-}
-.soonToExpire {
-    background-color: rgb(238, 244, 65);
-}
-.notExpiring {
-    background-color: rgb(91, 244, 65);
-}
+
 table {
   font-family: 'Open Sans', sans-serif;
   width: 75%;

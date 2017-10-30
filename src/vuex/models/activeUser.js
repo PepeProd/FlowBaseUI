@@ -15,8 +15,8 @@ const state = {
         email: '',
         notifications: false
     }
-}
+};
 
 export default {
-
-}
+    state
+};
