@@ -47,7 +47,7 @@ jobs:
       - deploy: 
             name: Deploy to QA S3
             command: |
-              if [ "${CIRCLE_BRANCH}" == "develop" || "${CIRCLE_BRANCH}" == "master"];
+              if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "master" ];
                 then aws s3 sync dist/ s3://flowbase-site-QA/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to QA."
               else 
                 echo "${CIRCLE_BRANCH} was not deployed to QA."
