@@ -37,18 +37,26 @@ jobs:
       # run tests!
       # - run: npm run unit
 
+    # For local use only
+      - deploy:
+            name: Add AWS credentials
+            command: |
+              #if [ "${LOCALBUILD}" == "true" ];
+                mkdir ~/.aws ; echo $AWS_ACCESS_KEY ; echo $AWS_ACCESS_SECRET ; echo -e "[default]\n$AWS_ACCESS_KEY\n$AWS_ACCESS_SECRET\n" > ~/.aws/credentials
+              #fi
+
     # Deploy DEV 
       - deploy: 
             name: Deploy to DEV S3
             command: |
-              aws s3 sync dist/ s3://flowbase-site-dev/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to DEV."
+              cat ~/.aws/credentials ; aws s3 sync dist/ s3://flowbase-site-dev/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to DEV."
 
     # Deploy QA
       - deploy: 
             name: Deploy to QA S3
             command: |
-              if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "master" ];
-                then aws s3 sync dist/ s3://flowbase-site-QA/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to QA."
+              if ([ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "master" ]) && [ "${LOCALBUILD}" != "true" ];
+                then aws s3 sync dist/ s3://flowbase-site-qa/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to QA."
               else 
                 echo "${CIRCLE_BRANCH} was not deployed to QA."
               fi
@@ -57,8 +65,8 @@ jobs:
       - deploy: 
             name: Deploy to PROD S3
             command: |
-              if [ "${CIRCLE_BRANCH}" == "master" ];
-                then aws s3 sync dist/ s3://flowbase-site-PROD/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to PROD."
+              if [ "${CIRCLE_BRANCH}" == "master" ] && [ "${LOCALBUILD}" != "true" ];
+                then aws s3 sync dist/ s3://flowbase-site-prod/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to PROD."
               else 
                 echo "${CIRCLE_BRANCH} was not deployed to PROD."
               fi
