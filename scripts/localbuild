@@ -1,0 +1,4 @@
+#!/bin/bash
+# run circleci locally with deployment to AWS by copying your credentials into the container
+
+circleci build --env AWS_ACCESS_KEY=$(sed '2q;d' ~/.aws/credentials) --env AWS_ACCESS_SECRET=$(sed '3q;d' ~/.aws/credentials) --env LOCALBUILD="true"
