@@ -37,7 +37,28 @@ jobs:
       # run tests!
       # - run: npm run unit
 
+    # Deploy DEV 
       - deploy: 
-          name: Deploy to S3 if tests pass 
-          command: |
-            aws s3 sync dist/ s3://flowbase-site-dev/ --delete --region us-east-2
+            name: Deploy to DEV S3
+            command: |
+              aws s3 sync dist/ s3://flowbase-site-dev/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to DEV."
+
+    # Deploy QA
+      - deploy: 
+            name: Deploy to QA S3
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "develop" || "${CIRCLE_BRANCH}" == "master"];
+                then aws s3 sync dist/ s3://flowbase-site-QA/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to QA."
+              else 
+                echo "${CIRCLE_BRANCH} was not deployed to QA."
+              fi
+
+    # Deploy PROD
+      - deploy: 
+            name: Deploy to PROD S3
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "master" ];
+                then aws s3 sync dist/ s3://flowbase-site-PROD/ --delete --region us-east-2 ; echo "${CIRCLE_BRANCH} deployed to PROD."
+              else 
+                echo "${CIRCLE_BRANCH} was not deployed to PROD."
+              fi
