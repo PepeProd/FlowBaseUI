@@ -53,7 +53,7 @@
             getAutoCompleteData: function(inputData, column) {
                 var result = [];
                 if (column == "")
-                    column = 'id';
+                    return result;
                 for (var i=0; i < inputData.length; i++) {
                     result.push( {key: inputData[i][column].toString()});
                 }
