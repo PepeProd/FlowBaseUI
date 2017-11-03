@@ -63,7 +63,7 @@
                 this.readyForSearch = searchState;                
             },
             emitSearchKeyWord: function() {
-                if (this.readyForSearch)
+                if (this.readyForSearch || this.searchTerm == "")
                     this.$emit('submitClicked',this.searchJsonData(this.rows, this.searchBy, this.searchTerm));
                 this.readyForSearch = !this.readyForSearch;
             },

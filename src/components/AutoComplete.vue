@@ -84,8 +84,8 @@ export default {
             } else if (this.isOpen == true) {
                 const selectedOption = this.fOptions[this.highlightedPosition]
                 this.keyword = selectedOption.key
-                this.$emit('optionClicked', this.isOpen)
                 this.isOpen = false
+                this.$emit('optionClicked', this.isOpen)
             }
         }
     },
