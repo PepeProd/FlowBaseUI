@@ -9,13 +9,17 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      redirect: '/chemicals'
+    },
+    {
       path: '/chemicals/:chemName',
       props: true,
       name: 'ChemicalDetails',
       component: ChemicalDetails
     },
     {
-      path: '/',
+      path: '/chemicals',
       name: 'ChemicalOverview',
       component: ChemicalOverview
     }

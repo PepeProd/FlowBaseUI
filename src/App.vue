@@ -85,7 +85,7 @@ export default {
   },
   created: function() {
     var initialChemicals = [
-        {id: 1, chemical_name: "PBasdsad sadsadasS asdasd", vendor: "VWR", vendor_catalog_number: "1234", 
+        {id: 1, chemical_name: "PBasdsad sadsadasS asdasd asdasdsad", vendor: "VWR", vendor_catalog_number: "1234", 
         received_date: "10/11/2016", expiration_date: "11/2/2017", project_code: "", 
         Storage_Temp: "-20C", Location: "Middle Lab"},
         {id: 2, chemical_name: "PBS", vendor: "VWRasdsad asdsadasdsa asdsadasd", vendor_catalog_number: "1234", 
