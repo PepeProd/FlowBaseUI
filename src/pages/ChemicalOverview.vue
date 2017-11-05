@@ -1,12 +1,14 @@
 <template>
     <div class="chemicalOverview">
-        <TableSearcher class="tableSearch" :rows="chemicalsNoDuplicates" :columnNames="Object.keys(chemicalsNoDuplicates[0])" @submitClicked="handleSubmitClicked"></TableSearcher> 
+        <TableSearcher class="tableSearch" :rows="chemicalsNoDuplicates" :columnNames="this.columnsForSearcher" @submitClicked="handleSubmitClicked"></TableSearcher> 
         <div v-for="chemical in this.chemicalFamilies" class="chemFamilies">
-            <div>
-                <router-link :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
+            <div class="noStyleLink">
+                <router-link  :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
                 <img class="iconDisplay" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
                     @click="chemical.displayDetails = !chemical.displayDetails"/>
-                <div :id="chemical" v-show="chemical.displayDetails">Quantity: {{chemical.quantity}}</div>
+                <div class="detailsContainer" :id="chemical.name" v-show="chemical.displayDetails">
+                    <div >Quantity: {{chemical.quantity}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -22,6 +24,7 @@
         data() {
             return {
                 chemicalFamilies: [],
+                columnsForSearcher: ['name', 'quantity']
             }
         },     
         computed: {
@@ -109,11 +112,20 @@
 .iconDisplay {
     display: inline;
     width: 15px;
+    cursor: pointer;
 }
 img {
 }
 
 .iconDisplayActive {
     transform: rotate(90deg);
+}
+.noStyleLink {
+}
+.noStyleLink > a {
+    color: black !important;
+}
+.detailsContainer {
+    font-size: 12px;
 }
 </style>
