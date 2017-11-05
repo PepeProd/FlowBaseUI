@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img style="width: 10%;" src="../assets/Logo_1.png">
+    <img style="width: 10%;" src="../assets/Logo_1.png" />
     <TableSearcher :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" defaultSort="id">
       <template slot="tableRows" scope="row" >

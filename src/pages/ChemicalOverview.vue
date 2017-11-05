@@ -4,7 +4,8 @@
         <div v-for="chemical in this.chemicalFamilies" class="chemFamilies">
             <div>
                 <router-link :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
-                <button @click="chemical.displayDetails = !chemical.displayDetails">{{chemical.displayDetails ? "Hide" : "Show"}}</button>
+                <img class="iconDisplay" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
+                    @click="chemical.displayDetails = !chemical.displayDetails"/>
                 <div :id="chemical" v-show="chemical.displayDetails">Quantity: {{chemical.quantity}}</div>
             </div>
         </div>
@@ -104,5 +105,15 @@
         justify-content: center;
         width: 100%;
         margin-bottom: 15px;
+}
+.iconDisplay {
+    display: inline;
+    width: 15px;
+}
+img {
+}
+
+.iconDisplayActive {
+    transform: rotate(90deg);
 }
 </style>
