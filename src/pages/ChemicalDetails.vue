@@ -1,10 +1,10 @@
 <template>
   <div>
-    <img style="width: 10%;" src="../assets/Logo_1.png">
-    <TableSearcher :rows="this.$store.getters.chemicals" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
+    <img style="width: 10%;" src="../assets/Logo_1.png" />
+    <TableSearcher :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" defaultSort="id">
       <template slot="tableRows" scope="row" >
-          <tr class="backgroundHoverColor" :class="{expiring : compareExpiration(row['Expiration_Date']), soonToExpire : compareSoonExpiration(row['Expiration_Date']), notExpiring : compareNotExpiring(row['Expiration_Date'])}">
+          <tr class="backgroundHoverColor" :class="{expiring : compareExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <td v-for="col in columns">{{row[col]}}</td>
           </tr>
       </template>
@@ -17,7 +17,13 @@ import DynamicTable from '../components/DynamicTable.vue';
 import TableSearcher from '../components/TableSearcher.vue';
 import {dateComparison} from '../mixins/dateComparison.js';
 export default {
-  name: 'Overview',
+  name: 'Details',
+  props: {
+    chemName: {
+      type: String,
+      required: true
+    }
+  },
   mixins: [dateComparison],
   data () {
     return {
@@ -35,20 +41,21 @@ export default {
 
   },
   computed: {
+    
+    chemData: function() {
+      return this.$store.getters.findChemicalByName(this.chemName);
+    },
     columns: function() {
-      if (this.$store.getters.chemicals.length == 0)
-        return [];                    
-      return Object.keys(this.$store.getters.chemicals[0])
-    }
+      return (Object.keys(this.chemData[0] || []))
+    },
   },
   mounted: function() {
     //api call here to get data
-    this.dynamicTableDataSource = this.$store.getters.chemicals;
+    this.dynamicTableDataSource = this.chemData;
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .expiring {
     background-color: rgb(244, 66, 66);

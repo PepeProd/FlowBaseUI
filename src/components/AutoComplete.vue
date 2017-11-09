@@ -129,7 +129,7 @@ export default {
 }
 
 .autocomplete-input input {
-  height: 25px;
+  height: 26px;
   padding: 0;
   margin: 0px;
   border: 1px solid rgb(56,56,56);
@@ -138,7 +138,7 @@ export default {
 
 .autocomplete-input {
   position: relative;
-  height: 25px;
+  height: 26px;
   margin-bottom: 0px;
 }
 

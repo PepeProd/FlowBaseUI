@@ -6,9 +6,13 @@ import router from './router'
 import Vuex from 'vuex'
 import VuexStore from './vuex/store'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 Vue.config.productionTip = false
 
 Vue.use(Vuex);
+Vue.use(VueAxios, axios)
 
 const store = new Vuex.Store(VuexStore);
 

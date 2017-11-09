@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ChemicalDetails from '@/pages/ChemicalDetails'
+import ChemicalOverview from '@/pages/ChemicalOverview'
 
 Vue.use(Router)
 
@@ -9,8 +10,18 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/chemicals'
+    },
+    {
+      path: '/chemicals/:chemName',
+      props: true,
       name: 'ChemicalDetails',
       component: ChemicalDetails
+    },
+    {
+      path: '/chemicals',
+      name: 'ChemicalOverview',
+      component: ChemicalOverview
     }
   ]
 })
