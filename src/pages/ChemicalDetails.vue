@@ -2,7 +2,7 @@
   <div>
     <img style="width: 10%;" src="../assets/Logo_1.png" />
     <TableSearcher :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
-    <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" defaultSort="id">
+    <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
       <template slot="tableRows" scope="row" >
           <tr class="backgroundHoverColor" :class="{expiring : compareExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <td v-for="col in columns">{{row[col]}}</td>
