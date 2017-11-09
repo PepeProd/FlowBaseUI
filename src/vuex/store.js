@@ -26,6 +26,17 @@ export default {
     },
     getters: {
         activeUser: state => state.activeUser,
-        chemicals: state => state.chemicals
+        chemicals: state => state.chemicals,
+        findChemicalByName: (state, getters) => (chemicalToFind) => {
+            var items = getters.chemicals;
+            var result = [];
+            //O(N^2) performance, slow
+            for(var item, i=0; item=items[i++];) {
+              if ((item.chemical_name).toLowerCase() == chemicalToFind.toLowerCase()) {
+                result.push(item);
+              }
+            }
+            return result;
+        }
     }
 }

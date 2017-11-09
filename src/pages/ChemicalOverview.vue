@@ -1,6 +1,6 @@
 <template>
     <div class="chemicalOverview">
-        <TableSearcher class="tableSearch" :rows="chemicalsNoDuplicates" :columnNames="this.columnsForSearcher" @submitClicked="handleSubmitClicked"></TableSearcher> 
+        <TableSearcher class="tableSearch" :rows="chemicalsWithNoDuplicates" :columnNames="this.columnsForSearcher" @submitClicked="handleSubmitClicked"></TableSearcher> 
         <div v-for="chemical in this.chemicalFamilies" class="chemFamilies">
             <div class="noStyleLink">
                 <router-link  :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
@@ -28,15 +28,9 @@
             }
         },     
         computed: {
-            chemicalsNoDuplicates: function() {
+            chemicalsWithNoDuplicates: function() {
                 var items = this.$store.getters.chemicals;
                 
-          /*      var result = items.reduce( (acc, o) => (acc[o.chemical_name] = (acc[o.chemial_name] || 0)+1, acc), {} )
-
-                return result;
-                //var unique = [...new Set(array.map(item => item.chemical_name))];
-                var lookup = {};
-                var result = []; */
                 var lookup = {};
                 var result = [];
                 for (var item, i=0; item=items[i++];) {
@@ -47,26 +41,6 @@
                     }
                 }
                 return result;
-                /* var result = items.reduce(function(r, o) {
-                    if (r[o.chemical_name]){
-                        ++r[o.chemical_name].count;
-                    } else {
-                        r[o.chemical_name] = {count: 1};
-                    }
-                    return r;
-                }, {});
-
-
-                return result; */
-           /*      var chemicalFamilies = {},e;
-                var result=[]
-                for (var i = 0,l=items.length; i < l; i++) { 
-                    e = items[i];
-                    chemicalFamilies[e.chemical_name] = (chemicalFamilies[e.chemical_name] || 0) + 1;
-                    //result.push({name: e.chemical_name, quantity: chemicalFamilies[e.chemical_name]});
-                }
-                                
-                return chemicalFamilies;   */ 
             }
         },
         methods: {
@@ -75,7 +49,7 @@
             },
         },
         mounted: function() {
-            this.chemicalFamilies = this.chemicalsNoDuplicates;
+            this.chemicalFamilies = this.chemicalsWithNoDuplicates;
         }
 
     }

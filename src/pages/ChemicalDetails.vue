@@ -43,20 +43,10 @@ export default {
   computed: {
     
     chemData: function() {
-      var lookup = this.chemName;
-      var items = this.$store.getters.chemicals;
-      var result = [];
-      for(var item, i=0; item=items[i++];) {
-        if ((item.chemical_name).toLowerCase() == lookup.toLowerCase()) {
-          result.push(item);
-        }
-      }
-      return result;
+      return this.$store.getters.findChemicalByName(this.chemName);
     },
     columns: function() {
-      if (this.chemData.length == 0)
-        return [];                    
-      return Object.keys(this.chemData[0])
+      return (Object.keys(this.chemData[0] || []))
     },
   },
   mounted: function() {
@@ -66,7 +56,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .expiring {
     background-color: rgb(244, 66, 66);
