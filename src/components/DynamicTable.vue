@@ -62,12 +62,20 @@
                 }
 
                 var ascending = this.ascending;
-
+                
                 this.rows.sort(function(a, b) {
-                    if (a[col] > b[col]) {
-                        return ascending ? 1 : -1
-                    } else if (a[col] < b[col]) {
-                        return ascending ? -1 : 1
+                    if (col == "expiration_date" || col=="received_date") {
+                        if (new Date(a[col]) > new Date(b[col]) ) {
+                            return ascending ? 1 : -1
+                        } else if ( new Date(a[col]) < new Date(b[col]) ) {
+                            return ascending ? -1 : 1
+                        }
+                    } else {
+                        if (a[col] > b[col]) {
+                            return ascending ? 1 : -1
+                        } else if (a[col] < b[col]) {
+                            return ascending ? -1 : 1
+                        }
                     }
                     return 0;
                 })
