@@ -64,7 +64,8 @@
                 var ascending = this.ascending;
                 
                 this.rows.sort(function(a, b) {
-                    if (col == "expiration_date" || col=="received_date") {
+                    //check if column name contains date 
+                    if (col.indexOf("date") > -1) {
                         if (new Date(a[col]) > new Date(b[col]) ) {
                             return ascending ? 1 : -1
                         } else if ( new Date(a[col]) < new Date(b[col]) ) {
