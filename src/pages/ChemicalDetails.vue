@@ -10,7 +10,7 @@
             <div class="legendExpired"></div>
             <label class="lblText">Expired</label>
             <div class="legend1DayWarning"></div>
-            <label class="lblText">1 Day</label>
+            <label class="lblText">0-1 Day</label>
             <div class="legendSoon"></div>
             <label class="lblText">2-30 Days</label>
             <div class="legendGood"></div>
@@ -19,7 +19,7 @@
         </div>
       </template>
       <template slot="tableRows" scope="row" >
-          <tr class="backgroundHoverColor" :class="{expired: compareExpired(row),expiring : compare1DayToExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
+          <tr class="backgroundHoverColor" :class="{expired: compareExpired(row['expiration_date']),expiring : compare1DayToExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <td v-for="col in columns">{{row[col]}}</td>
           </tr>
       </template>
@@ -82,7 +82,7 @@ export default {
     background-color: rgb(238, 244, 65);
 }
 .notExpiring {
-    background-color: rgb(91, 244, 65);
+    background-color: rgb(45, 188, 20);
 }
 .legendExpired {
     height: 15px;
@@ -117,7 +117,7 @@ export default {
 .legendGood {
     height: 15px;
     width: 15px;
-    background-color: rgb(91, 244, 65);
+    background-color: rgb(45, 188, 20);
     display: inline-block;
     box-sizing: border-box;
     vertical-align: middle;

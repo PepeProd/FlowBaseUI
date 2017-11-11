@@ -86,7 +86,12 @@ export default {
   created: function() {
    // var initialChemicals = this.$http.get('http://flowbase-api-lb-1387389396.us-east-2.elb.amazonaws.com/chemicals');
       //this.$store.dispatch('setChemicals', initialChemicals);
-      var initialChemicals = [{barcode: 1, chemical_name: 'test'}, {barcode: 2, chemical_name: 'test2'}];
+      var initialChemicals = [
+        {id: 1, barcode: 11111, chemical_name: 'test', expiration_date: '10/9/2017'}, 
+        {id: 2, barcode: 22222, chemical_name: 'test2', expiration_date: '11/11/2017'},
+        {id: 3, barcode: 22222, chemical_name: 'test2', expiration_date: '12/15/2017'},
+        {id: 4, barcode: 22222, chemical_name: 'test', expiration_date: '1/11/2018'}
+      ];
       this.$store.dispatch('setChemicals', initialChemicals);
   }
 }
