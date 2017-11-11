@@ -16,7 +16,6 @@ Vue.use(VueAxios, axios)
 
 const store = new Vuex.Store(VuexStore);
 
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

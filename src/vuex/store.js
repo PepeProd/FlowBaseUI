@@ -22,7 +22,7 @@ export default {
         },
         setChemicals({commit}, chemicals) {
             commit('SET_CHEMICALS', chemicals);
-        }
+        },
     },
     getters: {
         activeUser: state => state.activeUser,
@@ -37,6 +37,16 @@ export default {
               }
             }
             return result;
+        },
+        findChemicalByBarcode: (state, getters) => (barcodeToFind) => {
+            var items = getters.chemicals;
+            var result = [];
+            //O(N^2) performance, slow
+            for(var item, i=0; item=items[i++];) {
+              if ((item.barcode).toString() === barcodeToFind) {
+                return item;
+              }
+            }
         }
     }
 }
