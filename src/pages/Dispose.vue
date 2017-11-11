@@ -19,6 +19,7 @@
 </template>
 
 <script>
+    import {stringUtil} from '../mixins/stringUtil';
     export default {
         name: 'Dispose',
         data() {
@@ -27,6 +28,7 @@
                 barcodesProcessList: []
             }
         },
+        mixins: [stringUtil],
         computed: {
         },
         methods: {
@@ -70,9 +72,6 @@
                     result += this.barcodesProcessList[i].toString() + ' ';
                 }
                 alert(result);
-            },
-            capitalizeFirstLetter: function(word) {
-                return word.split('_').join(' ').toLowerCase().replace(/(^| )(\w)/g, s => s.toUpperCase());
             },
             
         },
@@ -132,6 +131,8 @@ button {
     transition-duration: 0.5s;
     -webkit-transition-duration: 0.5s;
     -moz-transition-duration: 0.5s;
+    outline: none;
+    
 }
 button:hover {
     color: #006398;

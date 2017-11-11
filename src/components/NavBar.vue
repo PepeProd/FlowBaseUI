@@ -98,6 +98,8 @@
         transition-duration: 0.5s;
         -webkit-transition-duration: 0.5s;
         -moz-transition-duration: 0.5s;
+        outline: none;
+
     }
     .btnLog:hover {
         color: #006398;
