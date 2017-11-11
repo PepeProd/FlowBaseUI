@@ -3,6 +3,19 @@
     <img style="width: 10%;" src="../assets/Logo_1.png" />
     <TableSearcher :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
+      <template slot="legend">
+        <div class="tableLegend">
+          <div class="legendContainer">        
+            <label class="lblText">Days to Expiration: </label>
+            <div class="legendExpire"></div>
+            <label class="lblText">1 Day</label>
+            <div class="legendSoon"></div>
+            <label class="lblText">2-30 Day</label>
+            <div class="legendGood"></div>
+            <label class="lblText">30+</label>
+          </div>
+        </div>
+      </template>
       <template slot="tableRows" scope="row" >
           <tr class="backgroundHoverColor" :class="{expiring : compareExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <td v-for="col in columns">{{row[col]}}</td>
@@ -65,5 +78,44 @@ export default {
 }
 .notExpiring {
     background-color: rgb(91, 244, 65);
+}
+.legendExpire {
+    height: 15px;
+    width: 15px;
+    background-color: rgb(244, 66, 66);
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.legendSoon {
+    height: 15px;
+    width: 15px;
+    background-color: rgb(238, 244, 65);
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.legendGood {
+    height: 15px;
+    width: 15px;
+    background-color: rgb(91, 244, 65);
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.legendContainer {
+    margin-top: 9px;
+    height: 20px;
+}
+.lblText {
+  box-sizing: border-box;
+  height: 20px;
+  vertical-align: middle;
 }
 </style>

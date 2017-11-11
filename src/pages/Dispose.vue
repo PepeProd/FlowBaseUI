@@ -1,19 +1,19 @@
 <template>
     <div>
         <div class="searchStyle">
-            <label  class="alignTop">Enter Barcodes To Dispose</label>
+            <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
-            <textarea class="alignTop" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
-            <button  class="alignTop" v-on:click="setProcessedBarcodes()">Review</button>
+            <textarea class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
+            <button  class="alignTop" v-on:click="setProcessedBarcodes()">Review Barcodes</button>
         </div>
         <div>
             <div class="chemicalPreviewContainer" v-for="chemical in getChemicalByProcessedBarcodes()">
                 <div class="chemicalPreview">
-                    <label  v-for="(propertyValue, key) in chemical"> {{capitalizeFirstLetter(key)}}: {{propertyValue}} </label>
+                    <label class="alignLabelToButton"  v-for="(propertyValue, key) in chemical"> {{capitalizeFirstLetter(key)}}: {{propertyValue}} </label>
                     <button v-on:click="removeChemicalFromPreviewByProcessedBarcode(chemical.barcode)">X</button>
                 </div>
             </div>
-            <button v-on:click="disposeChemicals">Dispose all</button>
+            <button v-on:click="disposeChemicals">Dispose All</button>
         </div>
     </div>
 </template>
@@ -80,6 +80,12 @@
 </script>
 
 <style scoped>
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+.lblBarcodeTitle {
+    font-weight: bold;
+}
 .chemicalPreviewContainer {
     box-sizing: border-box;
     display: flex;
@@ -89,12 +95,14 @@
     margin-top: 10px;
     margin-bottom: 10px;
     width: 100%;
-    list-style: none;
     justify-content: center;
 }
 .chemicalPreview  {
     margin-bottom: 5px;
     box-sizing: border-box;
+}
+.alignLabelToButton {
+    vertical-align: middle;
 }
 .searchStyle {
     box-sizing: border-box;
@@ -113,5 +121,24 @@
     justify-content: center;
     display: flex;
     flex: 1 0 auto;
+}
+button {
+    border-radius: 5px;
+    padding: 3px 25px 3px 25px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #00A6FF;
+    border: 1px solid #fff;
+    transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+}
+button:hover {
+    color: #006398;
+    opacity: 0.8;
+    border: 1px solid #006398;
+}
+.textArea {
+    resize: none;
 }
 </style>

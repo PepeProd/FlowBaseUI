@@ -1,6 +1,7 @@
 <template>
     <div class="tableObj">
         <div class="dropdownContainer">
+            <slot name="legend"></slot>
             <div class="dropdown">
                 <button class="btnDrop">Page Size: {{itemsPerPage}}</button>
                 <div class="dropdown-content">
@@ -143,7 +144,9 @@ tableObj {
 .dropdownContainer {
     margin-left: auto;
     margin-right: auto;
-    text-align: right;
+    display: flex;
+    /*text-align: right;*/
+    justify-content: space-between;
     width: 75%;
 }
 .dropdown {
