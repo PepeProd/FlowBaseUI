@@ -1,7 +1,7 @@
 <template>
     <div class="chemicalOverview">
         <TableSearcher class="tableSearch" :rows="chemicalsWithNoDuplicates" :columnNames="this.columnsForSearcher" @submitClicked="handleSubmitClicked"></TableSearcher> 
-        <div v-for="chemical in this.chemicalFamilies" class="chemFamilies">
+        <div v-for="chemical in chemicalFamiliesReactiveGetter" class="chemFamilies">
             <div class="noStyleLink">
                 <router-link  :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
                 <img class="iconDisplay" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
@@ -40,7 +40,11 @@
                         result.push({name: key, quantity: items.filter(i => i.chemical_name === key).length, displayDetails: false});
                     }
                 }
+                this.chemicalFamilies = result;
                 return result;
+            },
+            chemicalFamiliesReactiveGetter: function() {
+                return this.chemicalFamilies;
             }
         },
         methods: {
@@ -48,10 +52,9 @@
                 this.chemicalFamilies = filteredData;
             },
         },
-        mounted: function() {
-            this.chemicalFamilies = this.chemicalsWithNoDuplicates;
+        created: function() {
+            this.$store.dispatch('setChemicals');
         }
-
     }
 </script>
 

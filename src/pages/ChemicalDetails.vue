@@ -1,7 +1,7 @@
 <template>
   <div>
     <img style="width: 10%;" src="../assets/Logo_1.png" />
-    <TableSearcher :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
+    <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
       <template slot="legend">
         <div class="tableLegend">
@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style scoped>
+.searcherSpacing {
+  margin-bottom: 10px;
+}
 .expired {
     background-color: rgb(244, 66, 66);
 }

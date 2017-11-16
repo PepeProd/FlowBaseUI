@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ChemicalDetails from '@/pages/ChemicalDetails'
 import ChemicalOverview from '@/pages/ChemicalOverview'
+import DisposalRecords from '@/pages/DisposalRecords'
 import Dispose from '@/pages/Dispose'
 
 Vue.use(Router)
@@ -28,6 +29,11 @@ export default new Router({
       name: 'Dispose',
       path: '/dispose',
       component: Dispose
+    },
+    {
+      name: 'DisposalRecords',
+      path: '/disposalRecords',
+      component: DisposalRecords
     }
   ]
 })

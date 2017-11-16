@@ -4,7 +4,7 @@
             <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
             <textarea class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
-            <button  class="alignTop" v-on:click="setProcessedBarcodes()">Review Barcodes</button>
+            <button  class="alignTop" v-on:click="getBarcodes()">Review Barcodes</button>
         </div>
         <div>
             <div class="chemicalPreviewContainer" v-for="chemical in getChemicalByProcessedBarcodes()">
@@ -13,7 +13,7 @@
                     <button v-on:click="removeChemicalFromPreviewByProcessedBarcode(chemical.barcode)">X</button>
                 </div>
             </div>
-            <button v-on:click="disposeChemicals">Dispose All</button>
+            <button v-show="showDisposeAllButton" v-on:click="disposeChemicals">Dispose All</button>
         </div>
     </div>
 </template>
@@ -25,7 +25,8 @@
         data() {
             return {
                 barcodesRaw: '',
-                barcodesProcessList: []
+                barcodesList: [],
+                showDisposeAllButton: false,
             }
         },
         mixins: [stringUtil],
@@ -33,12 +34,13 @@
         },
         methods: {
             //Transform raw string into array of barcodes
-            setProcessedBarcodes: function() {
+            getBarcodes: function() {
                 if (this.barcodesRaw != "") {
-                    //this.barcodesProcessList = this.barcodesRaw.split(' '); //for input text
+                    //this.barcodesList = this.barcodesRaw.split(' '); //for input text
                     //for textarea
-                    this.barcodesProcessList = this.barcodesRaw.replace( /\n/g, " " ).split( " " )
-
+                    this.barcodesNotFound = '';
+                    this.barcodesList = this.barcodesRaw.replace( /\n/g, " " ).split( " " )
+                    this.showDisposeAllButton = true;
                 }
                 else {
                     //error handling to alert user that no barcodes entered
@@ -47,12 +49,15 @@
             //get array of chemicals based off of barcodes
             getChemicalByProcessedBarcodes: function() {
                 var result = []
-                for(var i=0; i<this.barcodesProcessList.length; i++) {
-                    var chemical = this.$store.getters.findChemicalByBarcode(this.barcodesProcessList[i]);
+                for(var i=0; i<this.barcodesList.length; i++) {
+                    var chemical = this.$store.getters.findChemicalByBarcode(this.barcodesList[i]);
+                    console.log(typeof chemical);
                     if (typeof chemical != "undefined") {
                         result.push(chemical);
                     }
                     else {
+                        this.barcodesList.splice(i,1);
+                        i--;
                         //error handling to alert user that barcode not found
                     }
                 }
@@ -60,18 +65,20 @@
             },
             //remove chemical from dispose selection
             removeChemicalFromPreviewByProcessedBarcode: function(barcode) {
-                for(var i=0; i < this.barcodesProcessList.length; i++) {
-                    if ((this.barcodesProcessList[i]).toString() === barcode.toString()) {
-                        this.barcodesProcessList.splice(i, 1);
+                for(var i=0; i < this.barcodesList.length; i++) {
+                    if ((this.barcodesList[i]).toString() === barcode.toString()) {
+                        this.barcodesList.splice(i, 1);
                     }
                 }                
             },
             disposeChemicals: function() {
-                var result = ''
-                for(var i=0; i<this.barcodesProcessList.length; i++) {
-                    result += this.barcodesProcessList[i].toString() + ' ';
+                this.$store.dispatch('deleteChemicalByBarcodes',this.barcodesList)
+                for(var i=0; i<this.barcodesList.length; i++) {
+                    //alert(this.barcodesList[i].toString());
+                    this.barcodesRaw = this.barcodesRaw.replace(this.barcodesList[i].toString(), '');
                 }
-                alert(result);
+                this.barcodesRaw = this.barcodesRaw.replace(/[\r\n]{2,}/g, "\n");;
+                this.showDisposeAllButton = false;
             },
             
         },
