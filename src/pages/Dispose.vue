@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div v-show="this.barcodesNotFound.length > 0" class="bannerStyle"><label>Barcodes Not Found: {{this.barcodesNotFound}}</label></div>
         <div class="searchStyle">
             <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
@@ -13,7 +14,7 @@
                     <button v-on:click="removeChemicalFromPreviewByProcessedBarcode(chemical.barcode)">X</button>
                 </div>
             </div>
-            <button v-show="showDisposeAllButton" v-on:click="disposeChemicals">Dispose All</button>
+            <button v-show="showDisposeAllButton & this.barcodesList.length > 0" v-on:click="disposeChemicals">Dispose All</button>
         </div>
     </div>
 </template>
@@ -27,6 +28,7 @@
                 barcodesRaw: '',
                 barcodesList: [],
                 showDisposeAllButton: false,
+                barcodesNotFound: ''
             }
         },
         mixins: [stringUtil],
@@ -56,6 +58,7 @@
                         result.push(chemical);
                     }
                     else {
+                        this.barcodesNotFound += this.barcodesList[i] + " ";
                         this.barcodesList.splice(i,1);
                         i--;
                         //error handling to alert user that barcode not found
@@ -77,7 +80,8 @@
                     //alert(this.barcodesList[i].toString());
                     this.barcodesRaw = this.barcodesRaw.replace(this.barcodesList[i].toString(), '');
                 }
-                this.barcodesRaw = this.barcodesRaw.replace(/[\r\n]{2,}/g, "\n");;
+                this.barcodesList = [];
+                this.barcodesRaw = this.barcodesRaw.replace(/[\r\n]{2,}/g, "\n");
                 this.showDisposeAllButton = false;
             },
             
@@ -88,6 +92,12 @@
 <style scoped>
 * {
     font-family: 'Open Sans', sans-serif;
+}
+.bannerStyle {
+    background-color: red;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 .lblBarcodeTitle {
     font-weight: bold;
