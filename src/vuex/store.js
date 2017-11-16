@@ -42,6 +42,9 @@ export default {
                     }
                 }
             }
+        },
+        SET_DISPOSED(state, disposedChemicals) {
+            state.disposedChemicals = disposedChemicals;
         }
     },
     actions: {
@@ -56,7 +59,7 @@ export default {
             .catch(function(error) {
       
             });
-            commit('SET_CHEMICALS', chemicals);
+            //commit('SET_CHEMICALS', chemicals);
         },
         deleteChemicalByBarcodes({commit}, barcodes) {
             //axios.post(api.getBaseUrl() + '/chemicals/' + barcodes)
@@ -66,6 +69,16 @@ export default {
             .catch(function(error) {
 
             }); */
+        },
+        setDisposedChemicals({commit}) {
+            //remove comments when api call is implemented
+            /*axios.get(api.getBaseUrl() + '/disposedChemicals')
+            .then(response => {
+                commit('SET_DISPOSED', response.data);
+            })
+            .catch(function(error) {
+
+            })*/
         }
     },
     getters: {

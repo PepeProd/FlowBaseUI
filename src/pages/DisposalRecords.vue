@@ -38,6 +38,9 @@ export default {
       return (Object.keys(this.chemData[0] || []))
     },
   },
+  created: function() {
+    this.$store.dispatch('setDisposedChemicals');
+  },
   mounted: function() {
     //api call here to get data
     this.dynamicTableDataSource = this.chemData;

@@ -1,7 +1,6 @@
 <template>
     <div class="tableObj">
         <div class="dropdownContainer">
-            <slot name="legend"></slot>
             <div class="dropdown">
                 <button class="btnDrop">Page Size: {{itemsPerPage}}</button>
                 <div class="dropdown-content">
@@ -10,6 +9,7 @@
                     <span href="#" v-on:click="setPageSize(50)">50 items</span>
                 </div>
             </div>
+            <slot name="legend"></slot>
         </div>
         <table>
             <thead>
@@ -248,7 +248,7 @@ table tbody tr:nth-child(n) td {
 }
 
 .pagination {
-  text-align: right;
+  text-align: left;
   width: 75%;
   padding: 8px;
   margin-left: auto;

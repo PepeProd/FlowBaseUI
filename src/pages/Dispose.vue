@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-show="this.barcodesNotFound.length > 0" class="bannerStyle"><label>Barcodes Not Found: {{this.barcodesNotFound}}</label></div>
+        <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label>Barcodes Not Found: {{this.barcodesNotFound}}</label></div>
         <div class="searchStyle">
             <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
-            <textarea class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
+            <textarea  @keydown.enter="getBarcodes()" class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
             <button  class="alignTop" v-on:click="getBarcodes()">Review Barcodes</button>
         </div>
         <div>
@@ -82,6 +82,7 @@
                 }
                 this.barcodesList = [];
                 this.barcodesRaw = this.barcodesRaw.replace(/[\r\n]{2,}/g, "\n");
+                this.barcodesRaw = this.barcodesRaw.replace(/^\n|\n$/g, '');
                 this.showDisposeAllButton = false;
             },
             
