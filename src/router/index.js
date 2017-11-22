@@ -4,6 +4,7 @@ import ChemicalDetails from '@/pages/ChemicalDetails'
 import ChemicalOverview from '@/pages/ChemicalOverview'
 import DisposalRecords from '@/pages/DisposalRecords'
 import Dispose from '@/pages/Dispose'
+import AddChemical from '@/pages/AddChemical'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       name: 'DisposalRecords',
       path: '/disposalRecords',
       component: DisposalRecords
+    },
+    {
+      name: 'AddChemical',
+      path: '/addChemical',
+      component: AddChemical
     }
   ]
 })
