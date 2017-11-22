@@ -28,11 +28,11 @@
             </div>
             <div>
                 <label>Received Date</label>
-                <input v-model="receivedDate" type="text" />
+                <flat-pickr placeholder="Select a Date" :config="receiveDatePickerConfig" v-model="receivedDate" ></flat-pickr>
             </div>
             <div>
                 <label>Expiration Date</label>
-                <input v-model="expireDate" type="text" />
+                <flat-pickr placeholder="Select a Date" :config="expireDatePickerConfig" v-model="expireDate"></flat-pickr>
             </div>
             <div>
                 <label>Project Code</label>
@@ -55,22 +55,13 @@
 
 
 <script>
+    import flatPickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
+    import 'flatpickr/dist/themes/material_blue.css';
     export default {
         name: 'AddChemical',
-        data() {
-            return {
-                chemName: '',
-                commonName: '',
-                SMN: '',
-                vendorName: '',
-                vendorCatNumber: '',
-                lotNumber: '',
-                receivedDate: '',
-                expireDate: '',
-                projectCode: '',
-                storageTemp: '',
-                location: ''
-            }
+        components : {
+            flatPickr
         },
         methods: {
             submitNewChemicalFormClicked: function() {
@@ -88,7 +79,31 @@
                     storage_temperature: this.storageTemp,
                     location: this.location
                 };
-                alert(chemical["chemical_name"] + " " + chemical["common_name"]);
+                alert(chemical["receive_date"] + " " + chemical["expiration_date"]);
+            },
+        },
+        data() {
+            return {
+                chemName: '',
+                commonName: '',
+                SMN: '',
+                vendorName: '',
+                vendorCatNumber: '',
+                lotNumber: '',
+                receivedDate: '',
+                expireDate: '',
+                projectCode: '',
+                storageTemp: '',
+                location: '',
+                expireDatePickerConfig: {
+                    wrap: false,
+                    dateFormat: 'm/d/Y',
+                    minDate: new Date(Date.now())
+                },
+                receiveDatePickerConfig: {
+                    wrap: false,
+                    dateFormat: 'm/d/Y',
+                }
             }
         }
     }
