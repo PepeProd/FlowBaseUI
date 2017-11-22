@@ -1,50 +1,50 @@
 <template>
     <div>
         <h2>Add New Chemical</h2>
-        <form class="addChemForm">
+        <form @submit.prevent="submitNewChemicalFormClicked()" class="addChemForm">
             <div>
                 <label>Chemical Name</label>
-                <input type="" />
+                <input v-model="chemName" type="text" />
             </div>
             <div>
                 <label>Common Name</label>
-                <input type="" />
+                <input v-model="commonName" type="text" />
             </div>
             <div>
                 <label>SMN</label>
-                <input type="" />
+                <input v-model="SMN" type="text" />
             </div>
             <div>
                 <label>Vendor Name</label>
-                <input type="" />
+                <input v-model="vendorName" type="text" />
             </div>
             <div>
                 <label>Vendor Catalog Number</label>
-                <input type="" />
+                <input v-model="vendorCatNumber" type="text" />
             </div>
             <div>
                 <label>Lot Number</label>
-                <input type="" />
+                <input v-model="lotNumber" type="text" />
             </div>
             <div>
                 <label>Received Date</label>
-                <input type="" />
+                <input v-model="receivedDate" type="text" />
             </div>
             <div>
                 <label>Expiration Date</label>
-                <input type="" />
+                <input v-model="expireDate" type="text" />
             </div>
             <div>
                 <label>Project Code</label>
-                <input type="" />
+                <input v-model="projectCode" type="text" />
             </div>
             <div>
                 <label>Storage Temperature</label>
-                <input type="" />
+                <input v-model="storageTemp" type="text" />
             </div>
             <div>
                 <label>Location</label>
-                <input type="" />
+                <input v-model="location" type="" />
             </div>
             <div>
                 <button class="submitNewChemical">Submit</button>
@@ -56,7 +56,41 @@
 
 <script>
     export default {
-        name: 'AddChemical'
+        name: 'AddChemical',
+        data() {
+            return {
+                chemName: '',
+                commonName: '',
+                SMN: '',
+                vendorName: '',
+                vendorCatNumber: '',
+                lotNumber: '',
+                receivedDate: '',
+                expireDate: '',
+                projectCode: '',
+                storageTemp: '',
+                location: ''
+            }
+        },
+        methods: {
+            submitNewChemicalFormClicked: function() {
+                //format form data into json object
+                var chemical = {
+                    chemical_name: this.chemName,
+                    common_name: this.commonName,
+                    siemens_material_number: this.SMN,
+                    vendor_name: this.vendorName,
+                    vendor_catalog_number: this.vendorCatNumber,
+                    lot_number: this.lotNumber,
+                    receive_date: this.receivedDate,
+                    expiration_date: this.expireDate,
+                    project_code: this.project_code,
+                    storage_temperature: this.storageTemp,
+                    location: this.location
+                };
+                alert(chemical["chemical_name"] + " " + chemical["common_name"]);
+            }
+        }
     }
 
 </script>
