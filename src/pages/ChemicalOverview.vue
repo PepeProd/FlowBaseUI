@@ -34,7 +34,7 @@
                 var lookup = {};
                 var result = [];
                 for (var item, i=0; item=items[i++];) {
-                    var key = item.chemical_name;
+                    var key = item.chemical_name.toLowerCase();
                     if (typeof key != "undefined" & !(key in lookup)) {
                         lookup[key]=1;
                         result.push({name: key, quantity: items.filter(i => i.chemical_name === key).length, displayDetails: false});

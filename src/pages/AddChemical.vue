@@ -44,7 +44,7 @@
             </div>
             <div>
                 <label>Location</label>
-                <input v-model="location" type="" />
+                <input v-model="location" type="text" />
             </div>
             <div>
                 <button class="submitNewChemical">Submit</button>
@@ -75,11 +75,13 @@
                     lot_number: this.lotNumber,
                     receive_date: this.receivedDate,
                     expiration_date: this.expireDate,
-                    project_code: this.project_code,
+                    project_code: this.projectCode,
                     storage_temperature: this.storageTemp,
                     location: this.location
                 };
-                alert(chemical["receive_date"] + " " + chemical["expiration_date"]);
+                var arr = [];
+                arr.push(chemical);
+                this.$store.dispatch('addNewChemical', arr)
             },
         },
         data() {
@@ -98,11 +100,12 @@
                 expireDatePickerConfig: {
                     wrap: false,
                     dateFormat: 'm/d/Y',
-                    minDate: new Date(Date.now())
+                    minDate: "today"
                 },
                 receiveDatePickerConfig: {
                     wrap: false,
                     dateFormat: 'm/d/Y',
+                    maxDate: "today"
                 }
             }
         }
