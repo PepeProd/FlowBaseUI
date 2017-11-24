@@ -37,7 +37,7 @@
                     var key = item.chemical_name.toLowerCase();
                     if (typeof key != "undefined" & !(key in lookup)) {
                         lookup[key]=1;
-                        result.push({name: key, quantity: items.filter(i => i.chemical_name === key).length, displayDetails: false});
+                        result.push({name: key, quantity: items.filter(i => i.chemical_name.toLowerCase() === key).length, displayDetails: false});
                     }
                 }
                 this.chemicalFamilies = result;
