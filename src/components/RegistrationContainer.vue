@@ -1,17 +1,20 @@
 <template>
         <div class="modal" @click="clickedOutside">
-            <form @submit.prevent="$emit('registrationSubmissionClicked', newUser)" class="modal-container registrationForm" style="background-color: rgb(56,56,56)" @click.stop>
+            <form @submit.prevent="submitRegistrationForm(newUser)" class="modal-container registrationForm" style="background-color: rgb(56,56,56)" @click.stop>
                 <span><strong>FlowBase Registration</strong></span>
                 <label>User Name</label>
-                <input type="text" v-model="newUser.username"></input>
+                <input type="text" v-model="newUser.username" name="User Name" v-validate="'required|min: 5'"  :class="{'error': errors.has('User Name')}"></input>
+                <label class="errorMessage" v-show="errors.has('User Name')">{{errors.first('User Name')}}</label>
                 <label>Email</label>
-                <input type="text" v-model="newUser.email"></input>
+                <input type="text" v-model="newUser.email" name="Email" v-validate="'required|email'"  :class="{'error': errors.has('Email')}"></input>
+                <label class="errorMessage" v-show="errors.has('Email')">{{errors.first('Email')}}</label>
                 <div class="flex-row">
                     <input id="emailNotifications" type="checkbox" v-model="newUser.notifications"></input>
                     <label class="lblEmail" for="emailNotifications">Email Notifications</label>
                 </div>
                 <label>Password</label>
-                <input  type="password" v-model="newUser.password"></input>
+                <input  type="password" v-model="newUser.password" name="Password" v-validate="'required|min:5'"  :class="{'error': errors.has('Password')}"></input>
+                <label class="errorMessage" v-show="errors.has('Password')">{{errors.first('Password')}}</label>
                 <button class="btnRegister">Register</button>
             </form>
         </div>
@@ -29,6 +32,14 @@
         methods: {
             clickedOutside: function() {
                 this.$emit('clickedOutside');
+            },
+            submitRegistrationForm: function(newUser) {
+                this.$validator.validateAll().then( (result) => {
+                    if (result) {
+                        this.$emit('registrationSubmissionClicked', newUser);
+                        return;
+                    }
+                });
             }
         },
         mounted: function () {
@@ -42,7 +53,7 @@
 </script>
 
 <style scope>
-    * {
+    .modal > * {
         font-family: 'Open Sans', sans-serif;
         text-transform: uppercase;
         font-weight: bold;
@@ -117,7 +128,6 @@
     }
     .btnRegister:hover {
         color: #006398;
-        opacity: 0.8;
         border: 1px solid #006398;
     }
     .modal-container {
@@ -147,6 +157,18 @@
         
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
+    }
+
+    .error {
+        border-color: red;
+    }
+    .errorMessage {
+        color: red !important;
+        margin-top: -10px;
+        margin-bottom: 8px;
+        font-size: 0.8em !important;
+        text-transform: none !important;
+        font-weight: normal !important;
     }
     
 </style>
