@@ -1,5 +1,6 @@
 <template>
     <div class="chemicalOverview">
+        <h2>Chemical Inventory</h2>
         <TableSearcher class="tableSearch" :rows="chemicalsWithNoDuplicates" :columnNames="this.columnsForSearcher" @submitClicked="handleSubmitClicked"></TableSearcher> 
         <div v-for="chemical in chemicalFamiliesReactiveGetter" class="chemFamilies">
             <div class="noStyleLink">
@@ -101,6 +102,9 @@ img {
 }
 .noStyleLink > a {
     color: black !important;
+}
+.noStyleLink > a:hover {
+    color: #00A6FF !important;
 }
 .detailsContainer {
     font-size: 12px;
