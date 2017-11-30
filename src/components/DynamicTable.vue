@@ -9,20 +9,23 @@
                     <span href="#" v-on:click="setPageSize(50)">50 items</span>
                 </div>
             </div>
+            <slot name="legend"></slot>
         </div>
         <table>
             <thead>
                 <tr>
                     <th v-for="col in columnNames" v-on:click="sortTable(col)">
-                        {{formatColumn(col)}}
-                        <div class="arrow" v-if="col == sortColumn" :class="[ascending ? 'arrow_up' : 'arrow_down']">
+                        <div class="headerStyle" >
+                            <div class="columnHeaderStyle">{{formatColumn(col)}}</div>
+                            <div class="arrow" v-show="col == sortColumn" :class="[ascending ? 'arrow_up' : 'arrow_down']">
+                            </div>
                         </div>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <slot name="tableRows" v-for="row in get_rows()" v-bind="row">
-                    <tr v-for="row in get_rows()" class="backgroundHoverColor">
+                    <tr class="backgroundHoverColor">
                         <td v-for="col in columnNames">{{row[col]}}</td>
                     </tr>
                 </slot>
@@ -61,12 +64,21 @@
                 }
 
                 var ascending = this.ascending;
-
+                
                 this.rows.sort(function(a, b) {
-                    if (a[col] > b[col]) {
-                        return ascending ? 1 : -1
-                    } else if (a[col] < b[col]) {
-                        return ascending ? -1 : 1
+                    //check if column name contains date 
+                    if (col.indexOf("date") > -1) {
+                        if (new Date(a[col]) > new Date(b[col]) ) {
+                            return ascending ? 1 : -1
+                        } else if ( new Date(a[col]) < new Date(b[col]) ) {
+                            return ascending ? -1 : 1
+                        }
+                    } else {
+                        if (a[col] > b[col]) {
+                            return ascending ? 1 : -1
+                        } else if (a[col] < b[col]) {
+                            return ascending ? -1 : 1
+                        }
                     }
                     return 0;
                 })
@@ -143,7 +155,9 @@ tableObj {
 .dropdownContainer {
     margin-left: auto;
     margin-right: auto;
-    text-align: right;
+    display: flex;
+    /*text-align: right;*/
+    justify-content: space-between;
     width: 75%;
 }
 .dropdown {
@@ -199,7 +213,12 @@ table {
   margin-right: auto;
 }
 
-
+.columnHeaderStyle {
+}
+.headerStyle {
+    display: flex;
+    flex: row nowrap;
+}
 table th {
   text-align: center;
   background: rgb(56,56,56);
@@ -229,7 +248,7 @@ table tbody tr:nth-child(n) td {
 }
 
 .pagination {
-  text-align: right;
+  text-align: left;
   width: 75%;
   padding: 8px;
   margin-left: auto;
@@ -243,12 +262,18 @@ table tbody tr:nth-child(n) td {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAwpJREFUSA21Vt1PUmEYP4dvkQ8JFMwtBRocWAkDbiqXrUWXzU1rrTt0bdVqXbb1tbW16C9IBUSmm27cODdneoXjputa6069qwuW6IIBIdLvdaF4OAcOiGeDc87zPs/vd57P96WpFq7p6enbGo1mjKZpeTabjU1MTCRagGnOZHFxcXxtbe1XKpUq7+zslJeXl//Mz8+Hy+Uy3RxSE9qTk5M3otFooVQqgef4Wl9f343FYoEmoISrxuNxFX5f9vb2jhn/PxUKhfLS0tIPfFifUESRUMV8Pv/M6XReRm5rTGQyGeXxeGxYe1ezeBpBOBx2rKysbO7v79d4Wy3Y2Nj4GQqFbgnhaugxwiuGJx99Pp9FLBbXxYTXvTqd7v3MzIy6riIWGxJnMpl7AwMD14xGYyMsSq1WUyQdUqn0eSPlusQIsbGrq+vl4OCgvhFQZd1utyv1en0gEolcqsi47nWJlUrlG5fLZVcoFFy2nDKSDpIWlUoVTCQSEk4lCHmJMZ2GTCbTiMVikfIZ88l7enoos9l8dXt7+z6fDicxSJUokqDX6xXcl2wCROoc0vQCWL3sNfLOSdzR0fHY4XC4tVotl40gmVwup9xuN4OQv+UyqCFGH9rg7SOGYVRcBs3IEG4J0nVnamrqOtvuBDGGgQg9+wHFcVEi4a0LNkbdd6TrPKo8ODc311mteIIYjT/a398/jK+s1jnVM0kXoufCFvq0GuiIGEVgQIhfoygM1QrteEa9dAL7ITiYCt4RMabOK5AyKKzKWtvupLcRciu8D5J0EuDDPyT/Snd39yh6VtY2NhYQSR9G79Ds7OxdskRjEyAufvb7/cPoO5Z6e1+xtVKrq6vfcFzyi/A3ZrPZ3GdNSlwgo5ekE4X2RIQGf2C1WlufFE0GBeGWYQ8YERWLxQtnUVB830MKLZfL9RHir8lkssCn2G751tZWEWe03zTKm15YWPiEiXXTYDB0Ig/t7yd8PRws4EicwWHxO4jHD8/C5HiTTqd1BwcHFozKU89origB+y/kmzgYpgOBQP4fGmUiZmJ+WNgAAAAASUVORK5CYII=')
 }
 .arrow {
-  float: right;
-  width: 12px;
-  height: 15px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position-y: bottom;
+    float: right;
+    width: 12px;
+    height: 15px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: bottom;
+    display: flex;
+    flex: 0 0 auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    margin-right: auto;
 }
 
 .number {
