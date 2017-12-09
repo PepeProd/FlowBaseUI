@@ -54,12 +54,18 @@
             <label class="errorMessage" v-show="errors.has('Project Code')">{{errors.first('Project Code')}}</label>
             <div>
                 <label>Storage Temperature</label>
-                <input v-model="storageTemp" type="text" name="Storage Temperature" v-validate="{required: true, alpha_num: true}"  :class="{'error': errors.has('Storage Temperature')}"/>
+                <select class="dropDownEdges dropDown" v-model="storageTemp" type="text" name="Storage Temperature" v-validate="{required: true}"  :class="{'error': errors.has('Storage Temperature')}">
+                    <option disabled hidden value="">Select Temperature Zone</option>
+                    <option v-for="tempZone in tempZones" :value="tempZone">{{tempZone}}</option>
+                </select>
             </div>
             <label class="errorMessage" v-show="errors.has('Storage Temperature')">{{errors.first('Storage Temperature')}}</label>
             <div>
                 <label>Location</label>
-                <input v-model="location" type="text" name="Location" v-validate="{required: true}"  :class="{'error': errors.has('Location')}"/>
+                <select class="dropDownEdges dropDown" v-model="location" name="Location" v-validate="{required: true}"  :class="{'error': errors.has('Location')}">
+                    <option disabled hidden value="">Select Storage Location</option>
+                    <option v-for="location in locations" :value="location">{{location}}</option>
+                </select>
             </div>
             <label class="errorMessage" v-show="errors.has('Location')">{{errors.first('Location')}}</label>
             <div>
@@ -130,6 +136,23 @@
 
                 })
             },
+        },
+        computed: {
+            locations: function() {
+                var locations = []; //implement api to get locations, vuex access throughg getters
+                locations.push("Lab 1");
+                locations.push("Lab 2");
+                locations.push("Lab 3");
+                return locations;
+            },
+            tempZones: function() {
+                var tempZones = []; //implement api to get locations, vuex access throughg getters
+                tempZones.push("RT");
+                tempZones.push("2-8C");
+                tempZones.push("-20C");
+                tempZones.push("-80C");
+                return tempZones;
+            }
         },
         data() {
             return {
@@ -209,5 +232,12 @@
         margin-top: -8px;
         margin-bottom: 5px;
         font-size: 0.8em;
+    }
+    .dropDownEdges:hover {
+        border-radius: 5px 5px 0px 0px;
+    }
+    .dropDown {
+        width: 173px;
+        outline: none;
     }
 </style>
