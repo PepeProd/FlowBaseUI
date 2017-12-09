@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Add New Chemical</h2>
-        <form @submit.prevent="submitNewChemicalFormClicked()" class="addChemForm">
+        <form ref="newChemicalForm" @submit.prevent="submitNewChemicalFormClicked($event)" class="addChemForm">
             <div>
                 <label>Chemical Name</label>
                 <input v-model="chemName" name="Chemical Name" v-validate="{required: true}" type="text" :class="{'error': errors.has('Chemical Name')}"/>
@@ -12,6 +12,11 @@
                 <input type="text" v-model="commonName" name="Common Name" v-validate="{required: true}"  :class="{'error': errors.has('Common Name')}"/>
             </div>
             <label class="errorMessage" v-show="errors.has('Common Name')">{{errors.first('Common Name')}}</label>
+            <div>
+                <label>Quantity</label>
+                <input type="text" v-model="quantity" name="Quantity" v-validate="{required: true, numeric: true, min_value: 1}"  :class="{'error': errors.has('Quantity')}"/>
+            </div>
+            <label class="errorMessage" v-show="errors.has('Quantity')">{{errors.first('Quantity')}}</label>
             <div>
                 <label>SMN</label>
                 <input v-model="SMN" type="text" name="SMN" v-validate="{required: true}"  :class="{'error': errors.has('SMN')}"/>
@@ -49,7 +54,7 @@
             <label class="errorMessage" v-show="errors.has('Project Code')">{{errors.first('Project Code')}}</label>
             <div>
                 <label>Storage Temperature</label>
-                <input v-model="storageTemp" type="text" name="Storage Temperature" v-validate="{required: true}"  :class="{'error': errors.has('Storage Temperature')}"/>
+                <input v-model="storageTemp" type="text" name="Storage Temperature" v-validate="{required: true, alpha_num: true}"  :class="{'error': errors.has('Storage Temperature')}"/>
             </div>
             <label class="errorMessage" v-show="errors.has('Storage Temperature')">{{errors.first('Storage Temperature')}}</label>
             <div>
@@ -75,8 +80,9 @@
             flatPickr
         },
         methods: {
-            submitNewChemicalFormClicked: function() {
+            submitNewChemicalFormClicked: function(e) {
                 //format form data into json object
+                var formSubmitted = false;
                 this.$validator.validateAll().then( (result) => {
                     if (result) {
                         var chemical = {
@@ -94,11 +100,35 @@
                         };
                         var arr = [];
                         arr.push(chemical);
-                        this.$store.dispatch('addNewChemical', arr)
+                        //e.target.submit(); use this to programmatically submit form
+                        //this.$refs.newChemicalForm.submit();
+                        for (var i=1; i<=this.quantity; i++) {
+                            this.$store.dispatch('addNewChemical', arr);
+                        }
+                        formSubmitted = true;
+                        alert("Successfully Added " + this.chemName)
+                        this.chemName = '';
+                        this.commonName = '';
+                        this.SMN = '';
+                        this.vendorName = '';
+                        this.vendorCatNumber = '';
+                        this.lotNumber = '';
+                        this.receivedDate = '';
+                        this.expireDate = '';
+                        this.projectCode = '';
+                        this.storageTemp = '';
+                        this.location = '';
+                        this.quantity = 1;
+                    } 
+                } ).then(() => {
+                    if (formSubmitted) {
+                        this.$validator.reset();
                         return;
+                    } else {
+                        alert("correct errors");
                     }
-                } )
-                alert("correct errors!");
+
+                })
             },
         },
         data() {
@@ -114,6 +144,7 @@
                 projectCode: '',
                 storageTemp: '',
                 location: '',
+                quantity: 1,
                 expireDatePickerConfig: {
                     wrap: false,
                     dateFormat: 'm/d/Y',
