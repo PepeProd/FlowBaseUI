@@ -70,7 +70,7 @@ export default {
 
             }); */
             for (var barcode, i=0; barcode=barcodes[i++];) {
-                axios.delete(api.getBaseUrl() + '/chemicals/' + this.getters.findChemicalByBarcode(barcode)["id"])
+                axios.delete(api.getBaseUrl() + '/chemicals/' + this.getters.findChemicalByBarcode(barcode.toString())["barcode"])
                 .then(response => {
 
                 })
