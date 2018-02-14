@@ -83,13 +83,13 @@ export default {
         },
         setDisposedChemicals({commit}) {
             //remove comments when api call is implemented
-            /*axios.get(api.getBaseUrl() + '/disposedChemicals')
+            axios.get(api.getBaseUrl() + '/chemicals/disposed')
             .then(response => {
                 commit('SET_DISPOSED', response.data);
             })
             .catch(function(error) {
 
-            })*/
+            })
         },
         addNewChemical({commit}, newChemical) {
             axios.post(api.getBaseUrl() + '/chemicals', newChemical)
