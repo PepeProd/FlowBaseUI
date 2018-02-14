@@ -214,6 +214,8 @@ table {
 }
 
 .columnHeaderStyle {
+    margin-left:auto;
+    margin-right: auto;
 }
 .headerStyle {
     display: flex;

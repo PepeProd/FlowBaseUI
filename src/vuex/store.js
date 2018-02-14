@@ -21,13 +21,13 @@ export default {
             for (var i=0; i < chemicals.length; i++) {
                 if (chemicals[i].hasOwnProperty('expiration_date')) {
                     var stringLongExpirationDate = new Date(chemicals[i].expiration_date);
-                    var stringShortExpirationDate =  stringLongExpirationDate.getMonth() + "/" + stringLongExpirationDate.getDate() + "/" + stringLongExpirationDate.getFullYear();
+                    var stringShortExpirationDate =  (stringLongExpirationDate.getMonth()+1) + "/" + stringLongExpirationDate.getDate() + "/" + stringLongExpirationDate.getFullYear();
                     chemicals[i].expiration_date = stringShortExpirationDate;
                 }
 
                 if (chemicals[i].hasOwnProperty('receive_date')) {
                     var stringLongReceivedDate = new Date(chemicals[i].receive_date);
-                    var stringShortExpirationDate =  stringLongReceivedDate.getMonth() + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                    var stringShortExpirationDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
                     chemicals[i].receive_date = stringShortExpirationDate;
                 }
             }
@@ -64,11 +64,22 @@ export default {
         deleteChemicalByBarcodes({commit}, barcodes) {
             //axios.post(api.getBaseUrl() + '/chemicals/' + barcodes)
             //.then(response => {
-                commit('DELETE_CHEMICAL_BY_BARCODE', barcodes);
+                //commit('DELETE_CHEMICAL_BY_BARCODE', barcodes);
             /*})
             .catch(function(error) {
 
             }); */
+            for (var barcode, i=0; barcode=barcodes[i++];) {
+                axios.delete(api.getBaseUrl() + '/chemicals/' + this.getters.findChemicalByBarcode(barcode)["id"])
+                .then(response => {
+
+                })
+                .catch(function(error) {
+
+                })
+            }
+            commit('DELETE_CHEMICAL_BY_BARCODE', barcodes);
+
         },
         setDisposedChemicals({commit}) {
             //remove comments when api call is implemented
@@ -79,6 +90,16 @@ export default {
             .catch(function(error) {
 
             })*/
+        },
+        addNewChemical({commit}, newChemical) {
+            axios.post(api.getBaseUrl() + '/chemicals', newChemical)
+            .then(response => {
+                //do something
+            })
+            .catch(function(error) {
+                //do something
+            })
+            
         }
     },
     getters: {

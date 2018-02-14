@@ -38,7 +38,7 @@ export default {
       //mock api verification
       user.email = "testemail"; //get email from api
       user.notifications = "testnotifications"; //get notification status from api
-      if (user.username == "asd") {
+      if (user.username == "tester") {
         this.isUserLoggedIn = true;
         this.showLogForm = false;
         this.$store.dispatch('setActiveUser', user)

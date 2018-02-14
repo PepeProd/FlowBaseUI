@@ -1,13 +1,13 @@
 <template>
     <div class="modal" @click="clickedOutside">
-        <form style="background-color: rgb(56,56,56)" @keyup.enter="$emit('SubmitLog', user)" @submit.prevent="$emit('SubmitLog', user)" class="modal-container" @click.stop>
+        <form style="background-color: rgb(56,56,56)" @keyup.enter="submitLogIn(user)" @submit.prevent="submitLogIn(user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
-            <input type="text" v-model="user.username"></input>
-            
+            <input type="text" v-model="user.username" name="User Name" v-validate="'required|min:5'"  :class="{'error': errors.has('User Name')}"></input>
+            <label class="errorMessage" v-show="errors.has('User Name')">{{errors.first('User Name')}}</label>
             <label>Password</label>
-            <input  type="password" v-model="user.password"></input>
-
+            <input  type="password" v-model="user.password" name="Password" v-validate="'required|min:5'"  :class="{'error': errors.has('Password')}"></input>
+            <label class="errorMessage" v-show="errors.has('Password')">{{errors.first('Password')}}</label>
             <button class="btnLogIn">Login</button>
             <button class="btnLogIn" @click.prevent="$emit('showRegisterClicked')">Register</button>
         </form>
@@ -25,6 +25,14 @@
         methods: {
             clickedOutside: function() {
                 this.$emit('clickedOutside');
+            },
+            submitLogIn: function(user) {
+                this.$validator.validateAll().then( (result) => {
+                    if (result) {
+                        this.$emit('SubmitLog', user);
+                        return;
+                    }
+                });
             }
         },
         mounted: function () {
@@ -38,7 +46,7 @@
 </script>>
 
 <style scoped>
-    * {
+    .modal > * {
     font-family: 'Open Sans', sans-serif;
     text-transform: uppercase;
     font-weight: bold;
@@ -94,7 +102,6 @@
     }
     .btnLogIn:hover {
         color: #006398;
-        opacity: 0.8;
         border: 1px solid #006398;
     }
     .modal-container {
@@ -119,5 +126,15 @@
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
     }
-
+    .error {
+        border-color: red;
+    }
+    .errorMessage {
+        color: red !important;
+        margin-top: -10px;
+        margin-bottom: 8px;
+        font-size: 0.8em !important;
+        text-transform: none !important;
+        font-weight: normal !important;
+    }
 </style>
