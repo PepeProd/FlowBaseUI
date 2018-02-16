@@ -135,6 +135,9 @@
                     }
 
                 })
+                .catch(function(error) {
+
+                });
             },
         },
         computed: {

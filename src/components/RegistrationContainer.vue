@@ -39,6 +39,9 @@
                         this.$emit('registrationSubmissionClicked', newUser);
                         return;
                     }
+                })
+                .catch(function(error){
+
                 });
             }
         },

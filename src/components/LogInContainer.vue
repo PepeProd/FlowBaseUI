@@ -32,6 +32,9 @@
                         this.$emit('SubmitLog', user);
                         return;
                     }
+                })
+                .catch(function(error) {
+
                 });
             }
         },

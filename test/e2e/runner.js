@@ -31,3 +31,6 @@ server.ready.then(() => {
     throw err
   })
 })
+.catch(function(error) {
+
+});
