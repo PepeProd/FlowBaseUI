@@ -21,7 +21,8 @@
     "vue-axios": "^2.0.2",
     "vue-flatpickr-component": "^5.0.0",
     "vue-router": "^2.7.0",
-    "vuex": "^2.4.1"
+    "vuex": "^2.4.1",
+    "webpack-sources": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
