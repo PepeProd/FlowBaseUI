@@ -3,7 +3,7 @@ import chemicals from './models/chemicals';
 import disposedChemicals from './models/disposedChemicals';
 
 import axios from 'axios';
-import api from '../util/api'
+import api from '../util/api';
 
 export default {
     state: {

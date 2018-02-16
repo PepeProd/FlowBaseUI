@@ -12,6 +12,8 @@
 import NavBar from './components/NavBar.vue';
 import LogInContainer from './components/LogInContainer.vue';
 import RegistrationContainer from './components/RegistrationContainer.vue';
+import axios from 'axios';
+import api from './util/api';
 export default {  
   name: 'app',
   components: {
@@ -35,10 +37,6 @@ export default {
       this.showRegistrationForm = state;
     },
     logIn: function(user) {
-      //mock api verification
-
-      user.email = "testemail"; //get email from api
-      user.notifications = "testnotifications"; //get notification status from api
       var isUserValid = false;
       this.$store.dispatch('setActiveUser', user)
       .then(response => { 
@@ -61,7 +59,22 @@ export default {
     },
     submitNewUser: function(e) {
       //mock api post to create new user
-      this.showRegistrationForm = false;
+      var wrapperUser = [];
+      wrapperUser.push(e);
+      this.axios.post(api.getBaseUrl() + '/Users/CreateUser/', wrapperUser)
+      .then(response => {
+        if (response.status == 201) {
+          this.showLogForm = true;   
+          this.showRegistrationForm = false;       
+        } else {
+          //handle showing an error here
+          this.showRegistrationForm = false;
+        }
+      })
+      .catch(error => {
+
+      });
+
     },
     handleLogOutButtonClicked: function() {
       this.logOut('/');
