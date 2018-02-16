@@ -36,15 +36,21 @@ export default {
     },
     logIn: function(user) {
       //mock api verification
+
       user.email = "testemail"; //get email from api
       user.notifications = "testnotifications"; //get notification status from api
-      if (user.username == "tester") {
-        this.isUserLoggedIn = true;
-        this.showLogForm = false;
-        this.$store.dispatch('setActiveUser', user)
-      } else {
-        this.logOut();
-      }
+      var isUserValid = false;
+      this.$store.dispatch('setActiveUser', user)
+      .then(response => { 
+        if (response) {
+          this.isUserLoggedIn = true;
+          this.showLogForm = false;
+        } else {
+          this.logOut();
+        }
+      })
+      
+      
     },
     logOut: function(e) {
       this.isUserLoggedIn = false;

@@ -48,8 +48,25 @@ export default {
         }
     },
     actions: {
-        setActiveUser({commit}, user) {
-            commit('SET_ACTIVEUSER', user)
+        async setActiveUser({commit}, user) {
+                user.email = "empty";
+                user.notifications = true;
+                return await axios.post(api.getBaseUrl() + '/Users/ValidateUser/', user)
+                .then(response => {
+                    if (response.status == 200) {
+                        user.email = response.data.email;
+                        user.notifications = response.data.notifications;
+                        commit('SET_ACTIVEUSER', user);
+                        return true;
+                    } else {
+                        commit('SET_ACTIVEUSER', {});
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    commit('SET_ACTIVEUSER', {});
+                    return false;
+                }); 
         },
         setChemicals({commit}) {
             axios.get(api.getBaseUrl() + '/chemicals')
