@@ -77,7 +77,6 @@
             disposeChemicals: function() {
                 this.$store.dispatch('deleteChemicalByBarcodes',this.barcodesList)
                 for(var i=0; i<this.barcodesList.length; i++) {
-                    //alert(this.barcodesList[i].toString());
                     this.barcodesRaw = this.barcodesRaw.replace(this.barcodesList[i].toString(), '');
                 }
                 this.barcodesList = [];
