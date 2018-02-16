@@ -126,7 +126,11 @@
                         this.location = '';
                         this.quantity = 1;
                     } 
-                } ).then(() => {
+                } )
+                .catch(function(error) {
+
+                })
+                .then(() => {
                     if (formSubmitted) {
                         this.$validator.reset();
                         return;
