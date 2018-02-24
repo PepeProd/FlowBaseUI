@@ -14,7 +14,7 @@
             <label class="errorMessage" v-show="errors.has('Common Name')">{{errors.first('Common Name')}}</label>
             <div>
                 <label>Quantity</label>
-                <input type="text" v-model="quantity" name="Quantity" v-validate="{required: true, numeric: true, min_value: 1}"  :class="{'error': errors.has('Quantity')}"/>
+                <input type="text" v-model="quantity" name="Quantity" v-validate="{required: true, numeric: true, min_value: 1, max_value: 99}"  :class="{'error': errors.has('Quantity')}"/>
             </div>
             <label class="errorMessage" v-show="errors.has('Quantity')">{{errors.first('Quantity')}}</label>
             <div>
@@ -105,12 +105,15 @@
                             location: this.location
                         };
                         var arr = [];
-                        arr.push(chemical);
+                        for (var i=0; i < this.quantity; i++) {
+                            arr.push(chemical);
+                        }
                         //e.target.submit(); use this to programmatically submit form
                         //this.$refs.newChemicalForm.submit();
-                        for (var i=1; i<=this.quantity; i++) {
-                            this.$store.dispatch('addNewChemical', arr);
-                        }
+                        /*async () => {for (var i=1; i<=this.quantity; i++) {
+                            await this.$store.dispatch('addNewChemical', arr);
+                        }}*/
+                        this.$store.dispatch('addNewChemical', arr);
                         formSubmitted = true;
                         alert("Successfully Added " + this.chemName)
                         this.chemName = '';

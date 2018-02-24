@@ -109,7 +109,7 @@ export default {
             })
         },
         addNewChemical({commit}, newChemical) {
-            axios.post(api.getBaseUrl() + '/chemicals', newChemical)
+            axios.post(api.getBaseUrl() + '/chemicals/CreateChemicals', newChemical)
             .then(response => {
                 //do something
             })
