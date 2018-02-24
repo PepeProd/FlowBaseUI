@@ -14,7 +14,7 @@
             <label class="errorMessage" v-show="errors.has('Common Name')">{{errors.first('Common Name')}}</label>
             <div>
                 <label>Quantity</label>
-                <input type="text" v-model="quantity" name="Quantity" v-validate="{required: true, numeric: true, min_value: 1}"  :class="{'error': errors.has('Quantity')}"/>
+                <input type="text" v-model="quantity" name="Quantity" v-validate="{required: true, numeric: true, min_value: 1, max_value: 99}"  :class="{'error': errors.has('Quantity')}"/>
             </div>
             <label class="errorMessage" v-show="errors.has('Quantity')">{{errors.first('Quantity')}}</label>
             <div>
