@@ -108,9 +108,10 @@
                         arr.push(chemical);
                         //e.target.submit(); use this to programmatically submit form
                         //this.$refs.newChemicalForm.submit();
-                        for (var i=1; i<=this.quantity; i++) {
-                            this.$store.dispatch('addNewChemical', arr);
-                        }
+                        /*async () => {for (var i=1; i<=this.quantity; i++) {
+                            await this.$store.dispatch('addNewChemical', arr);
+                        }}*/
+                        this.asyncStoreCall(arr, this.quantity);
                         formSubmitted = true;
                         alert("Successfully Added " + this.chemName)
                         this.chemName = '';
@@ -143,6 +144,11 @@
 
                 });
             },
+            asyncStoreCall: async function(chem, count) {
+                for (var i=1; i<=count; i++) {
+                    await this.$store.dispatch('addNewChemical', chem);
+                }
+            }
         },
         computed: {
             locations: function() {
