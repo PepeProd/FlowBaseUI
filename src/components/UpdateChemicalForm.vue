@@ -40,6 +40,7 @@
         height:100%;
     }
     .formWrapper {
+        border-top: 20px solid #00A6FF;  
         display: flex;
         position:absolute;
         flex-direction:column;
@@ -49,7 +50,7 @@
         margin-bottom: auto;
         margin-right: auto;
         padding: 10px 30px;
-        background-color: black;
+        background-color: rgb(56, 56, 56);
         width: 350px;
         height: 500px;
         top:0;
@@ -71,6 +72,7 @@
         padding: 0;
         margin: 0;
         margin-bottom: 15px;
+        color: #00A6FF;
     }
     .formBtn {
         margin-top: 5px;

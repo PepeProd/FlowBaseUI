@@ -31,7 +31,7 @@
                             <label class="listBarcode">Barcode: {{chem["barcode"]}}</label>
                         </div>
                         <div>
-                            <label class="listExpire">Expired On: {{chem["expiration_date"]}}</label>
+                            <label class="listExpire">Expires On: {{chem["expiration_date"]}}</label>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                 var expiringSoonChemicals = [];
 
                 for (var item, i=0; item=items[i++];) {
-                    if (this.compareSoonExpiration(item["expiration_date"])) {
+                    if (this.compareSoonExpiration(item["expiration_date"]) || this.compare1DayToExpiration(item["expiration_date"])) {
                         expiringSoonChemicals.push(item);
                     }                    
                 } 
