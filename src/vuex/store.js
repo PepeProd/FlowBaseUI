@@ -7,7 +7,7 @@ import api from '../util/api';
 
 export default {
     state: {
-        activeUser: {},
+        activeUser: { username: '', email: '', notfications: ''},
         chemicals: [],
         disposedChemicals: []
     },

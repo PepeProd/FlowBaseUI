@@ -20,10 +20,13 @@
       </template>
       <template slot="tableRows" scope="row" >
           <tr class="backgroundHoverColor" :class="{expired: compareExpired(row['expiration_date']),expiring : compare1DayToExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
-              <td v-for="col in columns">{{row[col]}}</td>
+              <!-- recreate as custom TD -->
+              <!--<td  v-for="(col, index) in columns">{{row[col]}} <span v-show="(index == 1 && isUserLoggedIn == true)" >Edit</span></td>-->
+              <td  v-for="(col, index) in columns"><InnerTableDetail @showUpdateChemForm="ShowUpdateForm(row)" :index="index" :displayOnIndex="1" :isUserLoggedIn="isUserLoggedIn" :detail="row[col]"></InnerTableDetail></td>
           </tr>
       </template>
     </DynamicTable>
+    <UpdateChemicalForm v-show="this.showForm" :chemical="this.chemicalToUpdate" @closeChemUpdateForm="closeUpdateForm"></UpdateChemicalForm>
   </div>
 </template>
 
@@ -31,6 +34,8 @@
 import DynamicTable from '../components/DynamicTable.vue';
 import TableSearcher from '../components/TableSearcher.vue';
 import {dateComparison} from '../mixins/dateComparison.js';
+import InnerTableDetail from '../components/InnerTableDetail.vue';
+import UpdateChemicalForm from '../components/UpdateChemicalForm.vue';
 export default {
   name: 'Details',
   props: {
@@ -42,18 +47,29 @@ export default {
   mixins: [dateComparison],
   data () {
     return {
-      dynamicTableDataSource: [], //need to decide if this should be part of the store or just local placeholder variable      
+      dynamicTableDataSource: [], //need to decide if this should be part of the store or just local placeholder variable
+      showByIndex: 1,
+      chemicalToUpdate: {},
+      showForm: false
     }
   },
   components: {
     DynamicTable,
-    TableSearcher
+    TableSearcher,
+    InnerTableDetail,
+    UpdateChemicalForm
   },
   methods: {
     handleSubmitClicked: function(filteredData) {
       this.dynamicTableDataSource = filteredData;
     },
-
+    ShowUpdateForm: function(e) {
+      this.chemicalToUpdate = e;
+      this.showForm = true;
+    },
+    closeUpdateForm: function() {
+      this.showForm = false;
+    }
   },
   computed: {
     
@@ -63,6 +79,14 @@ export default {
     columns: function() {
       return (Object.keys(this.chemData[0] || []))
     },
+    isUserLoggedIn: function() {
+      var user = this.$store.getters.activeUser;
+      //if (user != null) {
+        if (typeof user.username != 'undefined' && user.username != '')
+          return true;
+      //}
+      return false;
+    }
   },
   mounted: function() {
     //api call here to get data
@@ -72,6 +96,12 @@ export default {
 </script>
 
 <style scoped>
+.active {
+  display: none;
+}
+.active:hover {
+  display: block;
+}
 .searcherSpacing {
   margin-bottom: 10px;
 }
