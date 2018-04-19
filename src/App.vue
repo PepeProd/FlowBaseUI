@@ -114,7 +114,7 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
   display: flex;
-  flex-flow: column
+  flex-flow: column;
 }
 .navOffset {
   margin-top: 40px;
@@ -131,5 +131,12 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
   transition: opacity .5s ease;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  background-color: #999999;
 }
 </style>

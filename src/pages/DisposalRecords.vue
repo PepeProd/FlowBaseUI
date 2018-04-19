@@ -1,9 +1,15 @@
 <template>
   <div>
-    <img style="width: 10%;" src="../assets/Logo_1.png" />
-    <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
-    <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
+    <!--<img style="width: 10%;" src="../assets/Logo_1.png" />-->
+    <h2>Disposal Records</h2>
+    <div v-if="this.chemData.length > 0">
+      <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
+      <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
     </DynamicTable>
+    </div>
+    <div v-else>
+      <h3>There are no records of any chemicals being disposed!</h3>
+    </div>
   </div>
 </template>
 

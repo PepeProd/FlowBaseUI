@@ -44,6 +44,19 @@ export default {
             }
         },
         SET_DISPOSED(state, disposedChemicals) {
+            for (var i=0; i < disposedChemicals.length; i++) {
+                if (disposedChemicals[i].hasOwnProperty('expiration_date')) {
+                    var stringLongExpirationDate = new Date(disposedChemicals[i].expiration_date);
+                    var stringShortExpirationDate =  (stringLongExpirationDate.getMonth()+1) + "/" + stringLongExpirationDate.getDate() + "/" + stringLongExpirationDate.getFullYear();
+                    disposedChemicals[i].expiration_date = stringShortExpirationDate;
+                }
+
+                if (disposedChemicals[i].hasOwnProperty('receive_date')) {
+                    var stringLongReceivedDate = new Date(disposedChemicals[i].receive_date);
+                    var stringShortExpirationDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                    disposedChemicals[i].receive_date = stringShortExpirationDate;
+                }
+            }
             state.disposedChemicals = disposedChemicals;
         }
     },

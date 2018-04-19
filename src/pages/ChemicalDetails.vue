@@ -1,6 +1,7 @@
 <template>
   <div>
-    <img style="width: 10%;" src="../assets/Logo_1.png" />
+    <!--<img style="width: 10%;" src="../assets/Logo_1.png" />-->
+    <h2>Details for {{this.chemData[0]["chemical_name"]}}</h2>
     <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
       <template slot="legend">
