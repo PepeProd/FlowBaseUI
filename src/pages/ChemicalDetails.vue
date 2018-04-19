@@ -2,8 +2,8 @@
   <div>
     <!--<img style="width: 10%;" src="../assets/Logo_1.png" />-->
     <h2>Details for {{this.chemData[0]["chemical_name"]}}</h2>
-    <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
-    <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
+    <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked" ></TableSearcher>    
+    <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]" :excludeColumns="getExcludedColumns">
       <template slot="legend">
         <div class="tableLegend">
           <div class="legendContainer">        
@@ -23,7 +23,7 @@
           <tr class="backgroundHoverColor" :class="{expired: compareExpired(row['expiration_date']),expiring : compare1DayToExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <!-- recreate as custom TD -->
               <!--<td  v-for="(col, index) in columns">{{row[col]}} <span v-show="(index == 1 && isUserLoggedIn == true)" >Edit</span></td>-->
-              <td  v-for="(col, index) in columns"><InnerTableDetail @showUpdateChemForm="ShowUpdateForm(row)" :index="index" :displayOnIndex="1" :isUserLoggedIn="isUserLoggedIn" :detail="row[col]"></InnerTableDetail></td>
+              <td  v-for="(col, index) in columns" v-if="!(getExcludedColumns.indexOf(col) > -1)"><InnerTableDetail @showUpdateChemForm="ShowUpdateForm(row)" :index="index" :displayOnIndex="1" :isUserLoggedIn="isUserLoggedIn" :detail="row[col]"></InnerTableDetail></td>
           </tr>
       </template>
     </DynamicTable>
@@ -70,7 +70,8 @@ export default {
     },
     closeUpdateForm: function() {
       this.showForm = false;
-    }
+    },
+    
   },
   computed: {
     
@@ -87,6 +88,10 @@ export default {
           return true;
       //}
       return false;
+    },
+    getExcludedColumns: function() {
+      var arr = new Array('id');
+      return arr;
     }
   },
   mounted: function() {

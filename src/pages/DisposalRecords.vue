@@ -4,7 +4,7 @@
     <h2>Disposal Records</h2>
     <div v-if="this.chemData.length > 0">
       <TableSearcher class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
-      <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]">
+      <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]" :excludeColumns="getExcludedColumns">
     </DynamicTable>
     </div>
     <div v-else>
@@ -43,6 +43,10 @@ export default {
     columns: function() {
       return (Object.keys(this.chemData[0] || []))
     },
+    getExcludedColumns: function() {
+      var arr = new Array('id');
+      return arr;
+    }
   },
   created: function() {
     this.$store.dispatch('setDisposedChemicals');

@@ -14,7 +14,7 @@
         <table>
             <thead>
                 <tr>
-                    <th v-for="col in columnNames" v-on:click="sortTable(col)">
+                    <th v-for="col in columnNames" v-if="!(excludeCol().indexOf(col) > -1)" v-on:click="sortTable(col)">
                         <div class="headerStyle" >
                             <div class="columnHeaderStyle">{{formatColumn(col)}}</div>
                             <div class="arrow" v-show="col == sortColumn" :class="[ascending ? 'arrow_up' : 'arrow_down']">
@@ -26,7 +26,7 @@
             <tbody>
                 <slot name="tableRows" v-for="row in get_rows()" v-bind="row">
                     <tr class="backgroundHoverColor">
-                        <td v-for="col in columnNames">{{row[col]}}</td>
+                        <td v-for="col in columnNames" v-if="!(excludeCol().indexOf(col) > -1)">{{row[col]}}</td>
                     </tr>
                 </slot>
             </tbody>
@@ -46,7 +46,7 @@
 <script>
     export default {
         name: 'DynamicTable',
-        props: ['rows', 'defaultSort', 'columnNames'],
+        props: ['rows', 'defaultSort', 'columnNames', 'excludeColumns'],
         data() {
             return {
             currentPage: 1,
@@ -82,6 +82,12 @@
                     }
                     return 0;
                 })
+            },
+            excludeCol: function() {
+                if (this.excludeColumns.length > 0)
+                    return this.excludeColumns;
+                else
+                    return [];
             },
             num_pages: function() {
                 return Math.ceil(this.rows.length / this.itemsPerPage);
