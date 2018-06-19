@@ -9,8 +9,23 @@
                 <input type="text" v-model="newUser.email" name="Email" v-validate="'required|email'"  :class="{'error': errors.has('Email')}"></input>
                 <label class="errorMessage" v-show="errors.has('Email')">{{errors.first('Email')}}</label>
                 <div class="flex-row">
-                    <input id="emailNotifications" type="checkbox" v-model="newUser.notifications"></input>
+                    <input id="emailNotifications" type="checkbox" v-model="newUser.notifications" @click="showFreq = !showFreq"></input>
                     <label class="lblEmail" for="emailNotifications">Email Notifications</label>
+                    
+                </div>
+                <div v-show="showFreq == true">
+                    <div>
+                        <input v-model="newUser.frequency" id="daily" type="radio" value="Daily" name="frequency"/>
+                        <label for="daily" >Daily</label>
+                    </div>
+                    <div>
+                        <input v-model="newUser.frequency" id="weekly" type="radio" value="Weekly" name="frequency" />
+                        <label for="weekly" >Weekly</label>
+                    </div>
+                    <div>
+                        <input v-model="newUser.frequency" id="monthly" type="radio" value="Monthly" name="frequency" />
+                        <label for="monthly" >Monthly</label>
+                    </div>
                 </div>
                 <label>Password</label>
                 <input  type="password" v-model="newUser.password" name="Password" v-validate="'required|min:5'"  :class="{'error': errors.has('Password')}"></input>
@@ -26,7 +41,8 @@
         props: [],
         data() {
             return {
-                newUser: {}
+                newUser: { frequency: 'Daily'},
+                showFreq: false
             }
         },
         methods: {
@@ -34,6 +50,8 @@
                 this.$emit('clickedOutside');
             },
             submitRegistrationForm: function(newUser) {
+                if (!this.showFreq) 
+                    this.showFreq = "";
                 this.$validator.validateAll().then( (result) => {
                     if (result) {
                         this.$emit('registrationSubmissionClicked', newUser);
@@ -161,7 +179,6 @@
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease; */
     }
-
     .error {
         border-color: red;
     }

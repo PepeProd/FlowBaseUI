@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label>Barcodes Not Found: {{this.barcodesNotFound}}</label></div>
+    <div v-if="this.$store.getters.chemicals.length > 0"> <!-- check if with no chemicals if this works" -->
+        <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label>Barcode(s) Not Found: {{this.barcodesNotFound}}</label></div>
         <div class="searchStyle">
             <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
             <textarea  @keydown.enter="getBarcodes()" class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
             <button  class="alignTop" v-on:click="getBarcodes()">Review Barcodes</button>
         </div>
-        <div>
+        <!--<div>
             <div class="chemicalPreviewContainer" v-for="chemical in getChemicalByProcessedBarcodes()">
                 <div class="chemicalPreview">
                     <label class="alignLabelToButton"  v-for="(propertyValue, key) in chemical"> {{capitalizeFirstLetter(key)}}: {{propertyValue}} </label>
@@ -15,12 +15,24 @@
                 </div>
             </div>
             <button v-show="showDisposeAllButton & this.barcodesList.length > 0" v-on:click="disposeChemicals">Dispose All</button>
-        </div>
+        </div>-->
+        <DynamicTable v-if="numBarcodes > 0" :rows="getChemicalByProcessedBarcodes()" :columnNames="column_Names" :defaultSort="column_Names[1]" :excludeColumns="getExcludedColumns()">
+            <template slot="tableRows" scope="row" >
+                <tr>
+                    <td  v-for="(col, index) in column_Names" v-if="!(getExcludedColumns().indexOf(col) > -1)">
+                        <div v-if="col == 'barcode'"><button v-on:click="removeChemicalFromPreviewByProcessedBarcode(row['barcode'])">X</button>{{row[col]}}</div>
+                        <span v-else>{{row[col]}}</span>
+                    </td>
+                </tr>
+            </template>
+        </DynamicTable>
+        <button v-show="showDisposeAllButton & this.barcodesList.length > 0" v-on:click="disposeChemicals">Dispose All</button>
     </div>
 </template>
 
 <script>
     import {stringUtil} from '../mixins/stringUtil';
+    import DynamicTable from '../components/DynamicTable.vue';
     export default {
         name: 'Dispose',
         data() {
@@ -28,11 +40,26 @@
                 barcodesRaw: '',
                 barcodesList: [],
                 showDisposeAllButton: false,
-                barcodesNotFound: ''
+                barcodesNotFound: '',
+                columns: []
             }
+        },
+        components: {
+            DynamicTable
         },
         mixins: [stringUtil],
         computed: {
+            column_Names: function() {
+                return Object.keys(this.$store.getters.chemicals[0])
+            },
+            numBarcodes: function() {
+                var count = this.barcodesList.length;
+
+                if (typeof count == "undefined")
+                    return 0;
+
+                return count;
+            }
         },
         methods: {
             //Transform raw string into array of barcodes
@@ -53,9 +80,9 @@
                 var result = []
                 for(var i=0; i<this.barcodesList.length; i++) {
                     var chemical = this.$store.getters.findChemicalByBarcode(this.barcodesList[i]);
-                    console.log(typeof chemical);
                     if (typeof chemical != "undefined") {
-                        result.push(chemical);
+                        if (result.indexOf(chemical) == -1)
+                            result.push(chemical);
                     }
                     else {
                         this.barcodesNotFound += this.barcodesList[i] + " ";
@@ -75,7 +102,16 @@
                 }                
             },
             disposeChemicals: function() {
-                this.$store.dispatch('deleteChemicalByBarcodes',this.barcodesList)
+                if (this.barcodesList.length == 1)
+                    this.$store.dispatch('deleteChemicalByBarcodes',this.barcodesList)
+                else {
+                    var barcodeArr = [];
+                    for (var i =0; i < this.barcodesList.length; i++) {
+                        barcodeArr.push({barcode: this.barcodesList[i]});
+                    }
+                    //var listBarcodeObj = {'barcodes': temp};
+                    this.$store.dispatch('deleteChemicalByList', barcodeArr);
+                }
                 for(var i=0; i<this.barcodesList.length; i++) {
                     this.barcodesRaw = this.barcodesRaw.replace(this.barcodesList[i].toString(), '');
                 }
@@ -84,7 +120,10 @@
                 this.barcodesRaw = this.barcodesRaw.replace(/^\n|\n$/g, '');
                 this.showDisposeAllButton = false;
             },
-            
+            getExcludedColumns: function() {
+                var arr = new Array('id');
+                return arr;
+            }
         },
     }
 </script>
@@ -98,9 +137,11 @@
     padding-top: 5px;
     padding-bottom: 5px;
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 .lblBarcodeTitle {
     font-weight: bold;
+    margin-top: 20px;
 }
 .chemicalPreviewContainer {
     box-sizing: border-box;

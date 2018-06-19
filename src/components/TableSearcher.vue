@@ -102,12 +102,13 @@
         color: #fff;
         background-color: #00A6FF;
         font-family: 'Roboto';
-        font-weight: 50;
         border: 1px solid rgb(56,56,56);
         transition-duration: 0.5s;
         -webkit-transition-duration: 0.5s;
         -moz-transition-duration: 0.5s;
         outline: none;
+        font-weight: bold;
+        font-size: 0.8em;
 
     }
       .btnSearch:hover {

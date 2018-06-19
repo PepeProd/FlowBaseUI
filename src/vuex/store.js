@@ -1,6 +1,8 @@
 import activeUser from './models/activeUser';
 import chemicals from './models/chemicals';
 import disposedChemicals from './models/disposedChemicals';
+import families from './models/families';
+import locations from './models/locations';
 
 import axios from 'axios';
 import api from '../util/api';
@@ -9,13 +11,50 @@ export default {
     state: {
         activeUser: { username: '', email: '', notfications: ''},
         chemicals: [],
-        disposedChemicals: []
+        disposedChemicals: [],
+        families: {},
+        locations: [],
+        tempZones: []
     },
     mutations: {
         SET_ACTIVEUSER(state, user) {
             state.activeUser.username = user.username;
             state.activeUser.email = user.email;
             state.notifications = user.notifications;
+        },
+        SET_FAMILY(state, families) {
+            state.families = families[0];
+        },
+        SET_FAMILY_FROM_UPDATE(state, families) {
+            state.families = families;
+        },
+        SET_LOCATIONS(state, locations) {
+            state.locations = locations;
+        },
+        ADD_SINGLE_LOCATION(state, location) {
+            state.locations.push(location[0]);
+        },
+        SET_TEMPZONES(state, tempZones) {
+            state.tempZones = tempZones;
+        },
+        ADD_SINGLE_TEMPZONE(state, tempZone) {
+            state.tempZones.push(tempZone[0]);
+        },
+        DELETE_LOCATION_BY_NAME(state, name) {
+            for(var j=0; j < state.locations.length; j++) {
+                if (state.locations[j].location.toString() === name ) {
+                    state.locations.splice(j, 1);
+                    break;
+                }
+            }
+        },
+        DELETE_TEMPZONE_BY_NAME(state, name) {
+            for(var j=0; j < state.tempZones.length; j++) {
+                if (state.tempZones[j]["storage_temperature"].toString() === name ) {
+                    state.tempZones.splice(j, 1);
+                    break;
+                }
+            }
         },
         SET_CHEMICALS(state, chemicals) {
             for (var i=0; i < chemicals.length; i++) {
@@ -27,11 +66,40 @@ export default {
 
                 if (chemicals[i].hasOwnProperty('receive_date')) {
                     var stringLongReceivedDate = new Date(chemicals[i].receive_date);
-                    var stringShortExpirationDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
-                    chemicals[i].receive_date = stringShortExpirationDate;
+                    var stringShortReceivedDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                    chemicals[i].receive_date = stringShortReceivedDate;
                 }
             }
             state.chemicals = chemicals;
+        },
+        UPDATE_CHEMICAL: function(state, updatedChemical) {
+            if (updatedChemical.hasOwnProperty('expiration_date')) {
+                var stringLongExpirationDate = new Date(updatedChemical.expiration_date);
+                var stringShortExpirationDate =  (stringLongExpirationDate.getMonth()+1) + "/" + stringLongExpirationDate.getDate() + "/" + stringLongExpirationDate.getFullYear();
+                updatedChemical.expiration_date = stringShortExpirationDate;
+            }
+
+            if (updatedChemical.hasOwnProperty('receive_date')) {
+                var stringLongReceivedDate = new Date(updatedChemical.receive_date);
+                var stringShortReceivedDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                updatedChemical.receive_date = stringShortReceivedDate;
+            }
+            var arr = state.chemicals;
+            var index = -1;
+            for(var i = 0; i < arr.length; i++) {
+                var barcodeFromAPI = updatedChemical.barcode;
+                var barcodeFromStore = arr[i]["barcode"];
+                if(barcodeFromAPI == barcodeFromStore) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index > -1) {
+                var newArr = state.chemicals;
+                newArr.splice(index, 1);
+                newArr.push(updatedChemical);
+                state.chemicals = newArr;
+            }
         },
         DELETE_CHEMICAL_BY_BARCODE(state, barcodes) {
             for(var i=0; i<barcodes.length; i++) {
@@ -53,8 +121,14 @@ export default {
 
                 if (disposedChemicals[i].hasOwnProperty('receive_date')) {
                     var stringLongReceivedDate = new Date(disposedChemicals[i].receive_date);
-                    var stringShortExpirationDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
-                    disposedChemicals[i].receive_date = stringShortExpirationDate;
+                    var stringShortReceivedDate =  (stringLongReceivedDate.getMonth()+1) + "/" + stringLongReceivedDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                    disposedChemicals[i].receive_date = stringShortReceivedDate;
+                }
+
+                if (disposedChemicals[i].hasOwnProperty('disposal_date')) {
+                    var stringLongDisposalDate = new Date(disposedChemicals[i].disposal_date);
+                    var stringShortDisposalDate =  (stringLongDisposalDate.getMonth()+1) + "/" + stringLongDisposalDate.getDate() + "/" + stringLongReceivedDate.getFullYear();
+                    disposedChemicals[i].disposal_date = stringShortDisposalDate;
                 }
             }
             state.disposedChemicals = disposedChemicals;
@@ -63,23 +137,53 @@ export default {
     actions: {
         async setActiveUser({commit}, user) {
                 user.email = "empty";
+                user.frequency = "never";
                 user.notifications = true;
-                return await axios.post(api.getBaseUrl() + '/Users/ValidateUser/', user)
-                .then(response => {
-                    if (response.status == 200) {
-                        user.email = response.data.email;
-                        user.notifications = response.data.notifications;
-                        commit('SET_ACTIVEUSER', user);
-                        return true;
-                    } else {
+                if (!user.hasOwnProperty('username'))
+                {
+                    commit('SET_ACTIVEUSER', {});
+                }
+                else
+                {
+                    return await axios.post(api.getBaseUrl() + '/Users/ValidateUser/', user)
+                    .then(response => {
+                        if (response.status == 200) {
+                            user.email = response.data.email;
+                            user.notifications = response.data.notifications;
+                            commit('SET_ACTIVEUSER', user);
+                            return true;
+                        } else {
+                            commit('SET_ACTIVEUSER', {});
+                            return false;
+                        }
+                    })
+                    .catch(error => {
                         commit('SET_ACTIVEUSER', {});
                         return false;
-                    }
-                })
-                .catch(error => {
-                    commit('SET_ACTIVEUSER', {});
+                    }); 
+                }
+        },
+        setFamily({commit}, chemFam) {
+             axios.post(api.getBaseUrl() + '/chemicals/family', chemFam)
+            .then(response => {
+                    commit('SET_FAMILY', response.data);
+            })
+            .catch(function(error) {
+            });
+        },
+        updateFamily({commit}, chemFam) {
+            return axios.post(api.getBaseUrl() + '/chemicals/family/update', chemFam)
+            .then(response => {
+                if (response.status == 200) {
+                    commit('SET_FAMILY_FROM_UPDATE', response.data);
+                    return true;                
+                } else {
                     return false;
-                }); 
+                }
+            })
+            .catch(function(error) {
+                return false;
+            })
         },
         setChemicals({commit}) {
             axios.get(api.getBaseUrl() + '/chemicals')
@@ -111,6 +215,16 @@ export default {
             commit('DELETE_CHEMICAL_BY_BARCODE', barcodes);
 
         },
+        deleteChemicalByList({commit}, barcodesList) {
+            axios.post(api.getBaseUrl() + '/chemicals/deleteBatch/', barcodesList)
+            .then(response => {
+
+            })
+            .catch(function(error) {
+
+            });
+            commit('DELETE_CHEMICAL_BY_BARCODE', barcodesList);
+        },
         setDisposedChemicals({commit}) {
             //remove comments when api call is implemented
             axios.get(api.getBaseUrl() + '/chemicals/disposed')
@@ -121,21 +235,117 @@ export default {
 
             })
         },
+        setMostRecentDisposedChemicals({commit}, topNumber) {
+            axios.get(api.getBaseUrl() + '/chemicals/disposed/top/' + topNumber)
+            .then(response => {
+                commit('SET_DISPOSED', response.data);
+            })
+            .catch(function(error) {
+
+            })
+        },
+        setDisposedChemicalsByDate({commit}, arrDate) {
+            axios.get(api.getBaseUrl() + '/chemicals/disposed/dates', {
+                params: {
+                    toDate: arrDate[0],
+                    fromDate: arrDate[1]
+                }
+            })
+            .then(response => {
+                commit('SET_DISPOSED', response.data);
+            })
+            .catch(function(error) {
+
+            })
+        },
         addNewChemical({commit}, newChemical) {
-            axios.post(api.getBaseUrl() + '/chemicals/CreateChemicals', newChemical)
+            return axios.post(api.getBaseUrl() + '/chemicals/CreateChemicals', newChemical)
             .then(response => {
                 //do something
+                return response.data;
             })
             .catch(function(error) {
                 //do something
             })
             
+        },
+        updateChemical({commit}, updatedChemical) {
+            axios.put(api.getBaseUrl() + '/chemicals/' + updatedChemical.id, updatedChemical)
+            .then(response => {
+                commit('UPDATE_CHEMICAL', response.data);
+            })
+            .catch(function(error) {
+
+            });
+        },
+        addLocation({commit}, newLoc) {
+            axios.post(api.getBaseUrl() + '/locations', newLoc)
+            .then(response => {
+                commit('ADD_SINGLE_LOCATION', response.data);
+            })
+            .catch(function(error) {
+                return false;
+            });
+        },
+        setLocations({commit}) {
+            axios.get(api.getBaseUrl() + '/locations')
+            .then(response => {
+                if (response.status == 200 ) {
+                    commit('SET_LOCATIONS', response.data);
+                }
+            })
+            .catch(function(error) {
+
+            });
+        },
+        deleteLocation({commit}, selectedLocation) {
+            return axios.post(api.getBaseUrl() + '/locations/delete', selectedLocation)
+            .then(response => {
+                commit('DELETE_LOCATION_BY_NAME', selectedLocation.location);
+                return true;
+            })
+            .catch(function(error) {
+                return {fail: error.response.data};
+            });
+        },
+        setTempZones({commit}) {
+            axios.get(api.getBaseUrl() + '/TempZones')
+            .then(response => {
+                if (response.status == 200 ) {
+                    commit('SET_TEMPZONES', response.data);
+                }
+            })
+            .catch(function(error) {
+
+            });
+        },
+        addTempZone({commit}, newTemp) {
+            axios.post(api.getBaseUrl() + '/TempZones', newTemp)
+            .then(response => {
+                commit('ADD_SINGLE_TEMPZONE', response.data);
+            })
+            .catch(function (error) {
+
+            });
+        },
+        deleteTempZone({commit}, selectedTemp) {
+            return axios.post(api.getBaseUrl() + '/TempZones/delete', selectedTemp)
+            .then(response => {
+                commit('DELETE_TEMPZONE_BY_NAME', selectedTemp["storage_temperature"]);
+                return true;
+            })
+            .catch(function(error) {
+                return {fail: error.response.data};
+            });
         }
     },
     getters: {
         activeUser: state => state.activeUser,
         chemicals: state => state.chemicals,
         disposedChemicals: state => state.disposedChemicals,
+        activeFamily: state => state.families,
+        locations: state => state.locations,
+        tempZones: state => state.tempZones,
         findChemicalByName: (state, getters) => (chemicalToFind) => {
             var items = getters.chemicals;
             var result = [];
@@ -156,6 +366,6 @@ export default {
                 return item;
               }
             }
-        }
+        },
     }
 }

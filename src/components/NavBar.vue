@@ -1,7 +1,7 @@
 <template>
 <div v-bind:class="{'modal-mask': (this.isFormActive)}">
     <nav >
-        <ul class="align"><li><span>FLOWBASE</span></li></ul>
+        <ul class="align"><li><span class="logoFormat">FLOWBASE</span></li></ul>
         <ul class="navLinks">
             <li><router-link to="/chemicals">Chemicals</router-link></li> <!-- find way to remove li and apply style to router-link -->
             <li v-if="this.isLoggedIn"><router-link to="/addChemical">Add Chemical</router-link></li>
@@ -115,5 +115,8 @@
         height: 100%;
         background-color: rgba(0, 0, 0, .5);
         transition: opacity .3s ease;
+    }
+    .logoFormat {
+        color: #56DBE8;
     }
 </style>

@@ -5,6 +5,7 @@ import ChemicalOverview from '@/pages/ChemicalOverview'
 import DisposalRecords from '@/pages/DisposalRecords'
 import Dispose from '@/pages/Dispose'
 import AddChemical from '@/pages/AddChemical'
+import SiteSettings from '@/pages/SiteSettings'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       name: 'AddChemical',
       path: '/addChemical',
       component: AddChemical
+    },
+    {
+      name: 'SiteSettings',
+      path: '/siteSettings',
+      component: SiteSettings
     }
   ]
 })

@@ -26,7 +26,7 @@
             <div v-show="this.displayExpiringSoon">
                 <div v-for="chem in getExpiringSoonChemicals">
                     <div style="margin-top: 10px; ">
-                        <label style="text-decoration: underline;" :class="{soonColor: compare1DayToExpiration(chem['expiration_date']), soon30Color: compareSoonExpiration(chem['expiration_date'])}">{{chem["chemical_name"]}}</label>
+                        <strong><label style="text-decoration: underline; font-size: 1.25em;" :class="{soonColor: compare1DayToExpiration(chem['expiration_date']), soon30Color: compareSoonExpiration(chem['expiration_date'])}">{{chem["chemical_name"]}}</label></strong>
                         <div> 
                             <label class="listBarcode">Barcode: {{chem["barcode"]}}</label>
                         </div>
@@ -129,13 +129,14 @@
     box-sizing: border-box;
 }
 .expired {
-    color: rgb(244, 66, 66);
+    color: #AA0D12;
+    /* CC414B  */
 }
 .soonColor {
-    color: #f7a416;
+    color: #F78B05;
 }
 .soon30Color {
-    color: #FFDC00;
+    color: #FFD41F;
 }
 .chemicalOverview {
     display: flex;
@@ -163,8 +164,6 @@
     width: 15px;
     cursor: pointer;
 }
-img {
-}
 
 .listBarcode, .listExpire{
     font-weight: normal;
@@ -176,6 +175,7 @@ img {
 .listTitle {
     font-size: 14pt;
     font-weight: 600;
+    color: black;
 }
 
 .spacingSmall {
@@ -200,4 +200,5 @@ img {
 .detailsContainer {
     font-size: 12px;
 }
+h1 {color: black;}
 </style>

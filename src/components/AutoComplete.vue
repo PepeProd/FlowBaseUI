@@ -1,7 +1,7 @@
 <template>
   <div class="autocomplete-input">
     <p class="">
-      <input v-model="keyword" type="text" class="input is-large" placeholder="Search..." @input="onInput($event.target.value)" @keyup.esc="closeDropDown()" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
+      <input v-model="keyword" type="text" class="input is-large" placeholder="Search For..." @input="onInput($event.target.value)" @keyup.esc="closeDropDown()" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
     </p>
     <ul v-show="isOpen" class="options-list">
       <li v-for="(option, index) in fOptions" :class="{

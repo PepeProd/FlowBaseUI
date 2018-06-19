@@ -44,9 +44,11 @@
 
 
 <script>
+    import {formatColumns} from '../mixins/formatColumns';
     export default {
         name: 'DynamicTable',
         props: ['rows', 'defaultSort', 'columnNames', 'excludeColumns'],
+        mixins: [formatColumns],
         data() {
             return {
             currentPage: 1,
@@ -107,9 +109,6 @@
             },
             getData: function(payload) {
                 this.rows = payload;
-            },
-            formatColumn: function(name) {
-                return name.toString().split('_').join(' ');
             },
 
         },
