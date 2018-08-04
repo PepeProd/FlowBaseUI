@@ -1,6 +1,7 @@
 <template>
     <div class="modal" @click="clickedOutside">
-        <form style="background-color: rgb(56,56,56)" @keyup.enter="submitLogIn(user)" @submit.prevent="submitLogIn(user)" class="modal-container" @click.stop>
+        <!-- keyup.enter and submit,prevent cause double ajax call @keyup.enter="submitLogIn(user)" -->
+        <form style="background-color: rgb(56,56,56)" @submit.prevent="submitLogIn(user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
             <input type="text" v-model="user.username" name="User Name" v-validate="'required|min:5'"  :class="{'error': errors.has('User Name')}"></input>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LogInContainer @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @showRegisterClicked="handleShowRegisterClicked"></LogInContainer>
-    <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationSubmissionClicked="handleRegistrationSubmissionClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
+    <LogInContainer :class="{'failedLogin': this.loginFailed}" @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @showRegisterClicked="handleShowRegisterClicked"></LogInContainer>
+    <RegistrationContainer :class="{'failedLogin': this.registrationFailed}" @clickedOutside="handleClickOutside_Register"  @registrationSubmissionClicked="handleRegistrationSubmissionClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
@@ -26,7 +26,8 @@ export default {
       isUserLoggedIn: false,
       showLogForm: false,
       showRegistrationForm: false,
-  
+      loginFailed: false,
+      registrationFailed: false
     }
   },
   methods: {
@@ -44,7 +45,10 @@ export default {
           this.isUserLoggedIn = true;
           this.showLogForm = false;
         } else {
+          //alert('Login Failed');
+          this.loginFailed = true;
           this.logOut();
+          setTimeout(()=>{ this.loginFailed = false; }, 501);
         }
       })
       
@@ -68,11 +72,14 @@ export default {
           this.showRegistrationForm = false;       
         } else {
           //handle showing an error here
+          this.registrationFailed = true;
+          setTimeout(()=>{ this.registrationFailed = false; }, 501);
           this.showRegistrationForm = false;
         }
       })
       .catch(error => {
-
+          this.registrationFailed = true;
+          setTimeout(()=>{ this.registrationFailed = false; }, 501);
       });
 
     },
@@ -114,7 +121,7 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
   display: flex;
-  flex-flow: column
+  flex-flow: column;
 }
 .navOffset {
   margin-top: 40px;
@@ -131,5 +138,33 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
   transition: opacity .5s ease;
+}
+html {
+  height: 100%;
+}
+body {
+  /*min-height: 100%; not sure why this was included, change if needed */
+  background-color: #AAB9BA;
+
+}
+.failedLogin {
+   /* Start the shake animation and make the animation last for 0.5 seconds */
+    animation: shake 0.5s; 
+    /* When the animation is finished, start again */
+    animation-iteration-count: 1; 
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 </style>

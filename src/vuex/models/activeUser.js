@@ -13,7 +13,8 @@ const state = {
     activeUser : {
         username: '',
         email: '',
-        notifications: false
+        notifications: false,
+        frequency: ''
     }
 };
 
