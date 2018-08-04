@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <LogInContainer :class="{'failedLogin': this.loginFailed}" @clickedOutside="handleClickOutside_Login" class='formOffset' v-if="this.showLogForm" @SubmitLog="logIn" @showRegisterClicked="handleShowRegisterClicked"></LogInContainer>
-    <RegistrationContainer @clickedOutside="handleClickOutside_Register"  @registrationSubmissionClicked="handleRegistrationSubmissionClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
+    <RegistrationContainer :class="{'failedLogin': this.registrationFailed}" @clickedOutside="handleClickOutside_Register"  @registrationSubmissionClicked="handleRegistrationSubmissionClicked" v-if="this.showRegistrationForm" class="formOffset"></RegistrationContainer>
     <NavBar :class="{'modal-mask': showRegistrationForm}" :isLoggedIn="isUserLoggedIn" :isFormActive="this.showLogForm" @loginButtonClicked="handleLogInButtonClicked" @logOutClicked="handleLogOutButtonClicked"></NavBar>
     <router-view class='navOffset'>
     </router-view>
@@ -27,6 +27,7 @@ export default {
       showLogForm: false,
       showRegistrationForm: false,
       loginFailed: false,
+      registrationFailed: false
     }
   },
   methods: {
@@ -71,11 +72,14 @@ export default {
           this.showRegistrationForm = false;       
         } else {
           //handle showing an error here
+          this.registrationFailed = true;
+          setTimeout(()=>{ this.registrationFailed = false; }, 501);
           this.showRegistrationForm = false;
         }
       })
       .catch(error => {
-
+          this.registrationFailed = true;
+          setTimeout(()=>{ this.registrationFailed = false; }, 501);
       });
 
     },

@@ -14,7 +14,7 @@
           <AlertMessage @submitClose="handleClose" v-if="this.displayUpdate"  :messageText="this.updateText"></AlertMessage>
       </div>
     </div>
-    <TableSearcher  class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked" ></TableSearcher>    
+    <TableSearcher :exceptionToAutoComplete="['storage_temperature']" class="searcherSpacing" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked" ></TableSearcher>    
     <DynamicTable :rows="this.dynamicTableDataSource" v-if="this.dynamicTableDataSource.length > 0" :columnNames="columns" :defaultSort="columns[0]" :excludeColumns="getExcludedColumns">
       <template slot="legend">
         <div class="tableLegend">
@@ -35,7 +35,7 @@
           <tr class="backgroundHoverColor" :class="{expired: compareExpired(row['expiration_date']),expiring : compare1DayToExpiration(row['expiration_date']), soonToExpire : compareSoonExpiration(row['expiration_date']), notExpiring : compareNotExpiring(row['expiration_date'])}">
               <!-- recreate as custom TD -->
               <!--<td  v-for="(col, index) in columns">{{row[col]}} <span v-show="(index == 1 && isUserLoggedIn == true)" >Edit</span></td>-->
-              <td  v-for="(col, index) in columns" v-if="!(getExcludedColumns.indexOf(col) > -1)"><InnerTableDetail @showUpdateChemForm="ShowUpdateForm(row)" :index="index" :displayOnIndex="0" :isUserLoggedIn="isUserLoggedIn" :detail="row[col]"></InnerTableDetail></td>
+              <td  v-for="(col, index) in columns" v-if="!(getExcludedColumns.indexOf(col) > -1)"><InnerTableDetail @showUpdateChemForm="ShowUpdateForm(row)" :index="index" :displayOnIndex="0"  :detail="row[col]"></InnerTableDetail></td>
           </tr>
       </template>
     </DynamicTable>
@@ -43,7 +43,7 @@
       <!-- Make better implementation for this scenario -->
       <span>No data for {{this.chemName}}</span>
     </div>
-    <UpdateChemicalForm v-if="this.showForm" :chemical="this.chemicalToUpdate" @closeChemUpdateForm="closeUpdateForm" @saveUpdate="handleChemUpdate"></UpdateChemicalForm>
+    <UpdateChemicalForm v-if="this.showForm" :loggedIn="isUserLoggedIn" :chemical="this.chemicalToUpdate" @closeChemUpdateForm="closeUpdateForm" @saveUpdate="handleChemUpdate"></UpdateChemicalForm>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ import {dateComparison} from '../mixins/dateComparison.js';
 import InnerTableDetail from '../components/InnerTableDetail.vue';
 import UpdateChemicalForm from '../components/UpdateChemicalForm.vue';
 import AlertMessage from '../components/AlertMessage.vue';
+
 export default {
   name: 'Details',
   props: {
@@ -72,7 +73,7 @@ export default {
       chemFamily: {},
       firstLoad: true,
       displayUpdate: false,
-      updateText: ""
+      updateText: "",
     }
   },
   components: {

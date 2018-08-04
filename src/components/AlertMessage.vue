@@ -1,8 +1,10 @@
 <template>
     <div class="alertWrapper">
-        <label class="leadingText">{{messageText}}</label>
-        <label class="formattedResponse" v-for="item in inputData">{{item}} </label>
-        <button type="button" class="btnOK" @click="closeMessage()">OK</button>
+            <label class="leadingText">{{messageText}}</label>
+            <div class="data">
+                <label class="formattedResponse" v-for="item in inputData">{{item}} </label>
+                <div style="margin-bottom: 20px; margin-top: 20px;"><button type="button" class="btnOK" @click="closeMessage()">OK</button></div>
+            </div>
     </div>
 
 </template>
@@ -38,17 +40,22 @@
         align-items: center;
         justify-content:center;
         margin-left: auto;
-        margin-top: 200px;
+        margin-top: 50px; /*was 200px */
         margin-bottom: auto;
         margin-right: auto;
         padding: 10px 30px;
         background-color: rgb(56, 56, 56);
         width: 250px;
+        max-height: 750px;
         top:0;
         left:0;
         right: 0;
         bottom: 0;
         overflow-y:auto;
+    }
+    .data {
+        display: flex;
+        flex-direction: column;
     }
     .formattedResponse {
         color: white;

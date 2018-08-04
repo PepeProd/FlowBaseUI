@@ -4,10 +4,10 @@
             <option disabled hidden value="">Search In</option>
             <option v-for="col in columnNames" v-bind:value="col">{{formatColumn(col)}}</option>
         </select>
-        <AutoComplete @optionClicked="handleOptionClicked"  :options="getAutoCompleteData(rows, searchBy)" @keywordChanged="updateSearchTerm">
+        <AutoComplete @optionClicked="handleOptionClicked" :minimumAutoLength="this.exceptionToAutoComplete.includes(searchBy) ? 0 : 3" :placeholderText="'Search For...'" :options="getAutoCompleteData(rows, searchBy)" @keywordChanged="updateSearchTerm">
             <template slot="item" scope="option">
                 <p>
-                    <strong >{{ option.searchSuggestion }}</strong>
+                    <strong class="dont-break-out">{{ option.searchSuggestion }}</strong>
                 </p>
             </template>
         </AutoComplete>
@@ -20,7 +20,7 @@
     import {formatColumns} from '../mixins/formatColumns';
     export default {
         name: 'TableSearcher',
-        props: ['rows', 'columnNames'],
+        props: ['rows', 'columnNames', 'exceptionToAutoComplete'],
         components: {
             AutoComplete
         },
@@ -126,5 +126,24 @@
 
     input[type=text] {
         padding-left: 5px;        
+    }
+    .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
     }
 </style>

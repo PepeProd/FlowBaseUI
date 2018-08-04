@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-on:mouseenter="toggleState()" v-on:mouseleave="toggleState()">{{detail}} <a class="link" v-on:click="$emit('showUpdateChemForm')" :class="[this.visibilityState ? '' : 'hidden']" v-show="(displayOnIndex == index && isUserLoggedIn == true)" >Edit</a></div>
+        <div v-on:mouseenter="toggleState()" v-on:mouseleave="toggleState()">{{detail}} <a class="link" v-on:click="$emit('showUpdateChemForm')" :class="[this.visibilityState ? '' : 'hidden']" v-show="(displayOnIndex == index)" >Edit</a></div>
     </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
       }
   },
   props: {
-      isUserLoggedIn: false,
+      //isUserLoggedIn: false,
       displayOnIndex: 0,
       index: 0,
       detail: {}

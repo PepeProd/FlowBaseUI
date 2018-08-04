@@ -20,9 +20,11 @@
                     </div>
                     <div v-show="this.displayTempErrorBarcodes == true">
                         <label>The following chemicals prevent deletion of the selected item</label>
-                        <li  v-for="chemical in this.tempError"> 
-                            {{chemical['chemical_name']}} (Barcode: {{chemical.barcode}})
-                        </li>
+                        <div class="chemicalsPrevent">
+                            <div  v-for="chemical in this.tempError"> 
+                                <div class="card"><div class="cardInner dont-break-out">{{chemical['chemical_name']}} (Barcode: {{chemical.barcode}})</div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,9 +46,12 @@
                     </div>
                     <div v-if="displayLocErrorBarcodes == true">
                         <label>The following chemicals prevent deletion of the selected item</label>
-                        <li  v-for="chemical in this.locError"> 
-                            {{chemical['chemical_name']}} (Barcode: {{chemical.barcode}})
-                        </li>
+                        <div class="chemicalsPrevent">
+                            <div  v-for="chemical in this.locError"> 
+                                <div class="card"><div class="cardInner dont-break-out">{{chemical['chemical_name']}} <div>(Barcode: {{chemical.barcode}})</div></div></div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -143,7 +148,6 @@
                 }
                 this.$store.dispatch('deleteTempZone', dtoTemp)
                 .then(response => {
-                    console.log(response.hasOwnProperty('fail'))
                     if (response.hasOwnProperty('fail')) {
                         this.hasErrorTemp = true;
                         this.tempError = response.fail;
@@ -232,5 +236,55 @@
     }
     .bottomHalf {
         margin-top: 5px;
+    }
+    .chemicalsPrevent {
+        display: flex;
+        flex-flow: row wrap;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .card {
+        height: 150px;
+        width: 175px;
+        min-width: 150px;
+        border: 3px solid #4CB6DE;
+        background-color: #4CB6DE;
+        margin: 10px 10px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        border-radius: 10px;
+        box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+    }
+    .card:hover {
+        opacity: 0.5;
+    }
+    .cardInner {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
     }
 </style>

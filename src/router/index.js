@@ -6,6 +6,7 @@ import DisposalRecords from '@/pages/DisposalRecords'
 import Dispose from '@/pages/Dispose'
 import AddChemical from '@/pages/AddChemical'
 import SiteSettings from '@/pages/SiteSettings'
+import MyAccount from '@/pages/MyAccount'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       name: 'SiteSettings',
       path: '/siteSettings',
       component: SiteSettings
+    },
+    {
+      name: 'MyAccount',
+      path: '/myAccount',
+      component: MyAccount
     }
   ]
 })

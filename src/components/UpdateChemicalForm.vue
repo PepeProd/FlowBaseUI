@@ -7,7 +7,7 @@
                 <div class="inlineForm" >
                     <label class="inlineColumnLabel" v-if="(excludeCol().indexOf('id') > -1) && (key != 'id')" :class="{'errorMessage': errors.has(key)}">{{formatColumn(key).toUpperCase()}}</label>
                     <div  v-if="!(excludeCol().indexOf(key) > -1) && !(dropDownTemp(key)) && !(dropDownLocation(key)) && (key != 'project_code')">
-                        <input class="inlineData" :name="key" :data-vv-as="formatColumn(key)" v-validate="{required: true}" data-vv-validate-on="blur" :class="{'error': errors.has(key)}" :ref="key" type="text" :placeholder="propertyValue"/>
+                        <input :disabled="!loggedIn" class="inlineData" :name="key" :data-vv-as="formatColumn(key)" v-validate="{required: true}" data-vv-validate-on="blur" :class="{'error': errors.has(key)}" :ref="key" type="text" :placeholder="propertyValue"/>
                     </div>
                     <div  v-else-if="!(excludeCol().indexOf(key) > -1) && !(dropDownTemp(key)) && !(dropDownLocation(key))">
                         <input class="inlineData" :name="key" :data-vv-as="formatColumn(key)" :ref="key" type="text" :placeholder="propertyValue"/>
@@ -21,8 +21,10 @@
                     <label class="inlineData" v-else-if="key != 'id'">{{propertyValue}}</label>
                 </div>
             </div>
-            <button class="formBtn" v-on:click="updateChem(chemical)">Save</button>
-            <button  class="formBtn" v-on:click="$emit('closeChemUpdateForm')">Cancel</button>
+            <div class="buttonContainer">
+                <button class="formBtn" v-on:click="updateChem(chemical)">Save</button>
+                <button  class="formBtn" v-on:click="$emit('closeChemUpdateForm')">Cancel</button>
+            </div>
         </div>
     </div>
 </template>
@@ -40,6 +42,7 @@
         },
         props: {
             chemical: {},
+            loggedIn: false
         },
         methods: {
             updateChem: function(e) {
@@ -209,5 +212,8 @@
     .errorMessage {
         color: red;
         width: 100%
+    }
+    .buttonContainer {
+        margin-top: 15px;
     }
 </style>

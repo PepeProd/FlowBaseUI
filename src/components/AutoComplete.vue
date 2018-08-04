@@ -1,7 +1,7 @@
 <template>
   <div class="autocomplete-input">
     <p class="">
-      <input v-model="keyword" type="text" class="input is-large" placeholder="Search For..." @input="onInput($event.target.value)" @keyup.esc="closeDropDown()" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
+      <input v-model="keyword" v-bind:value="value" v-on:input="$emit('input', $event.target.value)" type="text" class="input is-large" :placeholder="this.placeholderText" @input="onInput($event.target.value)" @keyup.esc="closeDropDown()" @blur="isOpen = false" @keydown.down="moveDown" @keydown.up="moveUp" @keydown.enter="select">
     </p>
     <ul v-show="isOpen" class="options-list">
       <li v-for="(option, index) in fOptions" :class="{
@@ -22,6 +22,9 @@ export default {
             type: Array,
             required: true
         },
+        placeholderText: '',
+        value: '',
+        minimumAutoLength: 0
     },
     data() {
         return {
@@ -46,13 +49,18 @@ export default {
         return result;   
       },
       fOptions() {
-            const re = new RegExp(this.keyword, 'i')
-            var results = this.optionsWithNoDuplicates.filter(o => o['key'].match(re));
-            if (results.length == 0) {
+            if (this.keyword.length > this.minimumAutoLength) {
+                const re = new RegExp(this.keyword, 'i')
+                var results = this.optionsWithNoDuplicates.filter(o => o['key'].match(re));
+                if (results.length == 0) {
+                    this.isOpen = false;
+                    this.$emit('optionClicked', true)
+                }
+                return results;
+            } else {
                 this.isOpen = false;
-                this.$emit('optionClicked', true)
+                return;
             }
-            return results;
       },
       
     },
@@ -92,6 +100,7 @@ export default {
     watch: {
         keyword: function(val, oldVal) {
             this.$emit('keywordChanged', val);
+            this.$emit('input', val);
         }
     },
 }

@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.$store.getters.chemicals.length > 0"> <!-- check if with no chemicals if this works" -->
-        <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label>Barcode(s) Not Found: {{this.barcodesNotFound}}</label></div>
+        <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label class="errorMsg"><strong>Barcode(s) Not Found: {{this.barcodesNotFound}}</strong></label></div>
         <div class="searchStyle">
             <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
             <!--<input v-model="barcodesRaw" type="text" />-->
@@ -73,6 +73,7 @@
                 }
                 else {
                     //error handling to alert user that no barcodes entered
+                    this.barcodesNotFound = '';
                 }
             },
             //get array of chemicals based off of barcodes
@@ -199,5 +200,8 @@ button:hover {
 }
 .textArea {
     resize: none;
+}
+.errorMsg {
+    color: white;
 }
 </style>

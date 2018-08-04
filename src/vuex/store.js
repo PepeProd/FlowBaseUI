@@ -9,7 +9,7 @@ import api from '../util/api';
 
 export default {
     state: {
-        activeUser: { username: '', email: '', notfications: ''},
+        activeUser: { username: '', email: '', notifications: ''},
         chemicals: [],
         disposedChemicals: [],
         families: {},
@@ -20,7 +20,11 @@ export default {
         SET_ACTIVEUSER(state, user) {
             state.activeUser.username = user.username;
             state.activeUser.email = user.email;
-            state.notifications = user.notifications;
+            state.activeUser.notifications = user.notifications;
+            state.activeUser.frequency = user.frequency;
+        },
+        UPDATE_FREQUENCY_USER(state, user) {
+            state.activeUser.frequency = user.frequency;
         },
         SET_FAMILY(state, families) {
             state.families = families[0];
@@ -150,6 +154,7 @@ export default {
                         if (response.status == 200) {
                             user.email = response.data.email;
                             user.notifications = response.data.notifications;
+                            user.frequency = response.data.frequency;
                             commit('SET_ACTIVEUSER', user);
                             return true;
                         } else {
@@ -162,6 +167,45 @@ export default {
                         return false;
                     }); 
                 }
+        },
+        async updateFrequencyUser ({commit}, userArray) {
+            userArray.password = "hidden";
+            if (!userArray.hasOwnProperty('username'))
+            {
+                return false;
+            }
+            else
+            {
+                //userArray[0].frequency = userArray[1];
+                return await axios.post(api.getBaseUrl() + '/Users/UpdateUserEmailFrequency', userArray)
+                .then(response => {
+                    if (response.status == 200) {
+                        commit('UPDATE_FREQUENCY_USER', userArray);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    return false;
+                }); 
+            }
+        },
+        async updateUserPassword ({commit}, updateUserInfo) {
+            console.log(updateUserInfo);
+            return await axios.post(api.getBaseUrl() + '/Users/UpdateUserPassword', updateUserInfo)
+                .then(response => {
+                    if (response.status == 200) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    return false;
+                });
         },
         setFamily({commit}, chemFam) {
              axios.post(api.getBaseUrl() + '/chemicals/family', chemFam)
