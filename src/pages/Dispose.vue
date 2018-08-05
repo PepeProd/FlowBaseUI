@@ -1,11 +1,13 @@
 <template>
     <div v-if="this.$store.getters.chemicals.length > 0"> <!-- check if with no chemicals if this works" -->
         <div v-show="this.barcodesNotFound.trim().length > 0" class="bannerStyle"><label class="errorMsg"><strong>Barcode(s) Not Found: {{this.barcodesNotFound}}</strong></label></div>
-        <div class="searchStyle">
-            <label  class="alignTop lblBarcodeTitle">Enter Barcodes To Dispose</label>
-            <!--<input v-model="barcodesRaw" type="text" />-->
-            <textarea  @keydown.enter="getBarcodes()" class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
-            <button  class="alignTop" v-on:click="getBarcodes()">Review Barcodes</button>
+        <div class="card">
+            <div class="innerCard">
+                <h2  class="pageHeader">Enter Barcodes To Dispose</h2>
+                <!--<input v-model="barcodesRaw" type="text" />-->
+                <textarea ref="barcodeInput"  @keydown.enter="getBarcodes()" class="alignTop textArea" cols="13" rows="10"  v-model="barcodesRaw"></textarea>
+                <button  class="alignTop" v-on:click="getBarcodes()">Review Barcodes</button>
+            </div>
         </div>
         <!--<div>
             <div class="chemicalPreviewContainer" v-for="chemical in getChemicalByProcessedBarcodes()">
@@ -28,6 +30,9 @@
         </DynamicTable>
         <button v-show="showDisposeAllButton & this.barcodesList.length > 0" v-on:click="disposeChemicals">Dispose All</button>
     </div>
+    <div v-else>
+      <h3 class="card">There are no chemicals to be disposed!</h3>
+    </div>
 </template>
 
 <script>
@@ -48,6 +53,9 @@
             DynamicTable
         },
         mixins: [stringUtil],
+        mounted() {
+            if (this.$refs.length > 0) {this.$refs.barcodeInput.focus();}
+        },
         computed: {
             column_Names: function() {
                 return Object.keys(this.$store.getters.chemicals[0])
@@ -203,5 +211,20 @@ button:hover {
 }
 .errorMsg {
     color: white;
+}
+.card {
+    width: 450px;
+    height: 100%;
+    margin: auto;
+    background-color: rgb(56, 56, 56);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+}
+.innerCard {
+    margin: 20px;
+}
+.pageHeader {
+    padding-top: 25px;
 }
 </style>

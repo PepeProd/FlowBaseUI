@@ -89,8 +89,8 @@
                 </form>
             </div>
         </div>
-        <div v-else>
-            <label>You must be logged in to view this page</label>
+        <div v-else class="card">
+            <label >You must be logged in to view this page</label>
         </div>
     </div>
 </template>
