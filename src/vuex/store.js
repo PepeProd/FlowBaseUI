@@ -14,9 +14,24 @@ export default {
         disposedChemicals: [],
         families: {},
         locations: [],
-        tempZones: []
+        tempZones: [],
+        users: [],
+        whitelistEmails: []
     },
     mutations: {
+        SET_USERS(state, allUsers) {
+            state.users = allUsers;
+        },
+        SET_WHITELISTEMAILS(state, emailList) {
+            state.whitelistEmails = emailList;
+        },
+        REMOVE_USER(state, user) {
+            var userIndex = (state.users).indexOf(user);
+            state.users.splice(userIndex, 1);
+
+            if (state.activeUser.username == user.username && state.activeUser.email == user.email)
+                state.activeUser = {};
+        },
         SET_ACTIVEUSER(state, user) {
             state.activeUser.username = user.username;
             state.activeUser.email = user.email;
@@ -139,6 +154,69 @@ export default {
         }
     },
     actions: {
+        setWhiteListEmails({commit}) {
+            axios.get(api.getBaseUrl() + '/users/GetAllWhitelistEmails')
+            .then(response => {
+                commit('SET_WHITELISTEMAILS', response.data);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
+        async handleNewUserEmail({commit}, newEmail) {
+            return await axios.post(api.getBaseUrl() + '/users/NewWhitelist', newEmail)
+            .then(response => {
+                if (response.status == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return false;
+            });
+        },
+        async resendRegistrationCode({commit}, email) {
+            return await axios.post(api.getBaseUrl() + '/users/sendRegistrationCode', email)
+            .then(response => {
+                if (response) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return false;
+            });
+        },
+        async setUsers({commit}) {
+            return await axios.get(api.getBaseUrl() + '/users/')
+            .then(response => {
+                    commit('SET_USERS', response.data);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
+        async removeUser({commit}, user) {
+            return await axios.delete(api.getBaseUrl() + '/users/' + user.id)
+            .then(response => {
+                console.log(response);
+                if (response.status == 200) {
+                    commit('REMOVE_USER', response.data);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+                return false;
+            });
+        },
         async setActiveUser({commit}, user) {
                 user.email = "empty";
                 user.frequency = "never";
@@ -384,6 +462,8 @@ export default {
         }
     },
     getters: {
+        users: state => state.users,
+        whitelistEmails: state => state.whitelistEmails,
         activeUser: state => state.activeUser,
         chemicals: state => state.chemicals,
         disposedChemicals: state => state.disposedChemicals,

@@ -3,7 +3,7 @@
             <form @submit.prevent="submitRegistrationForm(newUser)" class="modal-container registrationForm" style="background-color: rgb(56,56,56)" @click.stop>
                 <span><strong>FlowBase Registration</strong></span>
                 <label>User Name</label>
-                <input type="text" v-model="newUser.username" name="User Name" v-validate="'required|min: 5'"  :class="{'error': errors.has('User Name')}"></input>
+                <input ref="usernameInput" type="text" v-model="newUser.username" name="User Name" v-validate="'required|min: 5'"  :class="{'error': errors.has('User Name')}"></input>
                 <label class="errorMessage" v-show="errors.has('User Name')">{{errors.first('User Name')}}</label>
                 <label>Email</label>
                 <input type="text" v-model="newUser.email" name="Email" v-validate="'required|email'"  :class="{'error': errors.has('Email')}"></input>
@@ -30,6 +30,9 @@
                 <label>Password</label>
                 <input  type="password" v-model="newUser.password" name="Password" v-validate="'required|min:5'"  :class="{'error': errors.has('Password')}"></input>
                 <label class="errorMessage" v-show="errors.has('Password')">{{errors.first('Password')}}</label>
+                <label>Registration Code</label>
+                <input type="text" v-model="newUser.registration_code" name="registrationCode" v-validate="'required'" :class="{'error': errors.has('registrationCode')}"></input> 
+                <label class="errorMessage" v-show="errors.has('registrationCode')">{{errors.first('registrationCode')}}</label>
                 <button class="btnRegister">Register</button>
             </form>
         </div>
@@ -64,6 +67,7 @@
             }
         },
         mounted: function () {
+            this.$refs.usernameInput.focus();
             document.addEventListener("keydown", (e) => {
                 if (e.keyCode == 27) {
                     this.$emit('clickedOutside');

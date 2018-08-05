@@ -3,22 +3,20 @@
     <!--<img style="width: 10%;" src="../assets/Logo_1.png" />-->
     <h2>Disposal Records</h2>
     <div class="dateContainer spacer">
-      <div>
           <label class="strongFont">Date From:</label>
           <flat-pickr placeholder="Select a Date" :config="fromDatePickerConfig" v-model="fromDate" name="Date From" v-validate="{required: true, date_format:'MM/DD/YYYY'}"  :class="{'error': errors.has('Date From')}"></flat-pickr>
-      </div>
-      <label class="errorMessage" v-show="errors.has('Date From')">{{errors.first('Date From')}}</label>
-      <div>
           <label class="strongFont">Date To:</label>
           <flat-pickr placeholder="Select a Date" :config="toDatePickerConfig" v-model="toDate" name="Date To" v-validate="'required|date_format:MM/DD/YYYY|after:Date From,true'"  :class="{'error': errors.has('Date To')}"></flat-pickr>
-      </div>
-      <label class="errorMessage" v-show="errors.has('Date To')">{{errors.first('Date To')}}</label>
-      <div>
+      <div >
           <button @click="fetchDisposedByDateRange()" class="submitDates">Submit</button>
       </div>
     </div>
+    <div class="dateContainer spacer">
+      <label class="errorMessage" v-show="errors.has('Date From')">{{errors.first('Date From')}}</label>
+      <label class="errorMessage" v-show="errors.has('Date To')">{{errors.first('Date To')}}</label>
+    </div>
     <div v-if="this.chemData.length > 0">
-      <TableSearcher class="spacer" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
+      <TableSearcher :exceptionToAutoComplete="''" class="spacer" :rows="this.chemData" :columnNames="columns" @submitClicked="handleSubmitClicked"></TableSearcher>    
       <DynamicTable :rows="this.dynamicTableDataSource" :columnNames="columns" :defaultSort="columns[0]" :excludeColumns="getExcludedColumns">
       </DynamicTable>
     </div>
@@ -46,11 +44,14 @@ export default {
       toDatePickerConfig: {
           wrap: false,
           dateFormat: 'm/d/Y',
+          maxDate: "today",
+          allowInput: false
       },
       fromDatePickerConfig: {
           wrap: false,
           dateFormat: 'm/d/Y',
-          maxDate: "today"
+          maxDate: "today",
+          allowInput: false
       }     
     }
   },
@@ -64,10 +65,20 @@ export default {
       this.dynamicTableDataSource = filteredData;
     },
     fetchDisposedByDateRange: function() {
-      var arr = [];
-      arr.push(this.toDate);
-      arr.push(this.fromDate);
-      this.$store.dispatch("setDisposedChemicalsByDate",arr);
+      this.$validator.validateAll()
+                      .then( (result) => {
+                          if (result) {
+                              var arr = [];
+                              arr.push(this.toDate);
+                              arr.push(this.fromDate);
+                              this.$store.dispatch("setDisposedChemicalsByDate",arr);
+                              return;
+                          }
+                      })
+                      .catch(function(error) {
+
+                      });
+      
     }
   },
   computed: {
@@ -122,8 +133,7 @@ export default {
       -moz-transition-duration: 0.5s;
       outline: none;
       width: 100px;
-      margin-right: auto;
-      margin-left: auto;
+      
       
   }
   .submitDates:hover {
@@ -144,5 +154,9 @@ export default {
   }
   .strongFont {
       font-weight: bold;
+  }
+  .dateAlign {
+    display: flex; 
+    justify-content: flex-start;
   }
 </style>

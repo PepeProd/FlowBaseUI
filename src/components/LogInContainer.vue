@@ -4,7 +4,7 @@
         <form style="background-color: rgb(56,56,56)" @submit.prevent="submitLogIn(user)" class="modal-container" @click.stop>
             <span><strong>FlowBase Login</strong></span>
             <label>UserName</label>
-            <input type="text" v-model="user.username" name="User Name" v-validate="'required|min:5'"  :class="{'error': errors.has('User Name')}"></input>
+            <input ref="usernameInput" type="text" v-model="user.username" name="User Name" v-validate="'required|min:5'"  :class="{'error': errors.has('User Name')}"></input>
             <label class="errorMessage" v-show="errors.has('User Name')">{{errors.first('User Name')}}</label>
             <label>Password</label>
             <input  type="password" v-model="user.password" name="Password" v-validate="'required|min:5'"  :class="{'error': errors.has('Password')}"></input>
@@ -40,6 +40,7 @@
             }
         },
         mounted: function () {
+            //this.$refs.usernameInput.focus();
             document.addEventListener("keydown", (e) => {
                 if (e.keyCode == 27) {
                     this.$emit('clickedOutside');
