@@ -3,6 +3,7 @@ import chemicals from './models/chemicals';
 import disposedChemicals from './models/disposedChemicals';
 import families from './models/families';
 import locations from './models/locations';
+import whitelistEmails from './models/whitelistEmails';
 
 import axios from 'axios';
 import api from '../util/api';
