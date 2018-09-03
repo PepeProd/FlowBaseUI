@@ -226,7 +226,7 @@
         flex-direction: column;
         margin-left: auto;
         margin-right: auto;
-        width: 350px;
+        width: 400px;
         margin-top: 30px;
     }
     .topBotMargin {

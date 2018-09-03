@@ -102,6 +102,7 @@
     import 'flatpickr/dist/themes/material_blue.css';
     import AlertMessage from '../components/AlertMessage.vue';
     import AutoComplete from '../components/AutoComplete';
+    import {csvHelper} from '../mixins/csvHelper.js';
     export default {
         name: 'AddChemical',
         components : {
@@ -109,6 +110,7 @@
             AlertMessage,
             AutoComplete
         },
+        mixins: [csvHelper],
         methods: {
             getAutoCompleteData: function(inputData) {
                 var result = [];
@@ -163,15 +165,15 @@
                         var chemNameHolder = this.chemName;
                         this.$store.dispatch('addNewChemical', arr)
                         .then(response => {
+                            console.log(response);
                             var alertText = "";
                             for (var i=0; i < response.length; i++) {
                                 alertText += 'Barcode: ' + response[i].barcode + '\n';
                                 this.barcodeArrayResponse.push(response[i].barcode);
                             }
-                            //alert("Successfully Added " + this.chemName)
+                            this.prepForCSVExport(response);
                             this.displayNewBarcodes = true;
                             this.$store.dispatch('setChemicals');
-                            //alert('The new barcodes for ' + chemNameHolder + '\n' + alertText)
                         })
                         .catch(function(error) {
                             console.log(error)
@@ -208,6 +210,33 @@
 
                 });
             },
+            prepForCSVExport: function(chemType) {
+                var headers = {
+                    chemical_name: 'Chemical Name',
+                    common_name: 'Common Name',
+                    barcode: 'Barcode',
+                    expiration_date: 'Expiration Date',
+                    lot_number: 'Lot Number',
+                    location: 'Location'
+                }
+
+                var formattedChemicalsSoonExpire = [];
+
+                chemType.forEach((chem) => {
+                    formattedChemicalsSoonExpire.push({
+                        chemical_name: chem.chemical_name.replace(/,/g, ''),
+                        common_name: chem.common_name.replace(/,/g, ''),
+                        barcode: chem.barcode,
+                        expiration_date: chem.expiration_date.replace(/,/g, ''),
+                        lot_number: chem.lot_number.replace(/,/g, ''),
+                        location: chem.location.replace(/,/g, '')
+                    })
+                })
+                var date = new Date();
+                var fileTitle = 'New Chemicals ' + date.getMonth() + '/' + date.getDate() + ' ' + date.getHours() + '_' + date.getMinutes();
+
+                this.exportCSVFile(headers, formattedChemicalsSoonExpire, fileTitle);
+            }
         },
         computed: {
             chemicalsWithNoDuplicates: function() {
