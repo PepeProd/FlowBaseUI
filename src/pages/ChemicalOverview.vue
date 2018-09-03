@@ -44,9 +44,9 @@
             <div v-for="chemical in chemicalFamiliesReactiveGetter" >
                 <div class="noStyleLink card">
                     <div class="cardInner">
-                        <div>{{chemical.common}}</div>
-                        <router-link style="width: 125px; color: white;"  class="dont-break-out" :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
-                        <img class="iconDisplay" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
+                        <router-link class="dont-break-out chemFamRouteLink" :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
+                        <div v-show="chemical.common.length > 0" style="width:125px; margin-left: auto; margin-right: auto;">{{chemical.common}}</div>
+                        <img class="iconDisplay chemFamIcon" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
                             @click="chemical.displayDetails = !chemical.displayDetails"/>
                         <div class="detailsContainer" :id="chemical.name" v-show="chemical.displayDetails">
                             <div >Quantity: {{chemical.quantity}}</div>
@@ -230,6 +230,10 @@
     margin-top: 25px;
 }
 
+.chemFamIcon {
+    transform: rotate(-90deg);
+}
+
 .iconDisplayActive {
     transform: rotate(90deg);
 }
@@ -323,6 +327,12 @@ h1 {color: black;}
     margin-top: 10px;
     margin-bottom: 5px;
     width: 80px;
+}
+
+.chemFamRouteLink {
+    width: 125px; 
+    color: white; 
+    font-size: 0.8em;
 }
 
 
