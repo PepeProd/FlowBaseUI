@@ -5,7 +5,7 @@
             <label class="listTitle">Expired Chemicals</label>
             <img class="iconDisplay" :class="{iconDisplayActive : this.displayExpired}" src="../assets/chevron_blue.svg" 
                 @click="displayExpired = !displayExpired"/>
-            <button v-show="this.displayExpired && getExpiredChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiredChemicals, "Expired Chemicals")">Export</button>
+            <button v-show="this.displayExpired && getExpiredChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiredChemicals, 'Expired Chemicals')">Export</button>
             <div v-show="this.displayExpired" class="chemFamilies">
                 <div v-for="chem in getExpiredChemicals" class="card" :class="{expired: compareExpired(chem['expiration_date'])}">
                     <div class="cardInner" >
@@ -24,7 +24,7 @@
             <label class="listTitle">Expiring Soon Chemicals</label>
             <img class="iconDisplay" :class="{iconDisplayActive : this.displayExpiringSoon}" src="../assets/chevron_blue.svg" 
                 @click="displayExpiringSoon = !displayExpiringSoon"/>
-            <button v-show="this.displayExpiringSoon && getExpiringSoonChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiringSoonChemicals, "Expiring Soon")">Export</button>
+            <button v-show="this.displayExpiringSoon && getExpiringSoonChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiringSoonChemicals, 'Expiring Soon')">Export</button>
             <div v-show="this.displayExpiringSoon" class="chemFamilies">
                 <div v-for="chem in getExpiringSoonChemicals" class="card" :class="{soonColor: compare1DayToExpiration(chem['expiration_date']), soon30Color: compareSoonExpiration(chem['expiration_date'])}">
                     <div class="cardInner">
