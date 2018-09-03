@@ -5,6 +5,7 @@
             <label class="listTitle">Expired Chemicals</label>
             <img class="iconDisplay" :class="{iconDisplayActive : this.displayExpired}" src="../assets/chevron_blue.svg" 
                 @click="displayExpired = !displayExpired"/>
+            <button v-show="this.displayExpired && getExpiredChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiredChemicals)">Export</button>
             <div v-show="this.displayExpired" class="chemFamilies">
                 <div v-for="chem in getExpiredChemicals" class="card" :class="{expired: compareExpired(chem['expiration_date'])}">
                     <div class="cardInner" >
@@ -23,6 +24,7 @@
             <label class="listTitle">Expiring Soon Chemicals</label>
             <img class="iconDisplay" :class="{iconDisplayActive : this.displayExpiringSoon}" src="../assets/chevron_blue.svg" 
                 @click="displayExpiringSoon = !displayExpiringSoon"/>
+            <button v-show="this.displayExpiringSoon && getExpiringSoonChemicals.length > 0" class="btnStyle exportBtn" @click="prepForCSVExport(getExpiringSoonChemicals)">Export</button>
             <div v-show="this.displayExpiringSoon" class="chemFamilies">
                 <div v-for="chem in getExpiringSoonChemicals" class="card" :class="{soonColor: compare1DayToExpiration(chem['expiration_date']), soon30Color: compareSoonExpiration(chem['expiration_date'])}">
                     <div class="cardInner">
@@ -42,6 +44,7 @@
             <div v-for="chemical in chemicalFamiliesReactiveGetter" >
                 <div class="noStyleLink card">
                     <div class="cardInner">
+                        <div>{{chemical.common}}</div>
                         <router-link style="width: 125px; color: white;"  class="dont-break-out" :to="{name: 'ChemicalDetails', params: {chemName: chemical.name}}">{{chemical.name}}</router-link>
                         <img class="iconDisplay" :class="{iconDisplayActive : chemical.displayDetails}" src="../assets/chevron_blue.svg" 
                             @click="chemical.displayDetails = !chemical.displayDetails"/>
@@ -58,12 +61,13 @@
 <script>
     import TableSearcher from '../components/TableSearcher.vue';
     import {dateComparison} from '../mixins/dateComparison.js';
+    import {csvHelper} from '../mixins/csvHelper.js';
     export default {
         name: "Overview",
         components: {
             TableSearcher
         },
-        mixins: [dateComparison],
+        mixins: [dateComparison, csvHelper],
         data() {
             return {
                 chemicalFamilies: [],
@@ -82,7 +86,7 @@
                     var key = item.chemical_name.toLowerCase();
                     if (typeof key != "undefined" & !(key in lookup)) {
                         lookup[key]=1;
-                        result.push({name: key, quantity: items.filter(i => i.chemical_name.toLowerCase() === key).length, displayDetails: false});
+                        result.push({name: key, common: item.common_name, quantity: items.filter(i => i.chemical_name.toLowerCase() === key).length, displayDetails: false});
                     }
                 }
                 this.chemicalFamilies = result;
@@ -117,12 +121,40 @@
                     }                    
                 } 
                 return expiringSoonChemicals;
-            }
+            },
         },
         methods: {
             handleSubmitClicked: function(filteredData) {
                 this.chemicalFamilies = filteredData;
             },
+            prepForCSVExport: function(chemType) {
+                var headers = {
+                    chemical_name: 'Chemical Name',
+                    common_name: 'Common Name',
+                    barcode: 'Barcode',
+                    expiration_date: 'Expiration Date',
+                    lot_number: 'Lot Number',
+                    location: 'Location'
+                }
+
+                var formattedChemicalsSoonExpire = [];
+
+                chemType.forEach((chem) => {
+                    formattedChemicalsSoonExpire.push({
+                        chemical_name: chem.chemical_name.replace(/,/g, ''),
+                        common_name: chem.common_name.replace(/,/g, ''),
+                        barcode: chem.barcode,
+                        expiration_date: chem.expiration_date.replace(/,/g, ''),
+                        lot_number: chem.lot_number.replace(/,/g, ''),
+                        location: chem.location.replace(/,/g, '')
+                    })
+                })
+
+                var date = new Date();
+                var fileTitle = 'Expiration Info ' + date.getMonth() + '/' + date.getDate() + ' ' + date.getHours() + '_' + date.getMinutes();
+
+                this.exportCSVFile(headers, formattedChemicalsSoonExpire, fileTitle);
+            }
         },
         created: function() {
             this.$store.dispatch('setChemicals');
@@ -262,4 +294,36 @@ h1 {color: black;}
 .colorBlack {
     color: #2c3e50 !important;
 }
+
+.btnStyle {
+    border-radius: 5px;
+    padding: 3px 25px 3px 25px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #00A6FF;
+    border: 1px solid #fff;
+    transition-duration: 0.5s;
+    -webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    outline: none;
+}
+
+.btnStyle:hover {
+        color: #006398;
+        opacity: 0.8;
+        border: 1px solid #006398;
+    }
+
+.exportBtn {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    width: 80px;
+}
+
+
 </style>
